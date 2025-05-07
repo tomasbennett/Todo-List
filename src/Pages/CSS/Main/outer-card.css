@@ -1,0 +1,10 @@
+#outer-card{
+    width: 100rem;
+    height: 70rem;
+
+    background-color: whitesmoke;
+
+    border-radius: 3rem;
+
+    box-shadow: 0rem 0rem 1rem rgba(0, 0, 0, 0.3);
+}

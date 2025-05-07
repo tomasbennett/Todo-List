@@ -3,9 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Todo-List</title>
 </head>
 <body>
-    
+    <div id="outer-card">
+        <aside>
+            <div id="menu-title-container">
+                <h2>Menu</h2>
+                <button type="button"></button>
+            </div>
+            <div id="aside-list-options-container">
+
+                <div id="aside-tasks-list-container" class="sidebar-outer-container">
+                    <h3 class="sidebar-list-header">Tasks</h3>
+                    
+                    <div class="sidebar-inner-container">
+                        <div id="home-option" class="sidebar-option">
+                            <div class="sidebar-svg-container"></div>
+                            <p class="sidebar-option-title">Home</p>
+                            <div class="sidebar-notification-number-container"></div>
+                        </div>
+                        <div id="upcoming-option" class="sidebar-option">
+                            <div class="sidebar-svg-container"></div>
+                            <p class="sidebar-option-title">Upcoming</p>
+                            <div class="sidebar-notification-number-container"></div>
+                        </div>
+                        <div id="calendar-option" class="sidebar-option">
+                            <div class="sidebar-svg-container"></div>
+                            <p class="sidebar-option-title">Calendar</p>
+                            <div class="sidebar-notification-number-container"></div>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+                <div id="aside-projects-list-container" class="sidebar-outer-container">
+                    <h3 class="sidebar-list-header">Projects</h3>
+                    
+                    <div class="sidebar-inner-container">
+                        <div id="personal-option" class="sidebar-option">
+                            <div class="sidebar-svg-container"></div>
+                            <p class="sidebar-option-title">Personal</p>
+                            <div class="sidebar-notification-number-container"></div>
+                        </div>
+                        <div id="study-option" class="sidebar-option">
+                            <div class="sidebar-svg-container"></div>
+                            <p class="sidebar-option-title">Studies</p>
+                            <div class="sidebar-notification-number-container"></div>
+                        </div>
+                        <div id="list-one-option" class="sidebar-option">
+                            <div class="sidebar-svg-container"></div>
+                            <p class="sidebar-option-title">List 1</p>
+                            <div class="sidebar-notification-number-container"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="aside-notes-list-container" class="sidebar-outer-container">
+                    <h3 class="sidebar-list-header">Notes</h3>
+                    
+                    <div class="sidebar-inner-container">
+                        <button type="button" class="sidebar-notes-button">
+                            Note 1
+                        </button>
+                        <button type="button" class="sidebar-notes-button">
+                            Note 2
+                        </button>
+
+                        <button type="button" id="add-note-button" class="sidebar-notes-button">
+                            +Add Note
+                        </button>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </aside>
+        <main>
+            <h1 id="main-title"></h1>
+            <div id="main-content"></div>
+        </main>
+    </div>
 </body>
 </html>
