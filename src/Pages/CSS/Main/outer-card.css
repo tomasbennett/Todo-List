@@ -1,10 +1,16 @@
 #outer-card{
+    --outer-card-border-radius: 3rem;
+
     width: 100rem;
     height: 70rem;
 
     background-color: whitesmoke;
 
-    border-radius: 3rem;
+    border-radius: var(--outer-card-border-radius);
 
     box-shadow: 0rem 0rem 1rem rgba(0, 0, 0, 0.3);
+
+    display: flex;
+    
+
 }

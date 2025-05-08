@@ -1,5 +1,8 @@
 :root{
     font-size: 62.5%;
+
+    --dark-grey: rgb(59, 59, 59);
+    --light-grey: rgb(146, 146, 146);
 }
 
 
@@ -11,12 +14,18 @@
     border: 0;
     outline: 0;
 
+    color: inherit;
+    font-size: inherit;
+    font-family: inherit;
+
     box-sizing: border-box;
 }
 
 
 html,
 body{
+    font-family: Andale Mono, monospace;
+
     font-size: 1.6rem;
 
     display: flex;
