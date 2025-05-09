@@ -4,6 +4,10 @@ export class DialogOpenClose {
 
     open(): void {
         this.dialogElem.showModal();
+        this.dialogElem.addEventListener('cancel', (e) => {
+            e.preventDefault();
+            this.close();
+        }, { once: true });
     }
 
     close(): void {
