@@ -1,0 +1,20 @@
+dialog#new-entry-dialog{
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background-color: white;
+
+    width: 80rem;
+    height: 50rem;
+
+}
+
+
+dialog#new-entry-dialog::backdrop{
+    background-color: rgba(128, 128, 128, 0.4);
+    backdrop-filter: blur(.3rem);
+}
