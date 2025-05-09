@@ -1,6 +1,9 @@
 #outer-card{
     --outer-card-border-radius: 3rem;
 
+    position: relative;
+
+
     width: 100rem;
     height: 70rem;
 
@@ -13,4 +16,75 @@
     display: flex;
     
 
+}
+
+
+button#add-button{
+    --plus-large: 50%;
+    --plus-small: 10%;
+
+    position: absolute;
+
+    top: -4rem;
+    right: -4rem;
+
+    background-color: rgb(255, 141, 160);
+
+    box-shadow: .8rem .8rem 0.8rem rgba(59, 59, 59, 0.5);
+
+    width: 8rem;
+    aspect-ratio: 1;
+
+    border-radius: 50%;
+
+    display: grid;
+    place-items: center;
+
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+
+    cursor: pointer;
+
+    transition: background-color 500ms linear;
+
+}
+
+
+
+
+button#add-button:hover{
+    background-color: rgb(255, 113, 137);
+}
+
+button#add-button:active{
+    transform: scale(0.95);
+}
+
+
+button#add-button::before{
+    content: '';
+
+    grid-column: 1 / 1;
+    grid-row: 1 / 1;
+
+    width: var(--plus-large);
+    height: var(--plus-small);
+
+    border-radius: .5rem;
+
+    background-color: white;
+}
+
+button#add-button::after{
+    content: '';
+
+    grid-column: 1 / 1;
+    grid-row: 1 / 1;
+
+    width: var(--plus-small);
+    height: var(--plus-large);
+
+    border-radius: .5rem;
+
+    background-color: white;
 }

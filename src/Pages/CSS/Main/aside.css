@@ -13,13 +13,13 @@ aside.maximise{
     padding-top: var(--outer-card-border-radius);
     padding-bottom: var(--outer-card-border-radius);
     padding-left: var(--outer-card-border-radius);
-    padding-right: 1.5rem;
+    padding-right: calc(var(--outer-card-border-radius) / 2);
 
     display: flex;
     flex-direction: column;
 
     row-gap: 5rem;
-    border-right: .2rem solid black;
+    /* border-right: .2rem solid black; */
 
 }
 
@@ -109,8 +109,9 @@ div.sidebar-inner-container{
 
     row-gap: var(--sidebar-container-row-gap);
 
-    
+    max-height: 13rem;
 
+    overflow-y: auto;
 }
 
 
@@ -168,12 +169,24 @@ div.sidebar-notification-number-container{
 
 
 #aside-notes-list-container .sidebar-inner-container{
+
     display: flex;
     flex-direction: row;
 
-    justify-content: space-between;
     align-items: center;
     
+}
+
+
+#notes-container{
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    
+    column-gap: .5rem;
+
+    overflow-x: auto;
 }
 
 
@@ -200,21 +213,54 @@ div.sidebar-notification-number-container{
 }
 
 
+#aside-projects-list-container .sidebar-option:nth-of-type(1) .sidebar-svg-container svg{
+    fill: rgb(216, 76, 100);
+}
+
+
+#aside-projects-list-container .sidebar-option:nth-of-type(2) .sidebar-svg-container svg{
+    fill: rgb(77, 200, 241);
+}
+
+
+
+#aside-projects-list-container .sidebar-option:nth-of-type(3) .sidebar-svg-container svg{
+    fill: rgb(179, 179, 38);
+}
+
+
+
+
 
 
 .sidebar-notes-button{
-    flex: 1 1 0;
+    flex-shrink: 0;
+
+    width: 8rem;
+    height: 100%;
 
     text-wrap: nowrap;
 
     cursor: pointer;
 
-    padding: .5rem;
+    padding: 1rem .5rem;
 
     border-radius: .4rem;
 
     transition: background-color 300ms linear;
 }
+
+#add-note-button.sidebar-notes-button{
+    font-weight: bold;
+    
+    color: black;
+
+    width: 10rem;
+
+    margin-left: auto;
+}
+
+
 
 .sidebar-notes-button:hover{
     background-color: var(--hover-background-colour);
