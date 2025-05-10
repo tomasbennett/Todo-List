@@ -19,7 +19,9 @@ aside.maximise{
     flex-direction: column;
 
     row-gap: 5rem;
-    /* border-right: .2rem solid black; */
+
+
+    border-right: .2rem solid var(--light-grey);
 
 }
 

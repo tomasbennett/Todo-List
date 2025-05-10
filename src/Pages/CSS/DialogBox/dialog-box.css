@@ -1,0 +1,196 @@
+dialog#new-entry-dialog{
+    --animation-timing: 300ms;
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background-color: white;
+
+    box-shadow: 0rem 2rem 5rem rgba(0, 0, 0, 0.5);
+
+    width: 90rem;
+    height: 65rem;
+
+
+    
+
+    /* transform-origin: center; */
+
+    border-radius: 2rem;
+
+    /* border: .2rem solid var(--light-grey); */
+
+
+    animation: increaseScale var(--animation-timing) ease-in forwards;
+}
+
+dialog#new-entry-dialog[open]{
+    display: grid;
+    grid-template-columns: 25rem 1fr;
+    grid-template-rows: 12rem
+                        1fr;
+    grid-template-areas: "header header"
+                         "aside main";
+}
+
+
+dialog#new-entry-dialog.closing{
+    animation: decreaseScale var(--animation-timing) ease-in forwards;
+}
+
+dialog#new-entry-dialog::backdrop{
+    background-color: rgba(128, 128, 128, 0.4);
+    backdrop-filter: blur(.5rem);
+}
+
+
+
+dialog #dialog-header{
+    grid-area: header;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 2rem;
+
+    border-bottom: .2rem solid var(--light-grey);
+
+    background-color: rgb(184, 204, 184);
+}
+
+dialog #dialog-header h1{
+    color: rgb(255, 255, 255);
+    text-shadow: .5rem .5rem 1rem grey;
+
+    font-size: 4.5rem;
+    font-weight: lighter;
+}
+
+
+dialog #dialog-header button#close-dialog{
+
+    align-self: flex-start;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 42%;
+    aspect-ratio: 1;
+
+    cursor: pointer;
+
+    background-color: transparent;
+
+    /* overflow: hidden; */
+}
+
+dialog #dialog-header button#close-dialog svg{
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    fill: rgb(255, 99, 125);
+    
+
+
+    /* rgb(255, 74, 74) */
+
+    filter: drop-shadow(.4rem .4rem .2rem grey);
+}
+
+
+
+
+dialog #aside-theme-container{
+    grid-area: aside;
+
+    border-right: .2rem solid var(--light-grey);
+
+    width: 100%;
+    height: 100%;
+}
+
+dialog #main-editor-container{
+    grid-area: main;
+
+    width: 100%;
+    height: 100%;
+}
+
+
+@keyframes increaseScale {
+    from{
+        transform: translate(-50%, -50%) scale(0);
+    }
+    to{
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@keyframes decreaseScale {
+    from{
+        transform: translate(-50%, -50%) scale(1);
+    }
+    to{
+        transform: translate(-50%, -50%) scale(0);
+    }
+}
+
+
+
+
+
+
+
+
+
+div#aside-theme-container,
+div#aside-theme-container div{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    
+}
+
+div#aside-theme-container div{
+    row-gap: 1rem;
+
+    padding: 1rem 2rem;
+
+    font-size: 3rem;
+}
+
+div#aside-theme-container div p.dialog-theme-selection{
+    color: var(--dark-grey);
+
+    display: flex;
+    align-items: center;
+    /* justify-content: center; */
+
+    height: 5rem;
+
+    border-radius: .5rem;
+
+    padding: 0 1rem;
+
+    cursor: pointer;
+
+    text-wrap: nowrap;
+}
+
+div#aside-theme-container div p.dialog-theme-selection:hover{
+    background-color: rgba(128, 128, 128, 0.3);
+}
