@@ -1,0 +1,43 @@
+div#dialog-project-state{
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 8rem
+                        1fr
+                        6rem;
+    grid-template-areas: "title"
+                         "icon"
+                         "submit";
+
+    row-gap: 1rem;
+}
+
+
+div#project-text-input-container{
+    grid-area: title;
+
+    width: 100%;
+    height: 100%;
+}
+
+div#project-text-input-container input{
+    width: 100%;
+    height: 100%;
+
+    color: var(--dark-grey);
+}
+
+
+div#project-dialog-complete-button-container{
+    grid-area: submit;
+
+    width: 100%;
+    height: 100%;
+}
+
+div#project-dialog-complete-button-container button{
+    margin-left: auto;
+    margin-right: 2rem;
+}

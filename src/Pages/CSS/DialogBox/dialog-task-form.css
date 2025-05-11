@@ -1,18 +1,4 @@
-div#main-editor-container{
-    width: 100%;
-    height: 100%;
-
-    
-    
-}
-
-
-div#main-editor-container form{
-    width: 100%;
-    height: 100%;
-}
-
-div#main-editor-container[data-state="task"] div#dialog-task-state{
+div#dialog-task-state{
     width: 100%;
     height: 100%;
 
@@ -20,18 +6,22 @@ div#main-editor-container[data-state="task"] div#dialog-task-state{
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 6rem
                         1fr
-                        8rem
-                        8rem;
+                        6rem
+                        6rem;
     grid-template-areas: "subject subject"
                          "description description"
                          "due-date ."
                          "priority submit";
 
+    row-gap: 1rem;
+
+    
+
 
     /* padding: 1rem; */
 }   
 
-div#main-editor-container[data-state="task"] div.task-dialog-input-container{
+div.task-dialog-input-container{
 
 
     width: 100%;
@@ -46,6 +36,9 @@ div#main-editor-container[data-state="task"] div.task-dialog-input-container{
 
 }
 
+
+
+
 div#task-subject-container{
     grid-area: subject;
 }
@@ -54,12 +47,11 @@ div#task-subject-container input{
     width: 100%;
     height: 100%;
 
+    color: var(--dark-grey);
     /* border: .2rem solid var(--light-grey); */
     /* border-radius: .5rem; */
 
-    padding: 0 2rem;
-
-
+    /* padding: 0 2rem; */
 }
 
 div#task-subject-container label{
@@ -73,13 +65,53 @@ div#task-subject-container label{
     background-color: white;
 
     color: var(--light-grey);
+
+    cursor: text;
 }
+
+
+
+
 
 
 
 div#task-body-text-container{
     grid-area: description;
 }
+
+div#task-body-text-container textarea{
+    width: 100%;
+    height: 100%;
+
+    color: var(--dark-grey);
+
+    
+
+    resize: none;
+}
+
+div#task-body-text-container label{
+    position: absolute;
+
+    top: 50%;
+    left: 2rem;
+
+    transform: translate(0%, -50%);
+
+    /* background-color: white; */
+
+    color: var(--light-grey);
+
+    cursor: text;
+}
+
+
+
+
+
+
+
+
 
 
 div#task-due-date-container{
@@ -93,6 +125,12 @@ div#task-priority-container{
 }
 
 
-div#dialog-complete-button-container{
+div#task-dialog-complete-button-container{
     grid-area: submit;
+}
+
+div#task-dialog-complete-button-container button{
+    margin-left: auto;
+    margin-right: 2rem;
+
 }

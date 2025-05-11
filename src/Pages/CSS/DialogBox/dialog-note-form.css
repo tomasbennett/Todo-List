@@ -1,0 +1,57 @@
+div#dialog-note-state{
+    width: 100%;
+    height: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 8rem
+                        1fr
+                        6rem;
+    grid-template-areas: "title"
+                         "body-text"
+                         "submit";
+
+    row-gap: 1rem;
+}
+
+div#note-text-input-container{
+    grid-area: title;
+}
+
+div#note-text-input-container input{
+    width: 100%;
+    height: 100%;
+
+    color: var(--dark-grey);
+}
+
+
+div#note-body-text-container{
+    grid-area: body-text;
+}
+
+div#note-body-text-container textarea{
+    resize: none;
+
+    width: 100%;
+    height: 100%;
+
+    color: var(--dark-grey);
+}
+
+
+div#note-dialog-complete-button-container{
+    grid-area: submit;
+
+    display: flex;
+    justify-content: flex-end;
+}
+
+div#note-dialog-complete-button-container button{
+    margin-right: 2rem;
+}
+
+div.note-dialog-input-container{
+    width: 100%;
+    height: 100%;
+}

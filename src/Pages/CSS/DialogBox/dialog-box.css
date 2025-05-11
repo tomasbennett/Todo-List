@@ -194,3 +194,48 @@ div#aside-theme-container div p.dialog-theme-selection{
 div#aside-theme-container div p.dialog-theme-selection:hover{
     background-color: rgba(128, 128, 128, 0.3);
 }
+
+
+div#main-editor-container{
+    width: 100%;
+    height: 100%;
+
+    padding: 0 2rem 1rem;
+    
+}
+
+
+div#main-editor-container form{
+    width: 100%;
+    height: 100%;
+}
+
+
+
+button.submit-button{
+    --submit-button-colour: rgb(29, 199, 134);
+
+    
+    height: 4.8rem;
+    aspect-ratio: 3;
+
+    border-radius: 3rem;
+    border: var(--submit-button-colour) .3rem solid;
+
+    color: var(--submit-button-colour);
+
+    /* background-color: grey; */
+
+
+
+    cursor: pointer;
+
+    transition: background-color 300ms linear, 
+                color 300ms linear;
+}
+
+button.submit-button:hover{
+    background-color: var(--submit-button-colour);
+
+    color: white;
+}

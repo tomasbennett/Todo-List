@@ -259,19 +259,19 @@
 
         </div>
         <div id="main-editor-container" data-state="task">
-            <form method="dialog">
+            <form style="display: none;" id="form-task-state" method="dialog">
                 <div id="dialog-task-state">
                     
                     <div class="task-dialog-input-container" id="task-subject-container">
-                        <input id="task-subject" name="subject" type="text" required minlength="1">
-                        <label for="task-subject">Enter the subject for your task...</label>
+                        <input placeholder="Enter the subject for your task..." id="task-subject" name="subject" type="text" required minlength="1">
+                        <label for="task-subject"></label>
 
                     </div>
                     
 
                     <div class="task-dialog-input-container" id="task-body-text-container">
-                        <textarea id="body-text" name="body-text" required minlength="1"></textarea>
-                        <label for="body-text">Please enter your body of text here...</label>
+                        <textarea placeholder="Please enter your body of text here..." id="body-text" name="body-text" required minlength="1"></textarea>
+                        <label for="body-text"></label>
                     </div>
                     
 
@@ -291,17 +291,53 @@
                         
                     </div>
 
-                    
-
-
-                
-                    <div id="dialog-complete-button-container" class="task-dialog-input-container">
-                        <button type="submit">Complete</button>
+                    <div id="task-dialog-complete-button-container" class="task-dialog-input-container">
+                        <button class="submit-button" type="submit">Complete</button>
                     </div>
 
                 </div>
                 
             </form>
+            <form style="display: none;" id="form-project-state" method="dialog">
+                <div id="dialog-project-state">
+
+                    <div id="project-text-input-container">
+                        <input required minlength="1" placeholder="Enter your new projects name..." type="text" name="project-name-input" id="project-name-input">
+                        <label for="project-name-input"></label>
+                    </div>
+
+                    <div id="project-dialog-complete-button-container" class="project-dialog-input-container">
+                        <button class="submit-button" type="submit">Complete</button>
+                    </div>
+                </div>    
+            </form>
+            <form id="form-note-state" method="dialog">
+                <div id="dialog-note-state">
+
+                    <div class="note-dialog-input-container" id="note-text-input-container">
+                        <input required minlength="1" placeholder="Enter your new notes name..." type="text" name="note-name-input" id="note-name-input">
+                        <label for="note-name-input"></label>
+                    </div>
+
+                    <div class="note-dialog-input-container" id="note-body-text-container">
+                        <textarea placeholder="Enter the body of text for your note..." name="note-description" id="note-description"></textarea>
+                        <label for="note-description"></label>
+                    </div>
+
+                    <div id="note-dialog-complete-button-container" class="note-dialog-input-container">
+                        <button class="submit-button" type="submit">Complete</button>
+                    </div>
+                </div>    
+            </form>
+
+
+
+
+
+
+
+
+
         </div>
     </dialog>
 
