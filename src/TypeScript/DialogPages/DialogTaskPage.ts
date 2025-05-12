@@ -6,6 +6,8 @@ import { NotePageCommand, TaskPageCommand, ProjectsPageCommand } from "./SwitchD
 import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
+import { TasksFormSubmission } from "../LocalStorage/LocalStorageCommands";
+import { TasksLocalStorage } from "../LocalStorage/LocalStorage";
 
 
 export class TasksScreenFactory extends ScreenFactory {
@@ -60,14 +62,14 @@ export class TasksPage implements PageState {
 
 
 export class TaskFormComponent implements IComponentInteractive {
-    private taskForm: HTMLElement;
+    private taskForm: HTMLFormElement;
 
     private clickEvent: ClickEventObserver;
     
     private triggerObserver: () => void;
 
     constructor() {
-        this.taskForm = document.getElementById("form-task-state")!;
+        this.taskForm = document.getElementById("form-task-state")! as HTMLFormElement;
         
         this.clickEvent = new ClickEventObserver()
         
@@ -76,8 +78,7 @@ export class TaskFormComponent implements IComponentInteractive {
     }
 
     addEventListeners(stateManager: IPageStateManager): void {
-        
-    
+        this.clickEvent.setEvent(new TasksFormSubmission(this.taskForm, new TasksLocalStorage()));
     
         this.taskForm.addEventListener("submit", this.triggerObserver);
     

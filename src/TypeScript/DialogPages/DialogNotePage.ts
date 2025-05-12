@@ -2,6 +2,8 @@ import { ICommand, ClickEventObserver, ExitPageCommand } from "../Utility/EventO
 
 import { TaskPageCommand, NotePageCommand, ProjectsPageCommand } from "./SwitchDialogPageCommands";
 
+import { TasksFormSubmission } from "../LocalStorage/LocalStorageCommands";
+
 import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
@@ -59,14 +61,14 @@ export class NotePage implements PageState {
 
 
 export class NoteFormComponent implements IComponentInteractive {
-    private noteForm: HTMLElement;
+    private noteForm: HTMLFormElement;
 
     private clickEvent: ClickEventObserver;
     
     private triggerObserver: () => void;
 
     constructor() {
-        this.noteForm = document.getElementById("form-note-state")!;
+        this.noteForm = document.getElementById("form-note-state")! as HTMLFormElement;
         
         this.clickEvent = new ClickEventObserver()
         
@@ -75,7 +77,9 @@ export class NoteFormComponent implements IComponentInteractive {
     }
 
     addEventListeners(stateManager: IPageStateManager): void {
-    
+        // this.clickEvent.setEvent(new FormDataStorageTransfer(this.noteForm));
+
+
     
         this.noteForm.addEventListener("submit", this.triggerObserver);
     

@@ -4,9 +4,9 @@ import { TasksPage } from "./DialogTaskPage";
 
 export class DialogOpenClose {
 
-    constructor(private dialogElem: HTMLDialogElement) {}
+    constructor(private dialogElem: HTMLDialogElement, private dialogPageState: IPageStateManager) {}
 
-    open(dialogPageState: IPageStateManager): void {
+    open(): void {
         this.dialogElem.showModal();
         this.dialogElem.addEventListener('cancel', (e) => {
             e.preventDefault();
@@ -14,8 +14,8 @@ export class DialogOpenClose {
         }, { once: true });
 
         
-        dialogPageState.setState(new TasksPage(dialogPageState));
-        dialogPageState.load();
+        this.dialogPageState.setState(new TasksPage(this.dialogPageState));
+        this.dialogPageState.load();
 
     }
 
@@ -25,8 +25,9 @@ export class DialogOpenClose {
         this.dialogElem.addEventListener("animationend", () => { 
             this.dialogElem.close();
             this.dialogElem.classList.remove("closing");
-         }, { once: true });
-         
+        }, { once: true });
+        
+        this.dialogPageState.exit();
     }
 
 

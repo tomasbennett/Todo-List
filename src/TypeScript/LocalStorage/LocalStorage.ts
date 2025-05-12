@@ -1,8 +1,9 @@
+import { ICommand } from "../Utility/EventObserver";
 import { ITasks, INotes, IProjects } from "../Utility/StorageTypes";
 
 
 
-export abstract class LocalStorageStratergy<T extends { id: number }> {
+export abstract class LocalStorageStratergy<T extends ITasks | INotes | IProjects> {
     protected abstract storageKey: string;
 
     getAll(): T[] {

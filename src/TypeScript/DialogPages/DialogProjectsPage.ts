@@ -5,6 +5,7 @@ import { TaskPageCommand, NotePageCommand, ProjectsPageCommand } from "./SwitchD
 import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
+import { TasksFormSubmission } from "../LocalStorage/LocalStorageCommands";
 
 
 export class ProjectsScreenFactory extends ScreenFactory {
@@ -60,14 +61,14 @@ export class ProjectsPage implements PageState {
 
 
 export class ProjectsFormComponent implements IComponentInteractive {
-    private projectsForm: HTMLElement;
+    private projectsForm: HTMLFormElement;
 
     private clickEvent: ClickEventObserver;
     
     private triggerObserver: () => void;
 
     constructor() {
-        this.projectsForm = document.getElementById("form-project-state")!;
+        this.projectsForm = document.getElementById("form-project-state")! as HTMLFormElement;
         
         this.clickEvent = new ClickEventObserver()
         
@@ -76,7 +77,7 @@ export class ProjectsFormComponent implements IComponentInteractive {
     }
 
     addEventListeners(stateManager: IPageStateManager): void {
-    
+        // this.clickEvent.setEvent(new FormDataStorageTransfer(this.projectsForm));
     
         this.projectsForm.addEventListener("submit", this.triggerObserver);
     
