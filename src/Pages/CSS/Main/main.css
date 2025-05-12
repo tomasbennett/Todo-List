@@ -120,7 +120,7 @@ div.task-entry-container label{
 }
 
 div.task-entry-container input{
-    height: 50%;
+    height: 40%;
     aspect-ratio: 1.1;
 
     cursor: pointer;

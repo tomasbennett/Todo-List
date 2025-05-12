@@ -8,6 +8,10 @@ export class DialogOpenClose {
             e.preventDefault();
             this.close();
         }, { once: true });
+
+        
+
+
     }
 
     close(): void {

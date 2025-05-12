@@ -1,4 +1,4 @@
-import { DialogOpenClose } from "./DialogPages/Dialog";
+import { DialogOpenClose } from "./DialogPages/DialogStartup";
 
 
 const addButton: HTMLElement = document.getElementById("add-button")!;
