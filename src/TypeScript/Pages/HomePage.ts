@@ -1,4 +1,7 @@
-import { ICommand, ClickEventObserver, ExitPageCommand, CalendarPageCommand, UpcomingPageCommand } from "../Utility/EventObserver";
+import { ICommand, ClickEventObserver, ExitPageCommand } from "../Utility/EventObserver";
+
+import { UpcomingPageCommand, CalendarPageCommand } from "./SwitchPageCommands";
+
 import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";

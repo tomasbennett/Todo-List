@@ -1,8 +1,12 @@
+import { IPageStateManager } from "../Utility/PageState";
+import { TasksPage } from "./DialogTaskPage";
+
+
 export class DialogOpenClose {
 
     constructor(private dialogElem: HTMLDialogElement) {}
 
-    open(): void {
+    open(dialogPageState: IPageStateManager): void {
         this.dialogElem.showModal();
         this.dialogElem.addEventListener('cancel', (e) => {
             e.preventDefault();
@@ -10,7 +14,8 @@ export class DialogOpenClose {
         }, { once: true });
 
         
-
+        dialogPageState.setState(new TasksPage(dialogPageState));
+        dialogPageState.load();
 
     }
 

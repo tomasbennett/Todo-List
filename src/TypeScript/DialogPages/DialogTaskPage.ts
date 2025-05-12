@@ -1,4 +1,8 @@
-import { ICommand, ClickEventObserver, ExitPageCommand, CalendarPageCommand, UpcomingPageCommand } from "../Utility/EventObserver";
+import { ICommand, ClickEventObserver, ExitPageCommand } from "../Utility/EventObserver";
+
+import { NotePageCommand, TaskPageCommand, ProjectsPageCommand } from "./SwitchDialogPageCommands";
+
+
 import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
@@ -72,6 +76,7 @@ export class TaskFormComponent implements IComponentInteractive {
     }
 
     addEventListeners(stateManager: IPageStateManager): void {
+        
     
     
         this.taskForm.addEventListener("submit", this.triggerObserver);
@@ -116,7 +121,7 @@ export class ProjectsPageComponent implements IComponentEventListener {
 
     addEventListeners(stateManager: IPageStateManager): void {
         this.clickEvent.setEvent(new ExitPageCommand(stateManager));
-        this.clickEvent.setEvent(new CalendarPageCommand(stateManager));
+        this.clickEvent.setEvent(new ProjectsPageCommand(stateManager));
 
         this.projectsPageButton.addEventListener("click", this.triggerObserver);
     }
@@ -157,7 +162,7 @@ export class NotePageComponent implements IComponentEventListener {
 
     addEventListeners(stateManager: IPageStateManager): void {
         this.clickEvent.setEvent(new ExitPageCommand(stateManager));
-        this.clickEvent.setEvent(new CalendarPageCommand(stateManager));
+        this.clickEvent.setEvent(new NotePageCommand(stateManager));
 
         this.notePageButton.addEventListener("click", this.triggerObserver);
     }
