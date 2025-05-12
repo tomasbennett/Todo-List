@@ -1,7 +1,7 @@
-import { PageState } from "./PageState";
+import { PageState, IPageStateManager } from "./PageState";
 
 
-export class DialogPageStateManager {
+export class DialogPageStateManager implements IPageStateManager {
     private state!: PageState;
 
     setState(state: PageState): void {

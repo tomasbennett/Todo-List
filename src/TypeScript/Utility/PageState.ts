@@ -4,7 +4,17 @@ export interface PageState {
     exit(): void;
 }
 
-export class PageStateManager {
+export interface IPageStateManager {
+    setState(state: PageState): void;
+
+    getState(): PageState;
+
+    load(): void;
+
+    exit(): void;
+}
+
+export class PageStateManager implements IPageStateManager {
     private state!: PageState;
 
     setState(state: PageState): void {

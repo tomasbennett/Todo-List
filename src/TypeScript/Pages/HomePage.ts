@@ -1,6 +1,6 @@
-import { ICommand, ClickEventObserver, ExitPageCommand } from "../Utility/EventObserver";
+import { ICommand, ClickEventObserver, ExitPageCommand, CalendarPageCommand, UpcomingPageCommand } from "../Utility/EventObserver";
 import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
-import { PageState, PageStateManager } from "../Utility/PageState";
+import { PageState, IPageStateManager } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
 
 
@@ -12,14 +12,20 @@ export class HomeScreenFactory extends ScreenFactory {
 }
 
 class HomeScreen extends ScreenTemplate {
+    private calendarButton: IComponentEventListener;
+    private upcomingButton: IComponentEventListener;
 
-    constructor(stateManager: PageStateManager) {
+
+    constructor(stateManager: IPageStateManager) {
         super(stateManager);
+
+        this.calendarButton = new CalendarPageComponent();
+        this.upcomingButton = new UpcomingPageComponent();
 
 
         this.components = [];
         this.componentsRemovable = [];
-        this.componentsEvent = [];
+        this.componentsEvent = [this.calendarButton, this.upcomingButton];
     }
 }
 
@@ -30,7 +36,7 @@ export class HomePage implements PageState {
     private screenFactory: ScreenFactory;
     private screenTemplate!: ScreenTemplate;
 
-    constructor(stateManager: PageStateManager) {
+    constructor(stateManager: IPageStateManager) {
         this.screenFactory = new HomeScreenFactory(stateManager);
     }
 
@@ -56,14 +62,15 @@ export class CalendarPageComponent implements IComponentEventListener {
     constructor() {
         this.calendarButton = document.getElementById("calendar-option")!;
 
-        this.clickEvent = new ClickEventObserver()
+        this.clickEvent = new ClickEventObserver();
         
         this.triggerObserver = () => this.clickEvent.triggerEvent();
         
     }
 
-    addEventListeners(stateManager: PageStateManager): void {
+    addEventListeners(stateManager: IPageStateManager): void {
         this.clickEvent.setEvent(new ExitPageCommand(stateManager));
+        this.clickEvent.setEvent(new CalendarPageCommand(stateManager));
 
         this.calendarButton.addEventListener("click", this.triggerObserver);
     }
@@ -71,59 +78,52 @@ export class CalendarPageComponent implements IComponentEventListener {
     removeEventListeners(): void {
         this.calendarButton.removeEventListener("click", this.triggerObserver);
     }
+
     render(): void {
     }
+
     getHTML(): HTMLElement {
         return this.calendarButton;
     }
 
 }
 
-
-
-
-
-
-
-
-export class OnePlayerSelect implements IComponentInteractive {
-    private onePlayerSelectButton: HTMLDivElement;
+export class UpcomingPageComponent implements IComponentEventListener {
+    private upcomingButton: HTMLElement;
 
     private clickEvent: ClickEventObserver;
     
     private triggerObserver: () => void;
 
     constructor() {
-        this.onePlayerSelectButton = document.createElement("div");
-        this.onePlayerSelectButton.classList.add("Home", "screen", "poneselect");
-        this.onePlayerSelectButton.textContent = "This is the Home screen, click to go to Game Screen";
+        this.upcomingButton = document.getElementById("upcoming-option")!;
 
         this.clickEvent = new ClickEventObserver()
         
         this.triggerObserver = () => this.clickEvent.triggerEvent();
+        
     }
 
-    addEventListeners(stateManager: PageStateManager): void {
+    addEventListeners(stateManager: IPageStateManager): void {
         this.clickEvent.setEvent(new ExitPageCommand(stateManager));
+        this.clickEvent.setEvent(new UpcomingPageCommand(stateManager));
 
-        this.onePlayerSelectButton.addEventListener("click", this.triggerObserver);
+        this.upcomingButton.addEventListener("click", this.triggerObserver);
     }
 
     removeEventListeners(): void {
-        this.onePlayerSelectButton.removeEventListener("click", this.triggerObserver);
+        this.upcomingButton.removeEventListener("click", this.triggerObserver);
     }
-
+    
     render(): void {
-        document.body.appendChild(this.onePlayerSelectButton);
-    }
-
-    removeElem(): void {
-        this.onePlayerSelectButton.remove();
     }
 
     getHTML(): HTMLElement {
-        return this.onePlayerSelectButton;
+        return this.upcomingButton;
     }
+
 }
+
+
 
 

@@ -1,14 +1,14 @@
 import { IComponent, IComponentRemovable, IComponentEventListener } from "./HTMLElement";
-import { PageStateManager } from "./PageState";
+import { IPageStateManager } from "./PageState";
 
 export class ScreenTemplate {
     protected components!: IComponent[];
     protected componentsRemovable!: IComponentRemovable[];
     protected componentsEvent!: IComponentEventListener[];
 
-    protected stateManager: PageStateManager;
+    protected stateManager: IPageStateManager;
 
-    constructor(stateManager: PageStateManager) {
+    constructor(stateManager: IPageStateManager) {
         this.stateManager = stateManager;
     }
 
@@ -44,9 +44,9 @@ export class ScreenTemplate {
 
 
 export abstract class ScreenFactory {
-    protected stateManager: PageStateManager;
+    protected stateManager: IPageStateManager;
 
-    constructor(stateManager: PageStateManager) {
+    constructor(stateManager: IPageStateManager) {
         this.stateManager = stateManager;
     }
 

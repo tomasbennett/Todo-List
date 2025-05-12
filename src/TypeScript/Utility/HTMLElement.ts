@@ -1,4 +1,4 @@
-import { PageStateManager } from "./PageState";
+import { IPageStateManager } from "./PageState";
 
 export interface IComponent {
     render(): void;
@@ -11,7 +11,7 @@ export interface IComponentRemovable extends IComponent {
 }
 
 export interface IComponentEventListener extends IComponent {
-    addEventListeners(stateManager: PageStateManager): void;
+    addEventListeners(stateManager: IPageStateManager): void;
 
     removeEventListeners(): void;
 }
