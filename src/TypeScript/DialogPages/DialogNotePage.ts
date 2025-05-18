@@ -2,10 +2,8 @@ import { ICommand, ClickEventObserver, ExitPageCommand } from "../Utility/EventO
 
 import { TaskPageCommand, NotePageCommand, ProjectsPageCommand } from "./SwitchDialogPageCommands";
 
-import { TasksFormSubmission } from "../LocalStorage/LocalStorageCommands";
-
 import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
-import { PageState, IPageStateManager } from "../Utility/PageState";
+import { PageState, IPageStateManager, PageStateTemplate } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
 
 
@@ -40,21 +38,9 @@ class NoteScreen extends ScreenTemplate {
 
 
 
-export class NotePage implements PageState {
-    private screenFactory: ScreenFactory;
-    private screenTemplate!: ScreenTemplate;
-
+export class NotePage extends PageStateTemplate {
     constructor(stateManager: IPageStateManager) {
-        this.screenFactory = new NoteScreenFactory(stateManager);
-    }
-
-    load(): void {
-        this.screenTemplate = this.screenFactory.instantiate();
-    }
-
-    exit(): void {
-        this.screenTemplate.removeEventListeners();
-        this.screenTemplate.remove();
+        super(new NoteScreenFactory(stateManager));
     }
 }
 

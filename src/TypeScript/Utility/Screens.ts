@@ -1,10 +1,12 @@
+import { ClickEventObserver } from "./EventObserver";
 import { IComponent, IComponentRemovable, IComponentEventListener } from "./HTMLElement";
+
 import { IPageStateManager } from "./PageState";
 
 export class ScreenTemplate {
     protected components!: IComponent[];
     protected componentsRemovable!: IComponentRemovable[];
-    protected componentsEvent!: IComponentEventListener[];
+    protected clickEventObservers!: ClickEventObserver[];
 
     protected stateManager: IPageStateManager;
 
@@ -20,8 +22,8 @@ export class ScreenTemplate {
         return this.componentsRemovable;
     }
 
-    screenComponentsEvent(): IComponentEventListener[] {
-        return this.componentsEvent;
+    screenComponentsEvent(): ClickEventObserver[] {
+        return this.clickEventObservers;
     }
 
     render(): void {
@@ -57,7 +59,7 @@ export abstract class ScreenFactory {
         return screen;
     }
 
-    abstract create(): ScreenTemplate;
+    protected abstract create(): ScreenTemplate;
 }
 
 

@@ -3,7 +3,7 @@ import { ICommand, ClickEventObserver, ExitPageCommand } from "../Utility/EventO
 import { HomePageCommand, CalendarPageCommand } from "./SwitchPageCommands";
 
 import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
-import { PageState, IPageStateManager } from "../Utility/PageState";
+import { PageState, IPageStateManager, PageStateTemplate } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
 
 
@@ -35,21 +35,9 @@ class UpcomingScreen extends ScreenTemplate {
 
 
 
-export class UpcomingPage implements PageState {
-    private screenFactory: ScreenFactory;
-    private screenTemplate!: ScreenTemplate;
-
+export class UpcomingPage extends PageStateTemplate {
     constructor(stateManager: IPageStateManager) {
-        this.screenFactory = new UpcomingScreenFactory(stateManager);
-    }
-
-    load(): void {
-        this.screenTemplate = this.screenFactory.instantiate();
-    }
-
-    exit(): void {
-        this.screenTemplate.removeEventListeners();
-        this.screenTemplate.remove();
+        super(new UpcomingScreenFactory(stateManager));
     }
 }
 

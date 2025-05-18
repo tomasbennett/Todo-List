@@ -3,9 +3,8 @@ import { ICommand, ClickEventObserver, ExitPageCommand } from "../Utility/EventO
 import { TaskPageCommand, NotePageCommand, ProjectsPageCommand } from "./SwitchDialogPageCommands";
 
 import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
-import { PageState, IPageStateManager } from "../Utility/PageState";
+import { PageState, IPageStateManager, PageStateTemplate } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
-import { TasksFormSubmission } from "../LocalStorage/LocalStorageCommands";
 
 
 export class ProjectsScreenFactory extends ScreenFactory {
@@ -40,21 +39,9 @@ class ProjectsScreen extends ScreenTemplate {
 
 
 
-export class ProjectsPage implements PageState {
-    private screenFactory: ScreenFactory;
-    private screenTemplate!: ScreenTemplate;
-
+export class ProjectsPage extends PageStateTemplate {
     constructor(stateManager: IPageStateManager) {
-        this.screenFactory = new ProjectsScreenFactory(stateManager);
-    }
-
-    load(): void {
-        this.screenTemplate = this.screenFactory.instantiate();
-    }
-
-    exit(): void {
-        this.screenTemplate.removeEventListeners();
-        this.screenTemplate.remove();
+        super(new ProjectsScreenFactory(stateManager));
     }
 }
 

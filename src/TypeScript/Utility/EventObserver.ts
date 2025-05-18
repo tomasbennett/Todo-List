@@ -1,11 +1,41 @@
 import { IPageStateManager, PageState } from "./PageState";
 
 
-
-
-export interface ICommand {
-    execute(): void;
+export interface ICommand<T = void> {
+    execute(): T;
 }
+
+
+export class ClickEventObserver {
+    private commands: ICommand[];
+
+    private triggerObserver: () => void;
+
+    constructor(private htmlElem: HTMLElement, private eventType: keyof HTMLElementEventMap) {
+        this.commands = [];
+
+        this.triggerObserver = () => { this.triggerEvent(); }
+
+        this.htmlElem.addEventListener(this.eventType, this.triggerObserver);
+    }
+
+    setEvent(command: ICommand): void {
+        this.commands.push(command);
+    }
+
+    triggerEvent(): void {
+        if (this.commands.length > 0) {
+            this.commands.forEach(command => command.execute());
+        }
+    }
+
+    removeEventListeners(): void {
+        this.htmlElem.removeEventListener(this.eventType, this.triggerObserver);
+    }
+
+}
+
+
 
 // export class EventTracker {
 //     private eventList: ICommand[];
@@ -43,28 +73,6 @@ export interface ICommand {
 //         finalPage.execute();
 //     }
 // }
-
-
-
-
-
-export class ClickEventObserver {
-    private commands: ICommand[];
-
-    constructor() {
-        this.commands = [];
-    }
-
-    setEvent(command: ICommand): void {
-        this.commands.push(command);
-    }
-
-    triggerEvent(): void {
-        if (this.commands.length > 0) {
-            this.commands.forEach(command => command.execute());
-        }
-    }
-}
 
 
 

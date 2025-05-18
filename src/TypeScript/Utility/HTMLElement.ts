@@ -1,4 +1,5 @@
-import { IPageStateManager } from "./PageState";
+// import { ClickEventObserver } from "./EventObserver";
+// import { IPageStateManager } from "./PageState";
 
 export interface IComponent {
     render(): void;
@@ -10,17 +11,13 @@ export interface IComponentRemovable extends IComponent {
     removeElem(): void;
 }
 
-export interface IComponentEventListener extends IComponent {
-    addEventListeners(stateManager: IPageStateManager): void;
+// export interface IComponentEventListener extends IComponent {
+//     addEventListeners(stateManager: IPageStateManager): void;
+    
+//     removeEventListeners(): void;
+// }
 
-    removeEventListeners(): void;
-}
-
-export interface IComponentInteractive extends IComponentEventListener, IComponentRemovable {}
-
-
-
-
+// export interface IComponentInteractive extends IComponentEventListener, IComponentRemovable {}
 
 
 

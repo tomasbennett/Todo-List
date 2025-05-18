@@ -1,3 +1,5 @@
+import { ScreenFactory, ScreenTemplate } from "./Screens";
+
 export interface PageState {
     load(): void;
 
@@ -35,6 +37,21 @@ export class PageStateManager implements IPageStateManager {
 }
 
 
+export abstract class PageStateTemplate implements PageState {
+    private screenFactory: ScreenFactory;
+    private screenTemplate!: ScreenTemplate;
 
+    constructor(screenFactory: ScreenFactory) {
+        this.screenFactory = screenFactory;
+    }
+
+    load(): void {
+        this.screenTemplate = this.screenFactory.instantiate();
+    }
+    exit(): void {
+        this.screenTemplate.removeEventListeners();
+        this.screenTemplate.remove();
+    }
+}
 
 

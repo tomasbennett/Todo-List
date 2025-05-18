@@ -42,7 +42,10 @@ const config = {
             },
             {
                 test: /\.tsx?$/i,
-                use: ["ts-loader"]
+                loader: "ts-loader",
+                options: {
+                    onlyCompileBundledFiles: true
+                }
             }
             ,{
                 test: /\.css$/i,

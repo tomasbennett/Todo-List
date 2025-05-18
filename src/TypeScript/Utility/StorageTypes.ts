@@ -1,27 +1,69 @@
-export interface ITasks {
-    id: number;
+// import { title } from "process";
+import { z } from "zod";
 
-    title: string;
-    bodyText: string;
-
-    dueDate: string;
-
-    priority: "low" | "medium" | "high";
-
-    completed: boolean;
+export enum Priority {
+    "low",
+    "medium",
+    "high"
 }
 
-export interface INotes {
-    id: number;
+export const TaskSchema = z.object({
+    id: z.number().positive(),
+    title: z.string().min(1),
+    bodyText: z.string().min(1),
+    dueDate: z.string(),
+    priority: z.enum(["low","medium","high"]),
+    completed: z.boolean().default(false)
+});
 
-    title: string;
-    bodyText: string;
-}
+export const NoteSchema = z.object({
+    id: z.number().positive(),
+    title: z.string().min(1),
+    bodyText: z.string().min(1)
+});
 
-export interface IProjects {
-    id: number;
+export const ProjectSchema = z.object({
+    id: z.number().positive(),
+    title: z.string().min(1),
+    tasks: TaskSchema.array()
+});
 
-    title: string;
 
-    tasks: ITasks[];
-}
+export type TaskLiteral = z.infer<typeof TaskSchema>;
+export type NoteLiteral = z.infer<typeof NoteSchema>;
+export type ProjectLiteral = z.infer<typeof ProjectSchema>;
+
+
+
+
+
+
+
+
+// export interface ITasks {
+//     id: number;
+
+//     title: string;
+//     bodyText: string;
+
+//     dueDate: string;
+
+//     priority: "low" | "medium" | "high";
+
+//     completed: boolean;
+// }
+
+// export interface INotes {
+//     id: number;
+
+//     title: string;
+//     bodyText: string;
+// }
+
+// export interface IProjects {
+//     id: number;
+
+//     title: string;
+
+//     tasks: ITasks[];
+// }

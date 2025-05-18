@@ -1,9 +1,9 @@
 import { ICommand } from "../Utility/EventObserver";
-import { ITasks, INotes, IProjects } from "../Utility/StorageTypes";
+import { TaskLiteral, NoteLiteral, ProjectLiteral } from "../Utility/StorageTypes";
 
 
 
-export abstract class LocalStorageStratergy<T extends ITasks | INotes | IProjects> {
+export abstract class LocalStorageStratergy<T extends { id: number }> {
     protected abstract storageKey: string;
 
     getAll(): T[] {
@@ -39,15 +39,15 @@ export abstract class LocalStorageStratergy<T extends ITasks | INotes | IProject
 }
 
 
-export class TasksLocalStorage extends LocalStorageStratergy<ITasks> {
+export class TasksLocalStorage extends LocalStorageStratergy<TaskLiteral> {
     protected storageKey = "tasks";
 }
 
 
-export class NotesLocalStorage extends LocalStorageStratergy<INotes> {
+export class NotesLocalStorage extends LocalStorageStratergy<NoteLiteral> {
     protected storageKey = "note";
 }
 
-export class ProjectsLocalStorage extends LocalStorageStratergy<IProjects> {
+export class ProjectsLocalStorage extends LocalStorageStratergy<ProjectLiteral> {
     protected storageKey = "projects";
 }

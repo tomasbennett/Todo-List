@@ -1,10 +1,10 @@
-import { IPageStateManager } from "../Utility/PageState";
-import { TasksPage } from "./DialogTaskPage";
+import { IPageStateManager } from "../../Utility/PageState";
+import { TasksPage } from "../DialogTaskPage";
 
 
-export class DialogOpenClose {
+export abstract class DialogToggle {
 
-    constructor(private dialogElem: HTMLDialogElement, private dialogPageState: IPageStateManager) {}
+    constructor(private dialogElem: HTMLDialogElement, private cancelButton: HTMLElement) {}
 
     open(): void {
         this.dialogElem.showModal();
@@ -13,11 +13,14 @@ export class DialogOpenClose {
             this.close();
         }, { once: true });
 
-        
-        this.dialogPageState.setState(new TasksPage(this.dialogPageState));
-        this.dialogPageState.load();
-
+        this.cancelButton.addEventListener("click", () => {
+            this.close();
+        }, { once: true });
     }
+
+    
+    protected abstract addForm(): void;
+
 
     close(): void {
         this.dialogElem.classList.add("closing");
@@ -26,9 +29,5 @@ export class DialogOpenClose {
             this.dialogElem.close();
             this.dialogElem.classList.remove("closing");
         }, { once: true });
-        
-        this.dialogPageState.exit();
     }
-
-
 }
