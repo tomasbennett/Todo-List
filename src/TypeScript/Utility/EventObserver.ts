@@ -29,6 +29,10 @@ export class ClickEventObserver {
         }
     }
 
+    addEventListeners(): void {
+        this.htmlElem.addEventListener(this.eventType, this.triggerObserver);
+    }
+
     removeEventListeners(): void {
         this.htmlElem.removeEventListener(this.eventType, this.triggerObserver);
     }

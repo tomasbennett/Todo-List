@@ -9,4 +9,4 @@ import "./Pages/CSS/DialogBox/dialog-task-form.css";
 import "./Pages/CSS/DialogBox/dialog-project-form.css";
 import "./Pages/CSS/DialogBox/dialog-note-form.css";
 
-import "./TypeScript/Utility/StorageTypes.ts";
+import "./TypeScript/Main.ts";

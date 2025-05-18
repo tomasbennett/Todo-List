@@ -2,33 +2,40 @@ import { ICommand, ClickEventObserver, ExitPageCommand } from "../Utility/EventO
 
 import { HomePageCommand, UpcomingPageCommand } from "./SwitchPageCommands";
 
-import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
+import { IComponent, IComponentRemovable } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager, PageStateTemplate } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
+import { HomePageComponent, UpcomingPageComponent } from "./HTMLComponents";
 
 
 export class CalendarScreenFactory extends ScreenFactory {
 
     create(): ScreenTemplate {
-        return new CalendarScreen(this.stateManager);
+        return new CalendarScreen(new UpcomingPageComponent(), new HomePageComponent(), this.stateManager);
     }
 }
 
 class CalendarScreen extends ScreenTemplate {
-    private homeButton: IComponentEventListener;
-    private upcomingButton: IComponentEventListener;
+    private clickEventUpcomingPage: ClickEventObserver;
+    private clickEventHomePage: ClickEventObserver;
 
-
-    constructor(stateManager: IPageStateManager) {
+    constructor(private upcomingButton: IComponent, private homeButton: IComponent, stateManager: IPageStateManager) {
         super(stateManager);
 
-        this.homeButton = new HomePageComponent();
-        this.upcomingButton = new UpcomingPageComponent();
 
+        // this.homeButton = new HomePageComponent();
+        // this.upcomingButton = new UpcomingPageComponent();
 
-        this.components = [];
-        this.componentsRemovable = [];
-        this.componentsEvent = [this.homeButton, this.upcomingButton];
+        this.clickEventUpcomingPage = new ClickEventObserver(this.upcomingButton.getHTML(), "click");
+        this.clickEventUpcomingPage.setEvent(new ExitPageCommand(this.stateManager));
+        this.clickEventUpcomingPage.setEvent(new UpcomingPageCommand(this.stateManager));
+
+        this.clickEventHomePage = new ClickEventObserver(this.homeButton.getHTML(), "click");
+        this.clickEventHomePage.setEvent(new ExitPageCommand(this.stateManager));
+        this.clickEventHomePage.setEvent(new HomePageCommand(this.stateManager));
+
+        this.clickEventObservers = [this.clickEventHomePage, this.clickEventUpcomingPage];
+        
     }
 }
 
@@ -41,79 +48,6 @@ export class CalendarPage extends PageStateTemplate {
     }
 }
 
-
-
-export class HomePageComponent implements IComponentEventListener {
-    private homeButton: HTMLElement;
-
-    private clickEvent: ClickEventObserver;
-    
-    private triggerObserver: () => void;
-
-    constructor() {
-        this.homeButton = document.getElementById("home-option")!;
-
-        this.clickEvent = new ClickEventObserver()
-        
-        this.triggerObserver = () => this.clickEvent.triggerEvent();
-        
-    }
-
-    addEventListeners(stateManager: IPageStateManager): void {
-        this.clickEvent.setEvent(new ExitPageCommand(stateManager));
-        this.clickEvent.setEvent(new HomePageCommand(stateManager));
-
-        this.homeButton.addEventListener("click", this.triggerObserver);
-    }
-
-    removeEventListeners(): void {
-        this.homeButton.removeEventListener("click", this.triggerObserver);
-    }
-
-    render(): void {
-    }
-
-    getHTML(): HTMLElement {
-        return this.homeButton;
-    }
-
-}
-
-export class UpcomingPageComponent implements IComponentEventListener {
-    private upcomingButton: HTMLElement;
-
-    private clickEvent: ClickEventObserver;
-    
-    private triggerObserver: () => void;
-
-    constructor() {
-        this.upcomingButton = document.getElementById("upcoming-option")!;
-
-        this.clickEvent = new ClickEventObserver()
-        
-        this.triggerObserver = () => this.clickEvent.triggerEvent();
-        
-    }
-
-    addEventListeners(stateManager: IPageStateManager): void {
-        this.clickEvent.setEvent(new ExitPageCommand(stateManager));
-        this.clickEvent.setEvent(new UpcomingPageCommand(stateManager));
-
-        this.upcomingButton.addEventListener("click", this.triggerObserver);
-    }
-
-    removeEventListeners(): void {
-        this.upcomingButton.removeEventListener("click", this.triggerObserver);
-    }
-    
-    render(): void {
-    }
-
-    getHTML(): HTMLElement {
-        return this.upcomingButton;
-    }
-
-}
 
 
 

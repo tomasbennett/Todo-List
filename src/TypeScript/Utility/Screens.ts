@@ -1,5 +1,5 @@
 import { ClickEventObserver } from "./EventObserver";
-import { IComponent, IComponentRemovable, IComponentEventListener } from "./HTMLElement";
+import { IComponent, IComponentRemovable } from "./HTMLElement";
 
 import { IPageStateManager } from "./PageState";
 
@@ -35,11 +35,11 @@ export class ScreenTemplate {
     }
 
     addEventListeners(): void {
-        this.componentsEvent.forEach((elem) => {elem.addEventListeners(this.stateManager)});
+        this.clickEventObservers.forEach((elem) => {elem.addEventListeners()});
     }
 
     removeEventListeners(): void {
-        this.componentsEvent.forEach((elem) => {elem.removeEventListeners()});
+        this.clickEventObservers.forEach((elem) => {elem.removeEventListeners()});
     }
 }
 

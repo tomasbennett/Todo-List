@@ -3,37 +3,48 @@ import { ICommand, ClickEventObserver, ExitPageCommand } from "../Utility/EventO
 import { NotePageCommand, TaskPageCommand, ProjectsPageCommand } from "./SwitchDialogPageCommands";
 
 
-import { IComponent, IComponentRemovable, IComponentEventListener, IComponentInteractive } from "../Utility/HTMLElement";
+import { IComponent, IComponentRemovable } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager, PageStateTemplate } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
 import { TasksLocalStorage } from "../LocalStorage/LocalStorage";
+import { NoteFormComponent } from "./DialogNotePage";
+import { NotePageComponent, ProjectsPageComponent } from "./HTMLDialogComponents";
 
 
 export class TasksScreenFactory extends ScreenFactory {
 
     create(): ScreenTemplate {
-        return new TasksScreen(this.stateManager);
+        return new TasksScreen(new NotePageComponent(), new ProjectsPageComponent(), this.stateManager);
     }
 }
 
 class TasksScreen extends ScreenTemplate {
-    private taskForm: IComponentInteractive;
+    private taskForm: IComponentRemovable;
 
-    private notePageButton: IComponentEventListener;
-    private projectsPageButton: IComponentEventListener;
+    private clickEventNotePage: ClickEventObserver;
+    private clickEventProjectsPage: ClickEventObserver;
 
-    constructor(stateManager: IPageStateManager) {
+    constructor(private noteButton: IComponent, private projectsButton: IComponent, stateManager: IPageStateManager) {
         super(stateManager);
 
         this.taskForm = new TaskFormComponent();
 
-        this.notePageButton = new NotePageComponent();
-        this.projectsPageButton = new ProjectsPageComponent();
+        // this.notePageButton = new NotePageComponent();
+        // this.projectsPageButton = new ProjectsPageComponent();
 
+        this.clickEventNotePage = new ClickEventObserver(this.noteButton.getHTML(), "click");
+        this.clickEventNotePage.setEvent(new ExitPageCommand(this.stateManager));
+        this.clickEventNotePage.setEvent(new NotePageCommand(this.stateManager));
+
+        this.clickEventProjectsPage = new ClickEventObserver(this.projectsButton.getHTML(), "click");
+        this.clickEventProjectsPage.setEvent(new ExitPageCommand(this.stateManager));
+        this.clickEventProjectsPage.setEvent(new ProjectsPageCommand(this.stateManager));
+
+        this.clickEventObservers = [this.clickEventProjectsPage, this.clickEventNotePage];
 
         this.components = [this.taskForm];
         this.componentsRemovable = [this.taskForm];
-        this.componentsEvent = [this.taskForm, this.notePageButton, this.projectsPageButton];
+
     }
 }
 
@@ -48,32 +59,11 @@ export class TasksPage extends PageStateTemplate {
 
 
 
-export class TaskFormComponent implements IComponentInteractive {
+export class TaskFormComponent implements IComponentRemovable {
     private taskForm: HTMLFormElement;
-
-    private clickEvent: ClickEventObserver;
-    
-    private triggerObserver: () => void;
 
     constructor() {
         this.taskForm = document.getElementById("form-task-state")! as HTMLFormElement;
-        
-        this.clickEvent = new ClickEventObserver()
-        
-        this.triggerObserver = () => this.clickEvent.triggerEvent();
-
-    }
-
-    addEventListeners(stateManager: IPageStateManager): void {
-        
-    
-        this.taskForm.addEventListener("submit", this.triggerObserver);
-    
-    
-    }
-
-    removeEventListeners(): void {
-        this.taskForm.removeEventListener("submit", this.triggerObserver);
     }
 
     removeElem(): void {
@@ -86,84 +76,6 @@ export class TaskFormComponent implements IComponentInteractive {
 
     getHTML(): HTMLElement {
         return this.taskForm;
-    }
-
-}
-
-
-export class ProjectsPageComponent implements IComponentEventListener {
-    private projectsPageButton: HTMLElement;
-
-    private clickEvent: ClickEventObserver;
-    
-    private triggerObserver: () => void;
-
-    constructor() {
-        this.projectsPageButton = document.getElementById("dialog-project-theme")!;
-
-        this.clickEvent = new ClickEventObserver();
-        
-        this.triggerObserver = () => this.clickEvent.triggerEvent();
-        
-    }
-
-    addEventListeners(stateManager: IPageStateManager): void {
-        this.clickEvent.setEvent(new ExitPageCommand(stateManager));
-        this.clickEvent.setEvent(new ProjectsPageCommand(stateManager));
-
-        this.projectsPageButton.addEventListener("click", this.triggerObserver);
-    }
-
-    removeEventListeners(): void {
-        this.projectsPageButton.removeEventListener("click", this.triggerObserver);
-    }
-
-    render(): void {
-    }
-
-    getHTML(): HTMLElement {
-        return this.projectsPageButton;
-    }
-
-}
-
-
-
-
-
-
-export class NotePageComponent implements IComponentEventListener {
-    private notePageButton: HTMLElement;
-
-    private clickEvent: ClickEventObserver;
-    
-    private triggerObserver: () => void;
-
-    constructor() {
-        this.notePageButton = document.getElementById("dialog-note-theme")!;
-
-        this.clickEvent = new ClickEventObserver();
-        
-        this.triggerObserver = () => this.clickEvent.triggerEvent();
-        
-    }
-
-    addEventListeners(stateManager: IPageStateManager): void {
-        this.clickEvent.setEvent(new ExitPageCommand(stateManager));
-        this.clickEvent.setEvent(new NotePageCommand(stateManager));
-
-        this.notePageButton.addEventListener("click", this.triggerObserver);
-    }
-
-    removeEventListeners(): void {
-        this.notePageButton.removeEventListener("click", this.triggerObserver);
-    }
-
-    render(): void {
-    }
-
-    getHTML(): HTMLElement {
-        return this.notePageButton;
     }
 
 }
