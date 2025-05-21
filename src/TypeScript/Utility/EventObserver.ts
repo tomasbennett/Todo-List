@@ -15,8 +15,6 @@ export class ClickEventObserver {
         this.commands = [];
 
         this.triggerObserver = () => { this.triggerEvent(); }
-
-        this.htmlElem.addEventListener(this.eventType, this.triggerObserver);
     }
 
     setEvent(command: ICommand): void {
@@ -37,6 +35,38 @@ export class ClickEventObserver {
         this.htmlElem.removeEventListener(this.eventType, this.triggerObserver);
     }
 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+export class ExitPageCommand implements ICommand {
+    private stateManager: IPageStateManager;
+
+    constructor(stateManager: IPageStateManager) {
+        this.stateManager = stateManager;
+    }
+
+    execute(): void {
+        this.stateManager.exit();
+    }
 }
 
 
@@ -77,25 +107,6 @@ export class ClickEventObserver {
 //         finalPage.execute();
 //     }
 // }
-
-
-
-export class ExitPageCommand implements ICommand {
-    private stateManager: IPageStateManager;
-
-    constructor(stateManager: IPageStateManager) {
-        this.stateManager = stateManager;
-    }
-
-    execute(): void {
-        this.stateManager.exit();
-    }
-}
-
-
-
-
-
 
 
 // export class StartPageCommand implements ICommand {

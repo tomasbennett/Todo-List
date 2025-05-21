@@ -11,7 +11,7 @@ export const TaskSchema = z.object({
     id: z.number().positive(),
     title: z.string().min(1),
     bodyText: z.string().min(1),
-    dueDate: z.string(),
+    dueDate: z.date(),
     priority: z.enum(["low","medium","high"]),
     completed: z.boolean().default(false)
 });

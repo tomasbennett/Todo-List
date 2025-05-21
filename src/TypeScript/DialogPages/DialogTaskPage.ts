@@ -9,6 +9,8 @@ import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
 import { TasksLocalStorage } from "../LocalStorage/LocalStorage";
 import { NoteFormComponent } from "./DialogNotePage";
 import { NotePageComponent, ProjectsPageComponent } from "./HTMLDialogComponents";
+import { FormRecordTransfer, TaskRecordMods, UploadToLocalStorage } from "../Utility/RecordModifier/TaskModifier";
+import { TaskLiteral, TaskSchema } from "../Utility/StorageTypes";
 
 
 export class TasksScreenFactory extends ScreenFactory {
@@ -23,6 +25,7 @@ class TasksScreen extends ScreenTemplate {
 
     private clickEventNotePage: ClickEventObserver;
     private clickEventProjectsPage: ClickEventObserver;
+    private submitEventTasks: ClickEventObserver;
 
     constructor(private noteButton: IComponent, private projectsButton: IComponent, stateManager: IPageStateManager) {
         super(stateManager);
@@ -40,7 +43,14 @@ class TasksScreen extends ScreenTemplate {
         this.clickEventProjectsPage.setEvent(new ExitPageCommand(this.stateManager));
         this.clickEventProjectsPage.setEvent(new ProjectsPageCommand(this.stateManager));
 
-        this.clickEventObservers = [this.clickEventProjectsPage, this.clickEventNotePage];
+        this.submitEventTasks = new ClickEventObserver(this.taskForm.getHTML(), "submit");
+        this.submitEventTasks.setEvent(new UploadToLocalStorage(new FormRecordTransfer(this.taskForm.getHTML() as HTMLFormElement),
+                                                                TaskRecordMods, 
+                                                                TaskSchema,
+                                                                new TasksLocalStorage()));
+
+
+        this.clickEventObservers = [this.submitEventTasks, this.clickEventProjectsPage, this.clickEventNotePage];
 
         this.components = [this.taskForm];
         this.componentsRemovable = [this.taskForm];

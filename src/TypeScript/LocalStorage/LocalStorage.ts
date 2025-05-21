@@ -1,6 +1,6 @@
-import { ICommand } from "../Utility/EventObserver";
 import { TaskLiteral, NoteLiteral, ProjectLiteral } from "../Utility/StorageTypes";
 
+import SuperJSON from "superjson";
 
 
 export abstract class LocalStorageStratergy<T extends { id: number }> {
@@ -10,7 +10,7 @@ export abstract class LocalStorageStratergy<T extends { id: number }> {
         const raw = localStorage.getItem(this.storageKey);
         if (!raw) return [];
         try {
-            return JSON.parse(raw) as T[];
+            return SuperJSON.parse(raw);
         } catch {
             console.log('Corrupt data at', this.storageKey);
             return [];
@@ -29,12 +29,12 @@ export abstract class LocalStorageStratergy<T extends { id: number }> {
         } else {
             all.push(item);
         }
-        localStorage.setItem(this.storageKey, JSON.stringify(all));
+        localStorage.setItem(this.storageKey, SuperJSON.stringify(all));
     }
 
     deleteById(id: number): void {
         const filtered = this.getAll().filter(x => x.id !== id);
-        localStorage.setItem(this.storageKey, JSON.stringify(filtered));
+        localStorage.setItem(this.storageKey, SuperJSON.stringify(filtered));
     }
 }
 

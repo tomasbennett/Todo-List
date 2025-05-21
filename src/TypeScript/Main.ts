@@ -20,5 +20,3 @@ addButton?.addEventListener("click", () => {
     dialogToggler.open();
 });
 
-
-

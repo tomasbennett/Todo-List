@@ -40,12 +40,10 @@ const config = {
                     filename: "fonts/[name][hash].[ext]"
                 }
             },
+
             {
                 test: /\.tsx?$/i,
-                loader: "ts-loader",
-                options: {
-                    onlyCompileBundledFiles: true
-                }
+                loader: "ts-loader"
             }
             ,{
                 test: /\.css$/i,
@@ -76,11 +74,16 @@ const config = {
                     }
                 }
             }
+            ,{
+                test: /\.mjs$/,
+                include: /node_modules/,
+                type: "javascript/auto",
+            },
         ]
     }
 
     ,resolve: {
-        extensions: [".js", ".css", ".json", ".jsx", ".wasm", ".ts"]
+        extensions: [".mjs", ".js", ".css", ".json", ".jsx", ".wasm", ".ts"]
     }
 
     ,plugins: [
