@@ -47,7 +47,6 @@ class HomeScreen extends ScreenTemplate {
             this.componentsRemovable.push(i);
         }
 
-        //return of a method that gives us an array of IComponentRemovable[][]??? 
 
 
 
