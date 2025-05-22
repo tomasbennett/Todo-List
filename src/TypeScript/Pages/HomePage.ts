@@ -6,6 +6,10 @@ import { IComponent, IComponentRemovable } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager, PageStateTemplate } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
 import { CalendarPageComponent, UpcomingPageComponent } from "./HTMLComponents";
+import { IFetchPaste, TaskFetch } from "../RunTimeComponents/RTFunctionality";
+import { LocalStorageStratergy, TasksLocalStorage } from "../LocalStorage/LocalStorage";
+import { TaskLiteral } from "../Utility/StorageSchemas";
+import { UploadToLocalStorage } from "../Utility/RecordModifier/UploadForm";
 
 
 export class HomeScreenFactory extends ScreenFactory {
@@ -22,9 +26,6 @@ class HomeScreen extends ScreenTemplate {
     constructor(private upcomingButton: IComponent, private calendarButton: IComponent, stateManager: IPageStateManager) {
         super(stateManager);
 
-        // this.calendarButton = new CalendarPageComponent();
-        // this.upcomingButton = new UpcomingPageComponent();
-
         this.clickEventUpcomingPage = new ClickEventObserver(this.upcomingButton.getHTML(), "click");
         this.clickEventUpcomingPage.setEvent(new ExitPageCommand(this.stateManager));
         this.clickEventUpcomingPage.setEvent(new UpcomingPageCommand(this.stateManager));
@@ -34,6 +35,22 @@ class HomeScreen extends ScreenTemplate {
         this.clickEventCalendarPage.setEvent(new CalendarPageCommand(this.stateManager));
 
         this.clickEventObservers = [this.clickEventCalendarPage, this.clickEventUpcomingPage];
+
+        const localStorageFetch: LocalStorageStratergy<TaskLiteral> = new TasksLocalStorage();
+        const tasks: IFetchPaste = new TaskFetch(localStorageFetch.getAll());
+
+        this.components = [];
+        this.componentsRemovable = [];
+
+        for (const i of tasks.fetchData()) {
+            this.components.push(i);
+            this.componentsRemovable.push(i);
+        }
+
+        //return of a method that gives us an array of IComponentRemovable[][]??? 
+
+
+
     }
 }
 

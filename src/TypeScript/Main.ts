@@ -1,11 +1,13 @@
 import { DialogOpenClose } from "./DialogPages/DialogStartUp/DialogAdd";
 import { HomePage } from "./Pages/HomePage";
+import { HomePageCommand } from "./Pages/SwitchPageCommands";
+import { ICommand } from "./Utility/EventObserver";
 import { IPageStateManager, PageStateManager } from "./Utility/PageState";
 
 
 const pageStateManager: IPageStateManager = new PageStateManager();
-pageStateManager.setState(new HomePage(pageStateManager));
-
+const homePageCommand: ICommand = new HomePageCommand(pageStateManager);
+homePageCommand.execute();
 
 
 

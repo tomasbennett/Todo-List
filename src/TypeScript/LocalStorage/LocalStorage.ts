@@ -1,3 +1,4 @@
+import { IFetchPaste } from "../RunTimeComponents/RTFunctionality";
 import { TaskLiteral, NoteLiteral, ProjectLiteral } from "../Utility/StorageSchemas";
 
 import SuperJSON from "superjson";

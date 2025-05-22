@@ -90,15 +90,15 @@ div.task-entry-container:hover{
 
 
 
-div.task-entry-container[data-importance="low-importance"]{
+div.task-entry-container[data-importance="low"]{
     border-left-color: green;
 }
 
-div.task-entry-container[data-importance="medium-importance"]{
+div.task-entry-container[data-importance="medium"]{
     border-left-color: rgb(221, 221, 0);
 }
 
-div.task-entry-container[data-importance="high-importance"]{
+div.task-entry-container[data-importance="high"]{
     border-left-color: red;
 }
 
