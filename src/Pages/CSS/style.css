@@ -38,3 +38,9 @@ body{
     width: 100dvw;
     height: 100dvh;
 }
+
+
+.sidebar-option.selected-sidebar,
+.dialog-theme-selection.selected-sidebar{
+    background-color: rgba(32, 147, 255, 0.3);
+}

@@ -6,6 +6,10 @@ import { IComponent, IComponentRemovable } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager, PageStateTemplate } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
 import { ProjectsPageComponent, TasksPageComponent } from "./HTMLDialogComponents";
+import { FormRecordTransfer, UploadToLocalStorage } from "../Utility/RecordModifier/UploadForm";
+import { NoteRecordMods } from "../Utility/RecordModifier/NoteModifier";
+import { NoteSchema } from "../Utility/StorageSchemas";
+import { NotesLocalStorage } from "../LocalStorage/LocalStorage";
 
 
 export class NoteScreenFactory extends ScreenFactory {
@@ -20,6 +24,7 @@ class NoteScreen extends ScreenTemplate {
 
     private clickEventProjectsPage: ClickEventObserver;
     private clickEventTasksPage: ClickEventObserver;
+    private submitEventNote: ClickEventObserver;
 
     constructor(private projectsButton: IComponent, private tasksButton: IComponent, stateManager: IPageStateManager) {
         super(stateManager);
@@ -37,7 +42,13 @@ class NoteScreen extends ScreenTemplate {
         this.clickEventTasksPage.setEvent(new ExitPageCommand(this.stateManager));
         this.clickEventTasksPage.setEvent(new TaskPageCommand(this.stateManager));
 
-        this.clickEventObservers = [this.clickEventTasksPage, this.clickEventProjectsPage];
+        this.submitEventNote = new ClickEventObserver(this.noteForm.getHTML(), "submit");
+        this.submitEventNote.setEvent(new UploadToLocalStorage(new FormRecordTransfer(this.noteForm.getHTML() as HTMLFormElement),
+                                                               NoteRecordMods,
+                                                               NoteSchema,
+                                                               new NotesLocalStorage()));
+
+        this.clickEventObservers = [this.submitEventNote, this.clickEventTasksPage, this.clickEventProjectsPage];
 
         this.components = [this.noteForm];
         this.componentsRemovable = [this.noteForm];

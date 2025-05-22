@@ -190,6 +190,9 @@ div.task-del-svg-container svg{
 
     object-fit: cover;
 
+    fill-rule:evenodd;
+    clip-rule:evenodd;
+
     fill: var(--dark-grey);
 
     transition: fill 300ms linear;

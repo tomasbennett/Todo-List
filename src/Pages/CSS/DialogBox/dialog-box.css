@@ -191,7 +191,7 @@ div#aside-theme-container div p.dialog-theme-selection{
     text-wrap: nowrap;
 }
 
-div#aside-theme-container div p.dialog-theme-selection:hover{
+div#aside-theme-container div p.dialog-theme-selection:hover:not(.selected-sidebar){
     background-color: rgba(128, 128, 128, 0.3);
 }
 

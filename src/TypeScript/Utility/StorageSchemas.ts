@@ -1,18 +1,17 @@
 // import { title } from "process";
 import { z } from "zod";
 
-export enum Priority {
-    "low",
-    "medium",
-    "high"
-}
+const PRIORITIES = ["low", "medium", "high"] as const;
+
+export type Priority = typeof PRIORITIES[number];
+const PrioritySchema = z.enum(PRIORITIES);
 
 export const TaskSchema = z.object({
     id: z.number().positive(),
     title: z.string().min(1),
     bodyText: z.string().min(1),
     dueDate: z.date(),
-    priority: z.enum(["low","medium","high"]),
+    priority: PrioritySchema,
     completed: z.boolean().default(false)
 });
 

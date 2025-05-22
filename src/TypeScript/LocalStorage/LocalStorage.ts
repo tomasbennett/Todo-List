@@ -1,4 +1,4 @@
-import { TaskLiteral, NoteLiteral, ProjectLiteral } from "../Utility/StorageTypes";
+import { TaskLiteral, NoteLiteral, ProjectLiteral } from "../Utility/StorageSchemas";
 
 import SuperJSON from "superjson";
 

@@ -6,6 +6,10 @@ import { IComponent, IComponentRemovable } from "../Utility/HTMLElement";
 import { PageState, IPageStateManager, PageStateTemplate } from "../Utility/PageState";
 import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
 import { NotePageComponent, TasksPageComponent } from "./HTMLDialogComponents";
+import { FormRecordTransfer, UploadToLocalStorage } from "../Utility/RecordModifier/UploadForm";
+import { ProjectRecordMods } from "../Utility/RecordModifier/ProjectsModifier";
+import { ProjectSchema } from "../Utility/StorageSchemas";
+import { ProjectsLocalStorage } from "../LocalStorage/LocalStorage";
 
 
 export class ProjectsScreenFactory extends ScreenFactory {
@@ -20,6 +24,7 @@ class ProjectsScreen extends ScreenTemplate {
 
     private clickEventNotePage: ClickEventObserver;
     private clickEventTasksPage: ClickEventObserver;
+    private submitEventProjects: ClickEventObserver;
 
     constructor(private noteButton: IComponent, private tasksButton: IComponent, stateManager: IPageStateManager) {
         super(stateManager);
@@ -37,7 +42,15 @@ class ProjectsScreen extends ScreenTemplate {
         this.clickEventTasksPage.setEvent(new ExitPageCommand(this.stateManager));
         this.clickEventTasksPage.setEvent(new TaskPageCommand(this.stateManager));
 
-        this.clickEventObservers = [this.clickEventTasksPage, this.clickEventNotePage];
+        this.submitEventProjects = new ClickEventObserver(this.projectsForm.getHTML(), "submit");
+        this.submitEventProjects.setEvent(new UploadToLocalStorage(new FormRecordTransfer(this.projectsForm.getHTML() as HTMLFormElement),
+                                                                   ProjectRecordMods,
+                                                                   ProjectSchema,
+                                                                   new ProjectsLocalStorage()));
+
+
+
+        this.clickEventObservers = [this.submitEventProjects, this.clickEventTasksPage, this.clickEventNotePage];
 
         this.components = [this.projectsForm];
         this.componentsRemovable = [this.projectsForm];

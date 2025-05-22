@@ -139,7 +139,7 @@ div.sidebar-option{
 }
 
 
-div.sidebar-option:hover{
+div.sidebar-option:hover:not(.selected-sidebar){
     background-color: var(--hover-background-colour);
 }
 

@@ -9,8 +9,9 @@ import { ScreenFactory, ScreenTemplate } from "../Utility/Screens";
 import { TasksLocalStorage } from "../LocalStorage/LocalStorage";
 import { NoteFormComponent } from "./DialogNotePage";
 import { NotePageComponent, ProjectsPageComponent } from "./HTMLDialogComponents";
-import { FormRecordTransfer, TaskRecordMods, UploadToLocalStorage } from "../Utility/RecordModifier/TaskModifier";
-import { TaskLiteral, TaskSchema } from "../Utility/StorageTypes";
+import { FormRecordTransfer, UploadToLocalStorage } from "../Utility/RecordModifier/UploadForm";
+import { TaskLiteral, TaskSchema } from "../Utility/StorageSchemas";
+import { TaskRecordMods } from "../Utility/RecordModifier/TasksModifier";
 
 
 export class TasksScreenFactory extends ScreenFactory {
