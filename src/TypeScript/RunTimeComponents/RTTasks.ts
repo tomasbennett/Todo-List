@@ -66,16 +66,6 @@ export class TaskEntryCompletedInput implements IComponentRemovable {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 export class TaskEntryTitle implements IComponentRemovable {
     private taskEntryTitle: HTMLElement;
 

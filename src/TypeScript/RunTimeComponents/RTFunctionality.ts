@@ -3,42 +3,24 @@ import { IComponentRemovable } from "../Utility/HTMLElement";
 import { TaskLiteral } from "../Utility/StorageSchemas";
 import { TaskEntryCompletedInput, TaskEntryCompletedLabel, TaskEntryContainer, TaskEntryDate, TaskEntryDel, TaskEntryDesc, TaskEntryEdit, TaskEntryTitle } from "./RTTasks";
 
-export interface IFetchPaste {
-    fetchData(): IterableIterator<IComponentRemovable>;
+export interface IFetchPrint {
+    fetchContainer(): IComponentRemovable;
 }
 
 
+export class FetchPrint<T extends { id: number }> implements IFetchPrint {
+    constructor(private localStorage: T, private htmlOperation: new (localStorageObj: T, outerContainer: HTMLElement) => IHTMLOperation, private outerContainer: HTMLElement) {}
 
-export class TaskFetch implements IFetchPaste {
-    constructor(private taskLocalStorage: TaskLiteral[]) {}
+    fetchContainer(): IComponentRemovable {
+        const operation: IHTMLOperation = new this.htmlOperation(this.localStorage, this.outerContainer)
+        const container: IComponentRemovable = operation.renderComponents();
 
-    *fetchData(): IterableIterator<IComponentRemovable> {
-        const homeContainer: HTMLElement = document.getElementById("home-content-container")!;
-
-        for (const obj of this.taskLocalStorage) {
-            const container: IComponentRemovable = new TaskEntryContainer(homeContainer, obj["priority"], obj["id"].toString());
-
-            const label: IComponentRemovable = new TaskEntryCompletedLabel(container.getHTML());
-            const input: IComponentRemovable = new TaskEntryCompletedInput(label.getHTML());
-            
-            const title: IComponentRemovable = new TaskEntryTitle(container.getHTML(), obj["completed"] ? "complete" : "incomplete", obj["title"]);
-            const desc: IComponentRemovable = new TaskEntryDesc(container.getHTML(), obj["bodyText"]);
-
-            const dueDate: IComponentRemovable = new TaskEntryDate(container.getHTML(), obj["dueDate"].toDateString());
-
-            const editSVG: IComponentRemovable = new TaskEntryEdit(container.getHTML());
-            const delSVG: IComponentRemovable = new TaskEntryDel(container.getHTML());
-
-            label.render();
-            input.render();
-            title.render();
-            desc.render();
-            dueDate.render();
-
-            editSVG.render();
-            delSVG.render();
-
-            yield container;
-        }
+        return container;
     }
 }
+
+
+export interface IHTMLOperation {
+    renderComponents(): IComponentRemovable;
+}
+

@@ -2,7 +2,7 @@ import { SafeParseReturnType, ZodType, boolean } from "zod";
 import { LocalStorageStratergy, TasksLocalStorage } from "../../LocalStorage/LocalStorage";
 import { ICommand } from "../EventObserver";
 import { TaskLiteral, TaskSchema } from "../StorageSchemas";
-import { IFetchPaste, TaskFetch } from "../../RunTimeComponents/RTFunctionality";
+import { IFetchPrint, FetchPrint } from "../../RunTimeComponents/RTFunctionality";
 
 
 
@@ -23,10 +23,14 @@ export class UploadToLocalStorage<T extends { id: number }> implements ICommand 
         if (check.execute()) {
             this.localStorageStrat.save(updated as T);
 
-            const taskCreateHTML: IFetchPaste = new TaskFetch([updated as TaskLiteral]);
-            for (const i of taskCreateHTML.fetchData()) {
-                i.render();
-            }
+            // const taskCreateHTML: IFetchPrint = new FetchPrint([updated as TaskLiteral]);
+            // for (const i of taskCreateHTML.fetchData()) {
+            //     i.render();
+            // }
+            const createHTML: IFetchPrint = new FetchPrint(updated as T,
+                                                            
+            )
+
 
         } else {
             console.error("The task check has failed!!!");
