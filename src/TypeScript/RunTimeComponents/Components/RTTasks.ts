@@ -1,5 +1,5 @@
-import { IComponentRemovable } from "../Utility/HTMLElement";
-import { Priority } from "../Utility/StorageSchemas";
+import { IComponentRemovable } from "../../Utility/HTMLElement";
+import { Priority } from "../../Utility/StorageSchemas";
 
 export class TaskEntryContainer implements IComponentRemovable {
     private taskEntryContainer: HTMLElement;

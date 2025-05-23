@@ -1,7 +1,7 @@
 import { LocalStorageStratergy } from "../LocalStorage/LocalStorage";
 import { IComponentRemovable } from "../Utility/HTMLElement";
 import { TaskLiteral } from "../Utility/StorageSchemas";
-import { TaskEntryCompletedInput, TaskEntryCompletedLabel, TaskEntryContainer, TaskEntryDate, TaskEntryDel, TaskEntryDesc, TaskEntryEdit, TaskEntryTitle } from "./RTTasks";
+import { TaskEntryCompletedInput, TaskEntryCompletedLabel, TaskEntryContainer, TaskEntryDate, TaskEntryDel, TaskEntryDesc, TaskEntryEdit, TaskEntryTitle } from "./Components/RTTasks";
 
 export interface IFetchPrint {
     fetchContainer(): IComponentRemovable;
