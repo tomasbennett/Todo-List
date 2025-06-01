@@ -27,9 +27,9 @@ export class UploadToLocalStorage<T extends { id: number }> implements ICommand 
             // for (const i of taskCreateHTML.fetchData()) {
             //     i.render();
             // }
-            const createHTML: IFetchPrint = new FetchPrint(updated as T,
+            // const createHTML: IFetchPrint = new FetchPrint(updated as T,
                                                             
-            )
+            // )
 
 
         } else {

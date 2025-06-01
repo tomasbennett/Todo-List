@@ -4,38 +4,54 @@ import { IComponent, IComponentRemovable } from "./HTMLElement";
 import { IPageStateManager } from "./PageState";
 
 export class ScreenTemplate {
-    protected components!: IComponent[];
-    protected componentsRemovable!: IComponentRemovable[];
-    protected clickEventObservers!: ClickEventObserver[];
+    private components: IComponent[];
+    private componentsRemovable: IComponentRemovable[];
+    private clickEventObservers: ClickEventObserver[];
 
-    protected stateManager: IPageStateManager;
+    private stateManager: IPageStateManager;
 
     constructor(stateManager: IPageStateManager) {
         this.stateManager = stateManager;
+
+        this.components = [];
+        this.componentsRemovable = [];
+        this.clickEventObservers = [];
     }
 
-    screenComponents(): IComponent[] {
-        return this.components;
-    }
-
-    screenComponentsRemovable(): IComponentRemovable[] {
-        return this.componentsRemovable;
-    }
-
-    screenComponentsEvent(): ClickEventObserver[] {
-        return this.clickEventObservers;
+    setComponent(...component: IComponent[]): void {
+        for (const c of component) {
+            this.components.push(c);
+        }
     }
 
     render(): void {
         this.components.forEach((elem) => {elem.render()});
     }
 
+    setRemove(...remove: IComponentRemovable[]): void {
+        for (const r of remove) {
+            this.componentsRemovable.push(r);
+        }
+    }
+
     remove(): void {
         this.componentsRemovable.forEach((elem) => {elem.removeElem()});
     }
 
+    setEventListener(...event: ClickEventObserver[]): void {
+        for (const e of event) {
+            this.clickEventObservers.push(e);
+        }
+    }
+
     addEventListeners(): void {
         this.clickEventObservers.forEach((elem) => {elem.addEventListeners()});
+    }
+
+    setEventRemove(...eventRemovable: ClickEventObserver[]): void {
+        for (const eRem of eventRemovable) {
+            this.clickEventObservers.push(eRem);
+        }
     }
 
     removeEventListeners(): void {

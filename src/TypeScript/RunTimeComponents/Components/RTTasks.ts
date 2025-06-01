@@ -6,7 +6,7 @@ export class TaskEntryContainer implements IComponentRemovable {
 
     constructor(private container: HTMLElement, private importance: Priority, private id: string) {
         this.taskEntryContainer = document.createElement("div");
-        this.taskEntryContainer.classList.add("task-entry-container")
+        this.taskEntryContainer.classList.add("task-entry-container", "mod-container");
         this.taskEntryContainer.setAttribute("data-importance", this.importance);
         this.taskEntryContainer.setAttribute("data-id", this.id);
 
@@ -145,7 +145,7 @@ export class TaskEntryEdit implements IComponentRemovable {
         const SVG_NS = "http://www.w3.org/2000/svg";
 
         this.taskEntryEdit = document.createElement("div");
-        this.taskEntryEdit.classList.add("task-edit-svg-container");
+        this.taskEntryEdit.classList.add("task-edit-svg-container", "edit-button");
         
         this.editSVG = document.createElementNS(SVG_NS, "svg");
         this.editSVG.setAttribute("viewBox", "0 0 122.88 122.88")
@@ -181,7 +181,7 @@ export class TaskEntryDel implements IComponentRemovable {
         const SVG_NS = "http://www.w3.org/2000/svg";
 
         this.taskEntryDel = document.createElement("div");
-        this.taskEntryDel.classList.add("task-edit-svg-container");
+        this.taskEntryDel.classList.add("task-edit-svg-container", "del-button");
         
         this.delSVG = document.createElementNS(SVG_NS, "svg");
         this.delSVG.setAttribute("viewBox", "0 0 109.484 122.88")

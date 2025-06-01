@@ -18,7 +18,9 @@ export class TasksHTMLOperations implements IHTMLOperation {
 
         const dueDate: IComponentRemovable = new TaskEntryDate(container.getHTML(), this.localStorageObj["dueDate"].toDateString());
 
-        const editSVG: IComponentRemovable = new TaskEntryEdit(container.getHTML());
+        const editSVG: IComponentRemovable = new TaskEntryEdit(container.getHTML()); //Pass in clickEventObserver, .setEvent in the component
+                                                                                     //More importantly we also need to pass through a ScreenTemplate as we aren't returning
+                                                                                     //The clickEventObserver // IDEA (1): // 
         const delSVG: IComponentRemovable = new TaskEntryDel(container.getHTML());
 
         const componentsToRender: IComponentRemovable[] = [label, input, title, desc, dueDate, editSVG, delSVG];
@@ -28,3 +30,5 @@ export class TasksHTMLOperations implements IHTMLOperation {
         return container;
     }
 }
+
+
