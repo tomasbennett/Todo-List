@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { default: test } = require("node:test");
 const { type } = require("os");
+// const { optional } = require("zod");
 
 
 const config = {
@@ -43,7 +44,14 @@ const config = {
 
             {
                 test: /\.tsx?$/i,
-                loader: "ts-loader"
+                use: {
+                    loader: "ts-loader",
+                    options: {
+                        onlyCompileBundledFiles: true
+                    }
+
+                },
+                exclude: /node_modules/
             }
             ,{
                 test: /\.css$/i,
