@@ -24,15 +24,15 @@ homeMediator.setLivePages(homePageMap);
 
 
 
+// const dialogPageMap: Map<HTMLElement, IState> = new Map<HTMLElement, IState>([
+//     [projectsFormBtn, new ProjectsFormState()],
+//     [notesFormBtn, new NotesFormState()]
+// ]);
+
+// const mediator: IPageMediator = new PageMediator(tasksFormBtn, new TaskFormState());
+// mediator.setLivePages(dialogPageMap);
 
 
-const dialogPageMap: Map<HTMLElement, IState> = new Map<HTMLElement, IState>([
-    [projectsFormBtn, new ProjectsFormState()],
-    [notesFormBtn, new NotesFormState()]
-]);
-
-const mediator: IPageMediator = new PageMediator(tasksFormBtn, new TaskFormState());
-mediator.setLivePages(dialogPageMap);
 
 
 

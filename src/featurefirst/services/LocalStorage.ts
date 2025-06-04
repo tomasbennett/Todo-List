@@ -1,7 +1,7 @@
 import { INote } from "../features/Notes/models/NotesModel";
 import { IProject } from "../features/Projects/models/ProjectsModel";
 import { ITask } from "../features/Tasks/models/TaskModels";
-import { ILocalStorageRegistry, MapRegistryTemplate } from "../models/Registry";
+import { ILocalStorageRegistry } from "../models/Registry";
 
 import SuperJSON from "superjson";
 
