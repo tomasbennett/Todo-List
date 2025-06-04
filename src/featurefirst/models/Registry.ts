@@ -1,3 +1,4 @@
+import { IComponentRemovable } from "./IComponentModels";
 import { IState } from "./PageState";
 
 export interface IRegistry<T, K> {
@@ -18,6 +19,8 @@ export type IEventRegistry<T extends HTMLElement, K extends Event> = IRegistry<T
 
 export type ISubmitEventRegistry = IEventRegistry<HTMLFormElement, SubmitEvent>;
 export type IClickEventRegistry = IEventRegistry<HTMLElement, MouseEvent>;
+
+export type IScreenComponentRegistry = IRegistry<HTMLElement, IComponentRemovable>; 
 
 export interface ILocalStorageRegistry<T extends { id: number }> extends IRegistry<number, T> {}
 

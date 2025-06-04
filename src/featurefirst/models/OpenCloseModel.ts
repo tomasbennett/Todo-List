@@ -1,7 +1,5 @@
-import { PortableEventListenersObserver } from "../util/PortableEventListeners";
-
 export interface IOpenClose {
-    open(cancelEventListener: PortableEventListenersObserver): void;
+    open(): void;
 
-    close(cancelEventListener: PortableEventListenersObserver): void;
+    close(): void;
 }
