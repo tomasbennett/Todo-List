@@ -18,9 +18,10 @@ export type IPageRegistry = IRegistry<HTMLElement, IState>;
 export type IEventRegistry<T extends HTMLElement, K extends Event> = IRegistry<T, (e: K) => void>;
 
 export type ISubmitEventRegistry = IEventRegistry<HTMLFormElement, SubmitEvent>;
+export type IChangeEventRegistry = IEventRegistry<HTMLInputElement, Event>;
 export type IClickEventRegistry = IEventRegistry<HTMLElement, MouseEvent>;
 
-export type IScreenComponentRegistry = IRegistry<HTMLElement, IComponentRemovable>; 
+export type IScreenComponentRegistry = IRegistry<HTMLElement, IComponentRemovable<any>>; 
 
 export interface ILocalStorageRegistry<T extends { id: number }> extends IRegistry<number, T> {}
 

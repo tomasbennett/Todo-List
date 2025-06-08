@@ -3,7 +3,7 @@ import { NotesFormState } from "./features/Notes/states/NotesFormState";
 import { projectsFormBtn } from "./features/Projects/components/ProjectsForm";
 import { ProjectsFormState } from "./features/Projects/states/ProjectsFormState";
 import { tasksFormBtn } from "./features/Tasks/components/TasksForm";
-import { tasksCalendarBtn, tasksHomeBtn, tasksUpcomingBtn } from "./features/Tasks/components/TasksHomeFilters";
+import { tasksCalendarBtn, tasksHomeBtn, tasksUpcomingBtn } from "./features/Tasks/components/TaskDateFilters";
 import { CalendarState } from "./features/Tasks/states/CalendarState";
 import { HomeState } from "./features/Tasks/states/HomeState";
 import { TaskFormState } from "./features/Tasks/states/TaskFormState";
@@ -11,16 +11,23 @@ import { UpcomingState } from "./features/Tasks/states/UpcomingState";
 import { IPageMediator } from "./models/PageMediator";
 import { IState } from "./models/PageState";
 import { PageMediator } from "./services/PageMediator";
+import { addBtn, dialogElem } from "./components/DialogComponent";
+
+
+addBtn.addEventListener("click", () => {
+    dialogElem.showModal();
+    
+});
 
 
 
 
-const homePageMap: Map<HTMLElement, IState> = new Map<HTMLElement, IState>([
-    [tasksUpcomingBtn, new UpcomingState()],
-    [tasksCalendarBtn, new CalendarState()]
-]);
-const homeMediator: IPageMediator = new PageMediator(tasksHomeBtn, new HomeState());
-homeMediator.setLivePages(homePageMap);
+// const homePageMap: Map<HTMLElement, IState> = new Map<HTMLElement, IState>([
+//     [tasksUpcomingBtn, new UpcomingState()],
+//     [tasksCalendarBtn, new CalendarState()]
+// ]);
+// const homeMediator: IPageMediator = new PageMediator(tasksHomeBtn, new HomeState());
+// homeMediator.setLivePages(homePageMap);
 
 
 

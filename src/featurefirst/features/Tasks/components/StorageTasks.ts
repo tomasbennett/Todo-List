@@ -3,15 +3,15 @@ import { IClickEventRegistry, IEventRegistry } from "../../../models/Registry";
 import { ITask } from "../models/TaskModels";
 
 
-export class InputCompletedTask implements IComponentEventRemovable {
+export class InputCompletedTask implements IComponentEventRemovable<boolean> {
     private inputCompleted: HTMLInputElement;
 
-    constructor(private eventRegistry: IClickEventRegistry,
-                private checked: boolean
-    ) {
+    constructor(private eventRegistry: IClickEventRegistry) {
         this.inputCompleted = document.createElement("input");
         this.inputCompleted.type = "checkbox";
-        this.inputCompleted.checked = this.checked;
+    }
+    setValue(value: boolean): void {
+        this.inputCompleted.checked = value;
     }
 
     getHTML(): HTMLElement {
@@ -33,7 +33,7 @@ export class InputCompletedTask implements IComponentEventRemovable {
 }
 
 
-export class EditTask implements IComponentEventRemovable {
+export class EditTask implements IComponentEventRemovable<void> {
     private taskEntryEdit: HTMLElement;
     private editSVG: SVGElement;
     private editPath: SVGPathElement;
@@ -50,6 +50,8 @@ export class EditTask implements IComponentEventRemovable {
         
         this.editPath = document.createElementNS(SVG_NS, "path");
         this.editPath.setAttribute("d", "M14.1,0h94.67c7.76,0,14.1,6.35,14.1,14.1v94.67c0,7.75-6.35,14.1-14.1,14.1H14.1c-7.75,0-14.1-6.34-14.1-14.1 V14.1C0,6.34,6.34,0,14.1,0L14.1,0z M81.35,28.38L94.1,41.14c1.68,1.68,1.68,4.44,0,6.11l-7.06,7.06L68.17,35.44l7.06-7.06 C76.91,26.7,79.66,26.7,81.35,28.38L81.35,28.38z M52.34,88.98c-5.1,1.58-10.21,3.15-15.32,4.74c-12.01,3.71-11.95,6.18-8.68-5.37 l5.16-18.2l0,0l-0.02-0.02L64.6,39.01l18.87,18.87l-31.1,31.11L52.34,88.98L52.34,88.98z M36.73,73.36l12.39,12.39 c-3.35,1.03-6.71,2.06-10.07,3.11c-7.88,2.42-7.84,4.05-5.7-3.54L36.73,73.36L36.73,73.36z");
+    }
+    setValue(value: void): void {
     }
 
     getHTML(): HTMLElement {
@@ -71,7 +73,7 @@ export class EditTask implements IComponentEventRemovable {
 }
 
 
-export class DeleteTask implements IComponentEventRemovable {
+export class DeleteTask implements IComponentEventRemovable<void> {
     private taskEntryDel: HTMLElement;
     private delSVG: SVGElement;
     private delPath: SVGPathElement;
@@ -87,6 +89,9 @@ export class DeleteTask implements IComponentEventRemovable {
         
         this.delPath = document.createElementNS(SVG_NS, "path");
         this.delPath.setAttribute("d", "M14.1,0h94.67c7.76,0,14.1,6.35,14.1,14.1v94.67c0,7.75-6.35,14.1-14.1,14.1H14.1c-7.75,0-14.1-6.34-14.1-14.1 V14.1C0,6.34,6.34,0,14.1,0L14.1,0z M81.35,28.38L94.1,41.14c1.68,1.68,1.68,4.44,0,6.11l-7.06,7.06L68.17,35.44l7.06-7.06 C76.91,26.7,79.66,26.7,81.35,28.38L81.35,28.38z M52.34,88.98c-5.1,1.58-10.21,3.15-15.32,4.74c-12.01,3.71-11.95,6.18-8.68-5.37 l5.16-18.2l0,0l-0.02-0.02L64.6,39.01l18.87,18.87l-31.1,31.11L52.34,88.98L52.34,88.98z M36.73,73.36l12.39,12.39 c-3.35,1.03-6.71,2.06-10.07,3.11c-7.88,2.42-7.84,4.05-5.7-3.54L36.73,73.36L36.73,73.36z");
+    }
+    setValue(value: void): void {
+        
     }
 
     getHTML(): HTMLElement {
@@ -108,7 +113,7 @@ export class DeleteTask implements IComponentEventRemovable {
 }
 
 
-export class TaskContainer implements IComponentRemovable {
+export class TaskContainer implements IComponentRemovable<ITask> {
     private container: HTMLElement;
 
     // private inputComplete: IComponentEventRemovable;
@@ -121,15 +126,12 @@ export class TaskContainer implements IComponentRemovable {
     private date: HTMLElement;
 
     constructor(
-        private task: ITask,
-        private inputComplete: IComponentEventRemovable,
-        private editTask: IComponentEventRemovable,
-        private delTask: IComponentEventRemovable 
+        private inputComplete: IComponentEventRemovable<boolean>,
+        private editTask: IComponentEventRemovable<void>,
+        private delTask: IComponentEventRemovable<void> 
     ) {
         this.container = document.createElement("div");
         this.container.classList.add("task-entry-container", "mod-container");
-        this.container.setAttribute("data-importance", this.task.priority);
-        this.container.setAttribute("data-id", this.task.id.toString());
 
         // this.editTask = new EditTask();
         // this.delTask = new DeleteTask();
@@ -139,16 +141,26 @@ export class TaskContainer implements IComponentRemovable {
         // this.inputComplete = new InputCompletedTask();
 
         this.title = document.createElement("p");
-        this.title.classList.add("task-entry-title", this.task.completed ? "complete" : "incomplete");
-        this.title.textContent = this.task.title;
+        
+        
 
         this.description = document.createElement("p");
         this.description.classList.add("task-entry-description");
-        this.description.textContent = this.task.body;
+        
 
         this.date = document.createElement("p");
         this.date.classList.add("due-date");
-        this.date.textContent = this.task.date.toDateString();
+        
+    }
+    setValue(value: { body: string; title: string; id: number; date: Date; priority: "low" | "medium" | "high"; completed: boolean; }): void {
+        
+        this.container.setAttribute("data-importance", value.priority);
+        this.container.setAttribute("data-id", value.id.toString());
+
+        this.title.classList.add("task-entry-title", value.completed ? "complete" : "incomplete");
+        this.title.textContent = value.title;
+        this.description.textContent = value.body;
+        this.date.textContent = value.date.toDateString();
     }
     
     remove(): void {

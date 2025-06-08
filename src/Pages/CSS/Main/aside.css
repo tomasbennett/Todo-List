@@ -267,3 +267,15 @@ div.sidebar-notification-number-container{
 .sidebar-notes-button:hover{
     background-color: var(--hover-background-colour);
 }
+
+
+div.remove-sidebar-option{
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+}
+
+div.remove-sidebar-option:hover{
+    color: red;
+}

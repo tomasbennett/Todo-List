@@ -6,29 +6,28 @@ import { InputCompletedTask, EditTask, DeleteTask, TaskContainer } from "../comp
 import { ITask } from "../models/TaskModels";
 
 
-export class RenderTasks implements IOpenClose {
-    constructor(private tasks: ITask[],
+export class RenderTasks implements ICommand {
+    constructor(
+                private task: ITask,    
                 private screenEvents: IClickEventRegistry,
                 private screenRegistry: IScreenComponentRegistry
     ) {}
-    open(): void {
-        for (const task of this.tasks) {
-            const inputCheckBox: IComponentEventRemovable = new InputCompletedTask(this.screenEvents, task.completed);
-            inputCheckBox.addListener();
+    execute(): void {
+        const inputCheckBox: IComponentEventRemovable<boolean> = new InputCompletedTask(this.screenEvents);
+        inputCheckBox.setValue(this.task.completed);
+        inputCheckBox.addListener();
 
-            const editTask: IComponentEventRemovable = new EditTask(this.screenEvents);
-            editTask.addListener();
+        const editTask: IComponentEventRemovable<void> = new EditTask(this.screenEvents);
+        editTask.addListener();
 
-            const delTask: IComponentEventRemovable = new DeleteTask(this.screenEvents);
-            delTask.addListener();
+        const delTask: IComponentEventRemovable<void> = new DeleteTask(this.screenEvents);
+        delTask.addListener();
 
-            const taskContainer: IComponentRemovable = new TaskContainer(task, inputCheckBox, editTask, delTask);
-            this.screenRegistry.set(taskContainer.getHTML(), taskContainer);
-            taskContainer.render(document.getElementById("home-content-container")!);
-        }
-    }
-    close(): void {
-        this.screenEvents.removeAll();
-        this.screenRegistry.removeAll();
+        const taskContainer: IComponentRemovable<ITask> = new TaskContainer(inputCheckBox, editTask, delTask);
+        taskContainer.setValue(this.task);
+
+        this.screenRegistry.set(taskContainer.getHTML(), taskContainer);
+        
+        taskContainer.render(document.getElementById("home-content-container")!);
     }
 }

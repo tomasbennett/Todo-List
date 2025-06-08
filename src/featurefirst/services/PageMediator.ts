@@ -1,8 +1,9 @@
 import { IPageChangeMemento } from "../models/Memento";
 import { IPageMediator } from "../models/PageMediator";
 import { IState } from "../models/PageState";
+import { IClickEventRegistry } from "../models/Registry";
 
-import { EventRegistry } from "../util/EventRegistry";
+import { ClickEventRegistry } from "../util/EventRegistry";
 import { PageRegistry } from "../util/PageRegistry";
 import { ChangePageMemento } from "../util/PageStateMemento";
 
@@ -10,12 +11,12 @@ import { ChangePageMemento } from "../util/PageStateMemento";
 
 export class PageMediator implements IPageMediator {
     private pageObs: PageRegistry;
-    private eventObs: EventRegistry;
+    private eventObs: IClickEventRegistry;
     private stateManager: IPageChangeMemento;
 
     constructor(firstElem: HTMLElement, firstPage: IState) {
         this.pageObs = new PageRegistry(new Map<HTMLElement, IState>());
-        this.eventObs = new EventRegistry(new Map<HTMLElement, () => void>());
+        this.eventObs = new ClickEventRegistry(new Map<HTMLElement, () => void>());
         this.stateManager = new ChangePageMemento();
 
         this.pageObs.set(firstElem, firstPage);

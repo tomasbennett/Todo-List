@@ -1,4 +1,4 @@
-import { IClickEventRegistry, IEventRegistry, ISubmitEventRegistry } from "../models/Registry";
+import { IChangeEventRegistry, IClickEventRegistry, IEventRegistry, ISubmitEventRegistry } from "../models/Registry";
 
 export class ClickEventRegistry implements IClickEventRegistry {
     constructor(private map: Map<HTMLElement, (e: MouseEvent) => void>) {}
@@ -53,4 +53,35 @@ export class FormSubmitEventRegistry implements ISubmitEventRegistry {
         }
     }
 
+}
+
+
+
+export class InputChangeEventRegistry implements IChangeEventRegistry {
+    constructor(private map: Map<HTMLInputElement, (e: Event) => void>) {}
+
+    getByID(key: HTMLInputElement): (e: Event) => void {
+        return this.map.get(key)!;
+    }
+
+    getAll(): ((e: Event) => void)[] {
+        return Array.from(this.map.values());
+    }
+
+    removeAll(): void {
+        for (const key of this.map.keys()) {
+            this.removeByID(key);
+        }
+    }
+
+    set(key: HTMLInputElement, val: (e: Event) => void): void {
+        this.map.set(key, val);
+        key.addEventListener("click", val);
+    }
+
+    removeByID(key: HTMLInputElement): void {
+        const func: (e: Event) => void = this.map.get(key)!;
+        key.removeEventListener("click", func);
+        this.map.delete(key);
+    }
 }

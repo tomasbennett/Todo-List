@@ -1,3 +1,4 @@
+import { ICommand } from "../../../models/CommandModel";
 import { IComponentRemovable } from "../../../models/IComponentModels";
 import { IOpenClose } from "../../../models/OpenCloseModel";
 import { IState } from "../../../models/PageState";
@@ -11,21 +12,24 @@ import { RenderTasks } from "../services/CreateTaskHTML";
 
 
 export class HomeState implements IState {
-    private taskRender!: IOpenClose;
+    private screenRegistry!: IScreenComponentRegistry;
+    private eventRegistry!: IClickEventRegistry;
 
     load(): void {
         const localStorage: LocalStorage<ITask> = new TaskLocalStorage();
         const tasks: ITask[] = localStorage.getAll();
 
-        this.taskRender = new RenderTasks(tasks, 
-                                          new ClickEventRegistry(new Map<HTMLElement, () => void>()), 
-                                          new ScreenRegistry(new Map<HTMLElement, IComponentRemovable>())
-        );
-        
-        this.taskRender.open();
+        this.screenRegistry = new ScreenRegistry(new Map<HTMLElement, IComponentRemovable<any>>());
+        this.eventRegistry = new ClickEventRegistry(new Map<HTMLElement, () => void>());
+
+        for (const task of tasks) {
+            const taskRender: ICommand = new RenderTasks(task, this.eventRegistry, this.screenRegistry);
+            taskRender.execute(); //This can be done if TaskRender wasn't an IOpenClose as I believe ITasks needs to go through load instead of through the constructor anyway???
+        }
     }
 
     exit(): void {
-        this.taskRender.close();
+        this.screenRegistry.removeAll();
+        this.eventRegistry.removeAll();
     }
 }

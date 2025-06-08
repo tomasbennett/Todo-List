@@ -9,6 +9,7 @@ export const TaskSchema = z.object({
     body: z.string().min(1),
     date: z.date(),
     priority: z.enum(PRIORITY_VALUES),
+    project: z.string().min(1),
     completed: z.boolean()
 });
 
