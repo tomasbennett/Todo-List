@@ -1,11 +1,16 @@
 import { IState } from "../../../models/PageState";
+import { ITask } from "../models/TaskModels";
 
 
-export class TaskFormState implements IState {
+export class TaskFormState implements IState<ITask> {
+    constructor(
+        private form: HTMLFormElement
+    ) {}
+
     load(): void {
-        throw new Error("Method not implemented.");
+        this.form.style.display = "flex";
     }
     exit(): void {
-        throw new Error("Method not implemented.");
+        this.form.style.display = "none";
     }
 }

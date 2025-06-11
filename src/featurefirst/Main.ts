@@ -9,17 +9,54 @@ import { HomeState } from "./features/Tasks/states/HomeState";
 import { TaskFormState } from "./features/Tasks/states/TaskFormState";
 import { UpcomingState } from "./features/Tasks/states/UpcomingState";
 import { IPageMediator } from "./models/PageMediator";
-import { IState } from "./models/PageState";
+import { IState, IStateManager } from "./models/PageState";
 import { PageMediator } from "./services/PageMediator";
 import { addBtn, dialogElem } from "./components/DialogComponent";
+import { ITask } from "./features/Tasks/models/TaskModels";
+import { ILocalStorageRegistry } from "./models/Registry";
+import { NoteLocalStorage, ProjectLocalStorage, TaskLocalStorage } from "./services/LocalStorage";
+import { IProject } from "./features/Projects/models/ProjectsModel";
+import { INote } from "./features/Notes/models/NotesModel";
+import { PageStateManager } from "./states/PageStateManager";
 
 
 addBtn.addEventListener("click", () => {
     dialogElem.showModal();
     
+
+
 });
 
+const taskLocalStorage: ILocalStorageRegistry<ITask> = new TaskLocalStorage();
+const projLocalStorage: ILocalStorageRegistry<IProject> = new ProjectLocalStorage();
+const notesLocalStorage: ILocalStorageRegistry<INote> = new NoteLocalStorage();
 
+const homePage: Map<HTMLElement, (e: MouseEvent) => void> = new Map<HTMLElement, (e: MouseEvent) => void>([
+    [tasksHomeBtn, (e: MouseEvent) => {
+        const homeState: IState<ITask> = new HomeState();
+        for (const task of taskLocalStorage.getAll()) {
+            homeState.load(task);
+        }
+    }],
+    [tasksUpcomingBtn, (e: MouseEvent) => {
+        const upcomingState: IState<ITask> = new UpcomingState();
+        for (const task of taskLocalStorage.getAll()) {
+            upcomingState.load(task);
+        }
+    }],
+    [tasksCalendarBtn, (e: MouseEvent) => {
+        const calendarState: IState<ITask> = new CalendarState();
+        for (const task of taskLocalStorage.getAll()) {
+            calendarState.load(task);
+        }
+    }]
+
+]);
+
+const stateManager: IStateManager<ITask | INote | IProject> = new PageStateManager(new HomeState());
+
+const pageMediator: IPageMediator<ITask | INote | IProject, "click"> = new PageMediator(stateManager);
+pageMediator.setLivePages(homePage);
 
 
 // const homePageMap: Map<HTMLElement, IState> = new Map<HTMLElement, IState>([

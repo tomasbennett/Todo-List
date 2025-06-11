@@ -11,34 +11,36 @@ import { ITask } from "../models/TaskModels";
 import { RenderTasks } from "../services/CreateTaskHTML";
 import { DateRangeCheck } from "../util/DatesFilter";
 
-export class UpcomingState implements IState {
-    private screenRegistry!: IScreenComponentRegistry;
-    private eventRegistry!: IClickEventRegistry;
+export class UpcomingState implements IState<ITask> {
+    // private screenRegistry!: IScreenComponentRegistry;
+    // private eventRegistry!: IClickEventRegistry;
 
-    load(): void {
-        const localStorage: ILocalStorageRegistry<ITask> = new TaskLocalStorage();
-        const tasks: ITask[] = localStorage.getAll().filter((task) => {
-            const today: Date = new Date();
+    load(data: ITask): void {
+        // const localStorage: ILocalStorageRegistry<ITask> = new TaskLocalStorage();
+        // const tasks: ITask[] = localStorage.getAll().filter((task) => {
+        //     const today: Date = new Date();
 
-            const nextWeek: Date = new Date(today);
-            nextWeek.setDate(today.getDate() + 7);
+        //     const nextWeek: Date = new Date(today);
+        //     nextWeek.setDate(today.getDate() + 7);
 
-            const dateCheck: IDateRangeCheck = new DateRangeCheck(today, nextWeek);
-            return dateCheck.isBetween(task.date);
-        });
+        //     const dateCheck: IDateRangeCheck = new DateRangeCheck(today, nextWeek);
+        //     return dateCheck.isBetween(task.date);
+        // });
 
-        this.screenRegistry = new ScreenRegistry(new Map<HTMLElement, IComponentRemovable<any>>());
-        this.eventRegistry = new ClickEventRegistry(new Map<HTMLElement, () => void>());
+        // this.screenRegistry = new ScreenRegistry(new Map<HTMLElement, IComponentRemovable<any>>());
+        // this.eventRegistry = new ClickEventRegistry(new Map<HTMLElement, () => void>());
 
-        for (const task of tasks) {
-            const taskRender: ICommand = new RenderTasks(task, this.eventRegistry, this.screenRegistry);
-            taskRender.execute(); //This can be done if TaskRender wasn't an IOpenClose as I believe ITasks needs to go through load instead of through the constructor anyway???
-        }
+        // for (const task of tasks) {
+        //     const taskRender: ICommand = new RenderTasks(task, this.eventRegistry, this.screenRegistry);
+        //     taskRender.execute(); //This can be done if TaskRender wasn't an IOpenClose as I believe ITasks needs to go through load instead of through the constructor anyway???
+        // }
+        console.log("Entering the upcoming state");
 
     }
     exit(): void {
-        this.screenRegistry.removeAll();
-        this.eventRegistry.removeAll();
+        console.log("exiting the upcoming state");
+        // this.screenRegistry.removeAll();
+        // this.eventRegistry.removeAll();
     }
 
 }

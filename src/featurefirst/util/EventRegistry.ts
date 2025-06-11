@@ -33,7 +33,9 @@ export class FormSubmitEventRegistry implements ISubmitEventRegistry {
     constructor(private map: Map<HTMLFormElement, (e: SubmitEvent) => void>) {}
 
     set(key: HTMLFormElement, val: (e: SubmitEvent) => void): void {
+
         this.map.set(key, val);
+
         key.addEventListener("submit", val);
     }
     getByID(key: HTMLFormElement): (e: SubmitEvent) => void {
@@ -55,8 +57,6 @@ export class FormSubmitEventRegistry implements ISubmitEventRegistry {
 
 }
 
-
-
 export class InputChangeEventRegistry implements IChangeEventRegistry {
     constructor(private map: Map<HTMLInputElement, (e: Event) => void>) {}
 
@@ -76,12 +76,36 @@ export class InputChangeEventRegistry implements IChangeEventRegistry {
 
     set(key: HTMLInputElement, val: (e: Event) => void): void {
         this.map.set(key, val);
-        key.addEventListener("click", val);
+        key.addEventListener("change", val);
     }
 
     removeByID(key: HTMLInputElement): void {
         const func: (e: Event) => void = this.map.get(key)!;
-        key.removeEventListener("click", func);
+        key.removeEventListener("change", func);
         this.map.delete(key);
+    }
+}
+
+export class EventBus<T extends HTMLElement, K extends keyof HTMLElementEventMap> implements IEventRegistry<T, K> {
+    constructor(
+        private map: Map<T, (e: HTMLElementEventMap[K]) => void>
+    ) {}
+    
+    set(key: T, val: (e: HTMLElementEventMap[K]) => void): void {
+        this.map.set(key, val);
+    }
+    getByID(key: T): (e: HTMLElementEventMap[K]) => void {
+        return this.map.get(key)!;
+    }
+    getAll(): ((e: HTMLElementEventMap[K]) => void)[] {
+        return Array.from(this.map.values());
+    }
+    removeByID(key: T): void {
+        this.map.delete(key);
+    }
+    removeAll(): void {
+        for (const key of this.map.keys()) {
+            this.removeByID(key);
+        }
     }
 }

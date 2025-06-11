@@ -3,3 +3,8 @@ export interface IState {
 
     exit(): void;
 }
+
+
+export interface IStateManager extends IState {
+    set(newState: IState): void;
+}

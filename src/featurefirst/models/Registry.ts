@@ -13,13 +13,26 @@ export interface IRegistry<T, K> {
     removeAll(): void;
 }
 
-export type IPageRegistry = IRegistry<HTMLElement, IState>;
+export interface IMultipleRegistry<T, K> {
+    set(key: T, val: K): void;
 
-export type IEventRegistry<T extends HTMLElement, K extends Event> = IRegistry<T, (e: K) => void>;
+    getByID(key: T): Array<K>;
 
-export type ISubmitEventRegistry = IEventRegistry<HTMLFormElement, SubmitEvent>;
-export type IChangeEventRegistry = IEventRegistry<HTMLInputElement, Event>;
-export type IClickEventRegistry = IEventRegistry<HTMLElement, MouseEvent>;
+    getAll(): Array<K[]>;
+
+    removeByID(key: T): void;
+
+    removeAll(): void;
+}
+
+
+// export type IPageRegistry = IRegistry<HTMLElement, IState>;
+
+export type IEventRegistry<T extends HTMLElement, K extends keyof HTMLElementEventMap> = IRegistry<T, (e: HTMLElementEventMap[K]) => void>;
+
+export type ISubmitEventRegistry = IEventRegistry<HTMLFormElement, "submit">;
+export type IChangeEventRegistry = IEventRegistry<HTMLInputElement, "change">;
+export type IClickEventRegistry = IEventRegistry<HTMLElement, "click">;
 
 export type IScreenComponentRegistry = IRegistry<HTMLElement, IComponentRemovable<any>>; 
 
