@@ -3,10 +3,10 @@ import { TaskSchema } from "../../Tasks/models/TaskModels";
 // import { TaskSchema } from "../../Tasks/models/TaskModels";
 
 export const ProjectSchema = z.object({
-    id: z.number().positive(),
+    id: z.number().nonnegative(),
     title: z.string().min(1),
     // tasks: z.number().positive().array(),
-    tasks: TaskSchema.array()
+    // tasks: TaskSchema.array()
 });
 
 

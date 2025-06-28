@@ -1,21 +1,24 @@
-import { ICommand } from "../../../models/CommandModel";
-import { IComponentRemovable } from "../../../models/IComponentModels";
-import { IOpenClose } from "../../../models/OpenCloseModel";
 import { IState } from "../../../models/PageState";
 import { IClickEventRegistry, ILocalStorageRegistry, IScreenComponentRegistry } from "../../../models/Registry";
-import { TaskLocalStorage } from "../../../services/LocalStorage";
-import { ClickEventRegistry } from "../../../util/EventRegistry";
-import { ScreenRegistry } from "../../../util/ScreenRegistry";
+import { nextWeek } from "../components/SetDates";
 import { IDateRangeCheck } from "../models/DateRangeModel";
+import { IDateRange } from "../models/DateRangeScreen";
 import { ITask } from "../models/TaskModels";
-import { RenderTasks } from "../services/CreateTaskHTML";
-import { DateRangeCheck } from "../util/DatesFilter";
+import { ITaskScreen } from "../models/TaskScreen";
 
-export class UpcomingState implements IState<ITask> {
+
+export class UpcomingState implements IState {
     // private screenRegistry!: IScreenComponentRegistry;
     // private eventRegistry!: IClickEventRegistry;
 
-    load(data: ITask): void {
+    constructor(
+        private screen: ITaskScreen,
+        private localStorage: ILocalStorageRegistry<ITask>,
+
+        private dateCheck: IDateRangeCheck
+    ) {}
+
+    load(): void {
         // const localStorage: ILocalStorageRegistry<ITask> = new TaskLocalStorage();
         // const tasks: ITask[] = localStorage.getAll().filter((task) => {
         //     const today: Date = new Date();
@@ -34,11 +37,25 @@ export class UpcomingState implements IState<ITask> {
         //     const taskRender: ICommand = new RenderTasks(task, this.eventRegistry, this.screenRegistry);
         //     taskRender.execute(); //This can be done if TaskRender wasn't an IOpenClose as I believe ITasks needs to go through load instead of through the constructor anyway???
         // }
-        console.log("Entering the upcoming state");
+        const dateRange: IDateRange = {
+            fromDate: new Date(),
+            toDate: nextWeek()
+        }
+
+        const tasks: ITask[] = this.localStorage.getAll().filter((task) => {
+            return this.dateCheck.isBetween(task.date, dateRange);
+        });
+
+        for (const task of tasks) {
+            this.screen.renderDataToScreen(task);
+        }
 
     }
     exit(): void {
-        console.log("exiting the upcoming state");
+        
+        this.screen.removeAll();
+        
+
         // this.screenRegistry.removeAll();
         // this.eventRegistry.removeAll();
     }

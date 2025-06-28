@@ -1,26 +1,29 @@
-import { ICommand } from "../../../models/CommandModel";
-import { IComponentEventRemovable, IComponentRemovable } from "../../../models/IComponentModels";
 import { IState } from "../../../models/PageState";
-import { IScreenComponentRegistry, IClickEventRegistry, IChangeEventRegistry } from "../../../models/Registry";
-import { LocalStorage, TaskLocalStorage } from "../../../services/LocalStorage";
-import { ClickEventRegistry, InputChangeEventRegistry } from "../../../util/EventRegistry";
-import { ScreenRegistry } from "../../../util/ScreenRegistry";
-import { CalendarFromComponent, CalendarToComponent } from "../components/TaskDateFilters";
+import { ILocalStorageRegistry } from "../../../models/Registry";
+import { fourWeeksFromToday, nextWeek } from "../components/SetDates";
 import { IDateRangeCheck } from "../models/DateRangeModel";
+import { IDateRange, IDateRangeScreen } from "../models/DateRangeScreen";
 import { ITask } from "../models/TaskModels";
-import { RenderTasks } from "../services/CreateTaskHTML";
-import { DateRangeCheck } from "../util/DatesFilter";
-import { IDateToString } from "../../../models/Transformer";
-import { DateToString } from "../util/DateToText";
 
-export class CalendarState implements IState<ITask> {
+import { ITaskScreen } from "../models/TaskScreen";
+
+export class CalendarState implements IState {
     // private dateScreenRegistry!: IScreenComponentRegistry;
     // private dateEventRegistry!: IChangeEventRegistry;
 
     // private screenRegistry!: IScreenComponentRegistry;
     // private eventRegistry!: IClickEventRegistry;
 
-    load(data: ITask): void {
+    constructor(
+        // private taskScreen: ITaskScreen,
+        private dateScreen: IDateRangeScreen,
+
+        // private localStorage: ILocalStorageRegistry<ITask>,
+
+        // private dateCheck: IDateRangeCheck, //We still have dateCheck, instead of creating dateRange we get a class that returns an IDateRange from the inputs
+    ) {}
+
+    load(): void {
         // this.dateScreenRegistry = new ScreenRegistry(new Map<HTMLElement, IComponentRemovable<string>>());
         // this.dateEventRegistry = new InputChangeEventRegistry(new Map<HTMLInputElement, (e: Event) => void>());
 
@@ -60,7 +63,31 @@ export class CalendarState implements IState<ITask> {
         //     const taskRender: ICommand = new RenderTasks(task, this.eventRegistry, this.screenRegistry);
         //     taskRender.execute(); //This can be done if TaskRender wasn't an IOpenClose as I believe ITasks needs to go through load instead of through the constructor anyway???
         // }
-        console.log("entering Calendar state");
+        // const today: Date = new Date();
+        // const fourWeeksAhead: Date = new Date(today);
+        // fourWeeksAhead.setDate(today.getDate() + 28);
+
+        // const defaultDates: IDateRange = {
+        //     fromDate: today,
+        //     toDate: fourWeeksAhead
+        // }
+        
+        const dateRange: IDateRange = {
+            fromDate: new Date(),
+            toDate: fourWeeksFromToday()
+        }
+
+        this.dateScreen.renderDataToScreen(dateRange);
+
+        // const tasks: ITask[] = this.localStorage.getAll().filter((task) => {
+        //     return this.dateCheck.isBetween(task.date, dateRange);
+        // });
+
+        // for (const task of tasks) {
+        //     this.taskScreen.renderDataToScreen(task);
+        // }
+        
+
     }
     exit(): void {
         // this.screenRegistry.removeAll();
@@ -68,6 +95,9 @@ export class CalendarState implements IState<ITask> {
 
         // this.dateScreenRegistry.removeAll();
         // this.dateEventRegistry.removeAll();
-        console.log("exiting calendar state");
+        
+        // this.taskScreen.removeAll();
+        this.dateScreen.removeAll();
+
     }
 }

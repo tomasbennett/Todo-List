@@ -1,35 +1,32 @@
 import { IEventBus } from "../models/IEventBus";
 import { IPageChangeMemento } from "../models/Memento";
+import { IOpenClose } from "../models/OpenCloseModel";
 import { IPageMediator } from "../models/PageMediator";
 import { IState, IStateManager } from "../models/PageState";
 import { IClickEventRegistry, IEventRegistry, ILocalStorageRegistry } from "../models/Registry";
 
-import { ClickEventRegistry } from "../util/EventRegistry";
-import { PageRegistry } from "../util/PageRegistry";
-import { ChangePageMemento } from "../util/PageStateMemento";
 
+// export class PageMediator<T extends { id: number }> implements IPageMediator<T, "click"> {
+//     constructor(
+//         private stateManager: IStateManager<T>,
+//         private eventRegistry: IEventRegistry<HTMLElement, "click">,
+//         private eventBus: IEventBus<HTMLElement, "click">
+//     ) {}
 
-export class PageMediator<T extends { id: number }> implements IPageMediator<T, "click"> {
-    constructor(
-        private stateManager: IStateManager<T>,
-        private eventRegistry: IEventRegistry<HTMLElement, "click">,
-        private eventBus: IEventBus<HTMLElement, "click">
-    ) {}
-
-    setLivePages(pages: Map<HTMLElement, (e: HTMLElementEventMap["click"]) => void>): void {
-        for (const [key, val] of pages) {
-            this.eventRegistry.set(key, val);
-            this.eventBus.addListener(key);
-        }
-    }
-    changePage(newPageKey: HTMLElement): void {
-        this.stateManager.exit();
+//     setLivePages(pages: Map<HTMLElement, (e: HTMLElementEventMap["click"]) => void>): void {
+//         for (const [key, val] of pages) {
+//             this.eventRegistry.set(key, val);
+//             this.eventBus.addListener(key);
+//         }
+//     }
+//     changePage(newPageKey: HTMLElement): void {
+//         this.stateManager.exit();
         
-    }
-    pageReset(): void {
-        throw new Error("Method not implemented.");
-    }
-}
+//     }
+//     pageReset(): void {
+//         throw new Error("Method not implemented.");
+//     }
+// }
 // export class PageMediator implements IPageMediator {
 //     private pageObs: PageRegistry;
 //     private eventObs: IClickEventRegistry;
@@ -67,3 +64,61 @@ export class PageMediator<T extends { id: number }> implements IPageMediator<T, 
 //         this.eventObs.removeAll();
 //     }
 // }
+
+export class PageMediator implements IPageMediator {
+    constructor(
+        private pageClickEventRegistry: IClickEventRegistry,
+        private pageStateManager: IStateManager,
+        private pageChangeMemento: IPageChangeMemento,
+
+        private startPage: Map<HTMLElement, IState>
+    ) {
+        for (const [key, val] of this.startPage) {
+            this.pageClickEventRegistry.set(key, this.funcDevelopment(key, val));
+            this.pageStateManager.set(val);
+            this.pageChangeMemento.changeState(key);
+            val.load();
+
+        }
+    }
+
+    setLivePages(pages: Map<HTMLElement, IState>): void {
+        for (const [key, val] of pages) {
+            // const func: (e: MouseEvent) => void = (e) => {
+            //     this.pageStateManager.exit();
+            //     this.pageStateManager.set(val);
+            //     this.pageStateManager.load();
+            //     this.changePage(key);
+            // }
+
+            this.pageClickEventRegistry.set(key, (e) => {
+                this.funcDevelopment(key, val);
+            });
+        }
+    }
+    changePage(newPageKey: HTMLElement): void {
+        const funcRemove: (e: MouseEvent) => void = this.pageClickEventRegistry.getByID(newPageKey);
+        newPageKey.removeEventListener("click", funcRemove);
+        
+        const funcAdd: (e: MouseEvent) => void = this.pageClickEventRegistry.getByID(this.pageChangeMemento.getLatestState()!);
+        this.pageChangeMemento.getLatestState()!.addEventListener("click", funcAdd);
+
+        this.pageChangeMemento.changeState(newPageKey);
+    }
+    pageReset(): void {
+        this.pageClickEventRegistry.removeAll();
+    }
+
+
+    private funcDevelopment(key: HTMLElement, val: IState): (e: MouseEvent) => void {
+        const func: (e: MouseEvent) => void = (e) => {
+            this.pageStateManager.exit();
+            this.pageStateManager.set(val);
+            this.pageStateManager.load();
+            this.changePage(key);
+        }
+
+        return func;
+    }
+
+}

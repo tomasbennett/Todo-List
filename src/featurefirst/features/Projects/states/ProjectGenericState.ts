@@ -1,36 +1,26 @@
-import { ICommand } from "../../../models/CommandModel";
-import { IOpenClose } from "../../../models/OpenCloseModel";
-import { IState, IStateManager } from "../../../models/PageState";
-import { IClickEventRegistry } from "../../../models/Registry";
-import { ITask } from "../../Tasks/models/TaskModels";
-import { IProject } from "../models/ProjectsModel";
+import { IScreenGroupingCriteria } from "../../../models/OpenCloseModel";
+import { IState } from "../../../models/PageState";
+import { ILocalStorageRegistry } from "../../../models/Registry";
 
-export class ProjectGenericState implements IState {
+export class ProjectGenericState<Task extends { id: number, project: number }> implements IState {
     constructor(
-        private taskRender: IOpenClose<ITask>,
-        private proj: IProject,
+        private projID: number,
 
-        private stateManager: IStateManager,
-        private newState: IState,
-        private removeBtn: HTMLElement,
-        private removeBtnEventRegistry: IClickEventRegistry
+        private taskRenderScreen: IScreenGroupingCriteria<Task>,
+        private taskLocalStorage: ILocalStorageRegistry<Task>
     ) {}
 
-    load(): void {
-
-        this.proj.tasks.forEach((task: ITask) => {
-            this.taskRender.open(task);
-        })
-
-        this.removeBtnEventRegistry.set(this.removeBtn, (e: MouseEvent) => {
-            this.exit();
-            this.stateManager.set(this.newState);
-            this.stateManager.load();
+    load(): void {  
+        const tasks: Task[] = this.taskLocalStorage.getAll().filter(task => {
+            return task.project == this.projID;
         });
+
+        for (const task of tasks) {
+            this.taskRenderScreen.renderDataToScreen(task);
+        }
+        
     }
     exit(): void {
-        this.removeBtnEventRegistry.removeByID(this.removeBtn); //We need also a way of specifying remove a specific one or just remove the latest one for now???
-        
-        this.taskRender.close();
+        this.taskRenderScreen.removeAll();
     }
 }

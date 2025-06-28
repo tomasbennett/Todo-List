@@ -1,37 +1,80 @@
-import { ICommandCriteria, IObjectCommand } from "../../../models/CommandModel";
-import { IComponentEventListener, IComponentRemovable } from "../../../models/IComponentModels";
-import { IIDGenerator } from "../../../models/IGenerator";
-import { ILocalStorageRegistry } from "../../../models/Registry";
-import { ClickEventRegistry } from "../../../util/EventRegistry";
-import { PickRandomID } from "../../../util/IDRandomSelect";
-import { ProjectContainer, ProjectTitle } from "../components/ProjectComponents";
+import { ICommandCriteria } from "../../../models/CommandModel";
+import { IComponentRemovable } from "../../../models/IComponentModels";
+import { IIDRandomSelect, ISymbolIDGenerator } from "../../../models/IGenerator";
+import { IScreenGroupingCriteria } from "../../../models/OpenCloseModel";
+import { IPageMediator } from "../../../models/PageMediator";
+import { IState, IStateManager } from "../../../models/PageState";
+import { IClickEventRegistry, ILocalStorageRegistry } from "../../../models/Registry";
+import { ProjectContainer, ProjectRemoveBtn, ProjectTitle } from "../components/ProjectComponents";
+import { projContainer } from "../components/ProjectContainer";
 import { IProject } from "../models/ProjectsModel";
-import { AllSymbolID } from "../util/AllSymbolIDs";
+import { ProjectGenericState } from "../states/ProjectGenericState";
 
-export class ProjectHTMLCreator implements ICommandCriteria<IProject> {
+export class ProjectHTMLCreator<Task extends { id: number, project: number }> implements ICommandCriteria<IProject> {
 
     constructor(
-        private localStorage: ILocalStorageRegistry<IProject>
+        private allSymbolID: ISymbolIDGenerator,
+        private idRandomSelect: IIDRandomSelect, //For building containers we have one instance of these
+
+        private pageClickEventRegistry: IClickEventRegistry, // For setting the click events of a new page we set some of these
+
+        private projRemovalCommand: ICommandCriteria<IComponentRemovable<void>>,
+        private pageStateManager: IStateManager,
+        private pageMediator: IPageMediator,
+        private defaultPage: HTMLElement,
+
+        private taskRenderScreen: IScreenGroupingCriteria<Task>,
+        private taskLocalStorage: ILocalStorageRegistry<Task>
     ) {}
 
     execute(criteria: IProject): void {
         const projHTMLTitle: IComponentRemovable<string> = new ProjectTitle();
         projHTMLTitle.setValue(criteria["title"]);
 
-
-
-        const projHTMLContainer: IComponentEventListener<void> = new ProjectContainer(
+        const projHTMLContainer: IComponentRemovable<void> = new ProjectContainer(
                                                                                         projHTMLTitle,
-                                                                                        new AllSymbolID(), 
-                                                                                        new PickRandomID(), 
-                                                                                        new ClickEventRegistry(
-                                                                                                                new Map<HTMLElement, Array<(e: MouseEvent) => void>>()
-                                                                                                               ),
-                                                                                        criteria.id,
-                                                                                        this.localStorage
-                                                                                        );
+                                                                                        this.allSymbolID, //This one can be passed through the constructor
+                                                                                        this.idRandomSelect,
+                                                                                        criteria.id
+                                                                                    );
 
-        projHTMLContainer.addListener();
-        projHTMLContainer.render(document.querySelector("#aside-projects-list-container > .sidebar-inner-container")!);
+
+        const projRemoveBtn: IComponentRemovable<string> = new ProjectRemoveBtn();
+        projRemoveBtn.setValue("X");
+
+        //NEED TO SET IN THE CLICKEVENTLISTENERS FOR THE PAGES CLICKREGISTRY FOR BOTH THE REMOVE BTN AND CONTAINER, WE MIGHT NEED TO BRING THE REMOVE BTN OUT THE CONTAINER
+        //AFTER SET UP BOTH WITH THEIR OWN COMMANDS
+
+        const newProjState: IState = new ProjectGenericState<Task>(
+            criteria.id,
+            this.taskRenderScreen,
+            this.taskLocalStorage
+        );
+
+
+        this.pageMediator.setLivePages(
+            new Map<HTMLElement, IState>([
+                [projHTMLContainer.getHTML(), newProjState]
+            ])
+        ); //This does the change page event logic 
+
+        // this.pageClickEventRegistry.set(projHTMLContainer.getHTML(), (e: MouseEvent) => {
+        //     this.pageMediator.changePage(e.target as HTMLElement);
+
+        // });
+        
+        this.pageClickEventRegistry.set(projRemoveBtn.getHTML(), (e: MouseEvent) => {
+            if (this.pageStateManager.getState() === newProjState) {
+                this.pageMediator.changePage(this.defaultPage);
+
+            }
+            this.projRemovalCommand.execute(projHTMLContainer);
+
+            this.pageClickEventRegistry.removeByID(projRemoveBtn.getHTML());
+
+        });
+        
+        projRemoveBtn.render(projHTMLContainer.getHTML())
+        projHTMLContainer.render(projContainer);
     }
 }

@@ -1,16 +1,16 @@
 import { IState } from "../../../models/PageState";
-import { ITask } from "../models/TaskModels";
+import { ITaskFormScreen } from "../models/TaskScreen";
 
 
-export class TaskFormState implements IState<ITask> {
+export class TaskFormState implements IState {
     constructor(
-        private form: HTMLFormElement
+        private taskFormScreen: ITaskFormScreen
     ) {}
 
     load(): void {
-        this.form.style.display = "flex";
+        this.taskFormScreen.renderDataToScreen({});
     }
     exit(): void {
-        this.form.style.display = "none";
+        this.taskFormScreen.removeAll();
     }
 }

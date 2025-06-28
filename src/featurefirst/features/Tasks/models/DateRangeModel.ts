@@ -1,3 +1,5 @@
+import { IDateRange } from "./DateRangeScreen";
+
 export interface IDateRangeCheck {
-    isBetween(date: Date): boolean;
+    isBetween(date: Date, dateRange: IDateRange): boolean;
 }

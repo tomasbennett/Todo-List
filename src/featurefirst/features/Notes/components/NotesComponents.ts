@@ -48,26 +48,13 @@ export class NoteDesc implements IComponentRemovable<string> {
 }
 
 
-export class NoteRemoveBtn implements IComponentEventRemovable<string, [number]> {
+export class NoteRemoveBtn implements IComponentRemovable<string> {
     private noteRemoveBtn: HTMLButtonElement;
     
-    constructor(
-        private eventRegistry: IClickEventRegistry,
-        private removeCommand: ICommandCriteria<HTMLElement>,
-        private noteSidebarContainer: HTMLElement
-    ) {
+    constructor() {
         this.noteRemoveBtn = document.createElement("button");
         this.noteRemoveBtn.type = "button";
         this.noteRemoveBtn.classList.add("note-del-btn");
-    }
-    addListener(): void {
-        this.eventRegistry.set(this.noteRemoveBtn, (e: MouseEvent) => {
-            e.preventDefault();
-            this.removeCommand.execute(this.noteSidebarContainer);
-        });
-    }
-    removeListener(): void {
-        this.eventRegistry.removeByID(this.noteRemoveBtn);
     }
     
     remove(): void {
@@ -99,7 +86,7 @@ export class NoteContainer implements IComponentRemovable<void> {
     constructor(
         private noteTitle: IComponentRemovable<string>,
         private noteBody: IComponentRemovable<string>,
-        private noteRemoveBtn: IComponentEventRemovable<string, [number]>
+        private noteRemoveBtn: IComponentRemovable<string>
 
     ) {
         this.innerContainer = document.createElement("div");

@@ -1,17 +1,16 @@
-import { ICommand } from "../../../models/CommandModel";
 import { IComponentEventRemovable, IComponentRemovable } from "../../../models/IComponentModels";
-import { IOpenClose } from "../../../models/OpenCloseModel";
 import { IClickEventRegistry, IScreenComponentRegistry } from "../../../models/Registry";
 import { InputCompletedTask, EditTask, DeleteTask, TaskContainer } from "../components/StorageTasks";
 import { ITask } from "../models/TaskModels";
+import { ITaskScreen } from "../models/TaskScreen";
 
 
-export class RenderTasks implements IOpenClose<ITask> {
+export class RenderTasks implements ITaskScreen {
     constructor(  
                 private screenEvents: IClickEventRegistry,
                 private screenRegistry: IScreenComponentRegistry
     ) {}
-    open(data?: { id: number; title: string; body: string; date: Date; priority: "low" | "medium" | "high"; project: string; completed: boolean; } | undefined): void {
+    renderDataToScreen(data: { id: number; title: string; body: string; date: Date; priority: "low" | "medium" | "high"; project: number; completed: boolean; }): void {
         const inputCheckBox: IComponentEventRemovable<boolean> = new InputCompletedTask(this.screenEvents);
         inputCheckBox.setValue(data?.completed ?? false);
         inputCheckBox.addListener();
@@ -29,7 +28,7 @@ export class RenderTasks implements IOpenClose<ITask> {
         
         taskContainer.render(document.getElementById("home-content-container")!);
     }
-    close(): void {
+    removeAll(): void {
         this.screenEvents.removeAll();
         this.screenRegistry.removeAll();
     }

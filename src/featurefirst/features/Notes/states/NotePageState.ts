@@ -1,16 +1,13 @@
 import { IOpenClose } from "../../../models/OpenCloseModel";
 import { IState } from "../../../models/PageState";
-import { INote, NoteSchema } from "../models/NotesModel";
 
-export class NoteDynamicPage implements IState<INote> {
+
+export class NoteDynamicPage implements IState {
     constructor(
-        private notesRender: IOpenClose<INote>
+        private notesRender: IOpenClose
     ) {}
 
-    load(note: INote): void {
-        if (NoteSchema.safeParse(note)) {
-            this.notesRender.open(note);
-        }
+    load(): void {
         
 
     }

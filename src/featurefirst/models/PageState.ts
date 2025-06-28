@@ -5,6 +5,19 @@ export interface IState {
 }
 
 
+export interface IStateCriteria<LoadInData extends { id: number }> {
+    load(data: LoadInData): void;
+
+    exit(): void;
+}
+
+
 export interface IStateManager extends IState {
     set(newState: IState): void;
+
+    getState(): IState;
+}
+
+export interface IStateManagerCriteria<LoadInData extends { id: number }> extends IStateCriteria<LoadInData> {
+    set(newState: IStateCriteria<LoadInData>): void;
 }

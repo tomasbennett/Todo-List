@@ -26,7 +26,32 @@ export class ProjectTitle implements IComponentRemovable<string> {
 }
 
 
-export class ProjectContainer implements IComponentEventRemovable<void> {
+export class ProjectRemoveBtn implements IComponentRemovable<string> {
+    private removeButton: HTMLElement;
+
+    constructor() {
+        this.removeButton = document.createElement("div");
+        this.removeButton.classList.add("remove-sidebar-option");
+    }
+
+    remove(): void {
+        this.removeButton.remove();
+    }
+    render(container: HTMLElement): void {
+        container.appendChild(this.removeButton);
+    }
+    setValue(value: string): void {
+        this.removeButton.textContent = value;
+    }
+    getHTML(): HTMLElement {
+        return this.removeButton;
+    }
+
+}
+
+
+
+export class ProjectContainer implements IComponentRemovable<void> {
     private innerContainer: HTMLElement;
 
     private svgContainer: HTMLElement;
@@ -34,16 +59,14 @@ export class ProjectContainer implements IComponentEventRemovable<void> {
     private svgUsePath: SVGUseElement;
 
     private notificationNumber: HTMLElement;
-    private removeButton: HTMLElement;
+    
     
     constructor(
         private projectTitle: IComponentRemovable<string>,
         private allSymbols: ISymbolIDGenerator,
         private pickRandomly: IIDRandomSelect,
-        private eventsRegistry: IClickEventRegistry,
 
-        private projID: number,
-        private localStorage: ILocalStorageRegistry<IProject>
+        private projID: number
     ) {
         this.innerContainer = document.createElement("div");
         this.innerContainer.classList.add("sidebar-option");
@@ -67,9 +90,7 @@ export class ProjectContainer implements IComponentEventRemovable<void> {
         this.notificationNumber.classList.add("sidebar-notification-number-container");
         this.notificationNumber.setAttribute("data-notification", "inactive");
 
-        this.removeButton = document.createElement("div");
-        this.removeButton.classList.add("remove-sidebar-option");
-        this.removeButton.textContent = "X";
+        
     }
     
     remove(): void {
@@ -82,7 +103,7 @@ export class ProjectContainer implements IComponentEventRemovable<void> {
 
         this.projectTitle.render(this.innerContainer);
         this.innerContainer.appendChild(this.notificationNumber);
-        this.innerContainer.appendChild(this.removeButton);
+        
 
         container.appendChild(this.innerContainer);
     }
@@ -91,37 +112,5 @@ export class ProjectContainer implements IComponentEventRemovable<void> {
     }
     getHTML(): HTMLElement {
         return this.innerContainer;
-    }
-    addListener(): void {
-        this.eventsRegistry.set(this.innerContainer, () => {
-
-
-
-        });
-        this.eventsRegistry.set(this.removeButton, (e: MouseEvent) => {
-            e.stopPropagation();
-
-            const project: IProject = this.localStorage.getByID(this.projID);
-
-            //Creating an observer when you enter the project 
-            //Please remove my html content from the screen
-            //Remove my IProject element from the Projects and go through each of the tasks that belong to me and set them to --default--
-            //Finally if the screenState is set to me, i.e. when we create a new screenState through the event listener above,
-            //We will add to this observer of ours a specific command that will take the screenState from way up above and .exit()
-            //Then it will finally .load() HOMESCREEN
-
-            //Actual DOING:
-            //DELETING PROJECT:
-            //IN ALL CASES THIS.REMOVELISTENER();
-            //IN ALL CASES THIS.REMOVE();
-            //IN THE CASE OF THE OBSERVER WE NEED TO PLUG IN observer: IObserver
-            //observer.execute() WILL REGULAR this.currentState.exit
-            //Meaning we should probably make the command take a pageStateManager
-
-        });
-    }
-    removeListener(): void {
-        this.eventsRegistry.removeByID(this.innerContainer);
-        this.eventsRegistry.removeByID(this.removeButton);
     }
 }

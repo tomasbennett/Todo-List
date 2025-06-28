@@ -1,14 +1,15 @@
-export interface IOpenClose<T> {
-    open(data?: T): void;
+export interface IOpenClose {
+    open(): void;
 
     close(): void;
 }
 
 
-export type IIDOpenClose<T extends { id: number }> = IOpenClose<T>;
+export type IIDOpenClose = IOpenClose;
 
 
-export interface IScreenGroupingCriteria<ScreenDataType extends { id: number }> {
+
+export interface IScreenGroupingCriteria<ScreenDataType> {
     renderDataToScreen(data: ScreenDataType): void;
 
     removeAll(): void;

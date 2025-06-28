@@ -1,13 +1,14 @@
 import { ICommandCriteria, ISubmitCommand } from "../../../models/CommandModel";
-import { IComponentEventRemovable, IComponentRemovable } from "../../../models/IComponentModels";
 import { IIDGenerator } from "../../../models/IGenerator";
+import { ILocalStorageRegistry } from "../../../models/Registry";
 import { IProject, ProjectSchema } from "../models/ProjectsModel";
 
 export class ProjectSubmitCommand implements ISubmitCommand {
 
     constructor(
         private projIDGenerator: IIDGenerator,
-        private projHTMLCreator: ICommandCriteria<IProject>
+        private projHTMLCreator: ICommandCriteria<IProject>,
+        private projLocalStorage: ILocalStorageRegistry<IProject>
     ) {
 
     }
@@ -20,10 +21,9 @@ export class ProjectSubmitCommand implements ISubmitCommand {
         obj["id"] = this.projIDGenerator.generate();
         obj["title"] = projTitleInput.value;
 
-        if (ProjectSchema.safeParse(obj)) {
+        if (ProjectSchema.safeParse(obj).success) {
+            this.projLocalStorage.set(obj["id"] as number, obj as IProject);
             this.projHTMLCreator.execute(obj as IProject);
         }
-
-
     }
 }

@@ -1,5 +1,29 @@
 import { IChangeEventRegistry, IClickEventRegistry, IEventRegistry, ISubmitEventRegistry } from "../models/Registry";
 
+
+export class PageEventRegistry implements IClickEventRegistry {
+    constructor(private map: Map<HTMLElement, (e: MouseEvent) => void>) {}
+
+    set(key: HTMLElement, val: (e: MouseEvent) => void): void {
+        this.map.set(key, val);
+    }
+    getByID(key: HTMLElement): (e: MouseEvent) => void {
+        return this.map.get(key)!;
+    }
+    getAll(): ((e: MouseEvent) => void)[] {
+        return Array.from(this.map.values());
+    }
+    removeByID(key: HTMLElement): void {
+        this.map.delete(key);
+    }
+    removeAll(): void {
+        for (const key of this.map.keys()) {
+            this.removeByID(key);
+        }
+    }
+}
+
+
 export class ClickEventRegistry implements IClickEventRegistry {
     constructor(private map: Map<HTMLElement, (e: MouseEvent) => void>) {}
 

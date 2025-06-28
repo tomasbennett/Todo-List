@@ -4,30 +4,27 @@ import { IClickEventRegistry, ISubmitEventRegistry } from "../../../models/Regis
 import { IProject } from "../models/ProjectsModel";
 
 
-export class ProjectsFormState implements IState<IProject> {
+export class ProjectsFormState implements IState {
     constructor(
         private form: HTMLFormElement,
         // private formInputVals: ICommand, I'm going to try setting the vals in the event listeners when the dialog is called up
         //I also just realised that for projects the input values don't matter as we can't edit them so as long as they are reset when we
         //submit and when we close the dialog
-        // private projectSubmitCommand: ISubmitCommand,
-        // private eventsRegistry: ISubmitEventRegistry
+        private projectSubmitCommand: ISubmitCommand,
+        private eventsRegistry: ISubmitEventRegistry
     ) {}
 
-    load(data: IProject): void {
+    load(): void {
         this.form.style.display = "flex";
-        // this.eventsRegistry.set(this.form, (e: SubmitEvent) => 
-        //     { 
-        //         this.projectSubmitCommand.execute(e); 
-        //     }
-        // );
+        this.eventsRegistry.set(this.form, (e: SubmitEvent) => {
+            this.projectSubmitCommand.execute(e);
+        });
 
     }
     exit(): void {
         this.form.style.display = "none";
-        // this.form.reset();
+        this.form.reset();
 
-        // this.eventsRegistry.removeAll();
-
+        this.eventsRegistry.removeAll();
     }
 }

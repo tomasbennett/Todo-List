@@ -1,21 +1,20 @@
-import { ICommand } from "../../../models/CommandModel";
-import { IComponentRemovable } from "../../../models/IComponentModels";
-import { IOpenClose } from "../../../models/OpenCloseModel";
 import { IState } from "../../../models/PageState";
-import { IClickEventRegistry, IScreenComponentRegistry } from "../../../models/Registry";
-import { LocalStorage, TaskLocalStorage } from "../../../services/LocalStorage";
-import { ClickEventRegistry } from "../../../util/EventRegistry";
-import { ScreenRegistry } from "../../../util/ScreenRegistry";
+import { ILocalStorageRegistry } from "../../../models/Registry";
 import { ITask } from "../models/TaskModels";
-import { RenderTasks } from "../services/CreateTaskHTML";
+import { ITaskScreen } from "../models/TaskScreen";
 
 
 
-export class HomeState implements IState<ITask> {
+export class HomeState implements IState {
     // private screenRegistry!: IScreenComponentRegistry;
     // private eventRegistry!: IClickEventRegistry;
 
-    load(data: ITask): void {
+    constructor(
+        private screen: ITaskScreen,
+        private localStorage: ILocalStorageRegistry<ITask>,
+    ) {}
+
+    load(): void {
         // const localStorage: LocalStorage<ITask> = new TaskLocalStorage();
         // const tasks: ITask[] = localStorage.getAll();
 
@@ -27,12 +26,15 @@ export class HomeState implements IState<ITask> {
         //     taskRender.execute(); //This can be done if TaskRender wasn't an IOpenClose as I believe ITasks needs to go through load instead of through the constructor anyway???
         // }
 
-        console.log("You are in the home state again!!!");
+        for (const task of this.localStorage.getAll()) {
+            this.screen.renderDataToScreen(task);
+        }
     }
 
     exit(): void {
         // this.screenRegistry.removeAll();
         // this.eventRegistry.removeAll();
-        console.log("You have left the home state");
+        
+        this.screen.removeAll();
     }
 }
