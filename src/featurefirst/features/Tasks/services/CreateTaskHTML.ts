@@ -1,3 +1,4 @@
+import { homeContentContainer } from "../../../components/MainContainer";
 import { IComponentEventRemovable, IComponentRemovable } from "../../../models/IComponentModels";
 import { IClickEventRegistry, IScreenComponentRegistry } from "../../../models/Registry";
 import { InputCompletedTask, EditTask, DeleteTask, TaskContainer } from "../components/StorageTasks";
@@ -26,7 +27,7 @@ export class RenderTasks implements ITaskScreen {
 
         this.screenRegistry.set(taskContainer.getHTML(), taskContainer);
         
-        taskContainer.render(document.getElementById("home-content-container")!);
+        taskContainer.render(homeContentContainer);
     }
     removeAll(): void {
         this.screenEvents.removeAll();

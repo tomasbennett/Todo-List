@@ -91,8 +91,6 @@ export class NoteContainer implements IComponentRemovable<void> {
     ) {
         this.innerContainer = document.createElement("div");
         this.innerContainer.classList.add("note-container");
-
-        this.noteRemoveBtn.setValue("X");
     }
     
     remove(): void {
@@ -111,3 +109,4 @@ export class NoteContainer implements IComponentRemovable<void> {
         return this.innerContainer;
     }
 }
+

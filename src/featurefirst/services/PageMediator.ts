@@ -1,9 +1,7 @@
-import { IEventBus } from "../models/IEventBus";
 import { IPageChangeMemento } from "../models/Memento";
-import { IOpenClose } from "../models/OpenCloseModel";
 import { IPageMediator } from "../models/PageMediator";
 import { IState, IStateManager } from "../models/PageState";
-import { IClickEventRegistry, IEventRegistry, ILocalStorageRegistry } from "../models/Registry";
+import { IClickEventRegistry } from "../models/Registry";
 
 
 // export class PageMediator<T extends { id: number }> implements IPageMediator<T, "click"> {
@@ -90,9 +88,16 @@ export class PageMediator implements IPageMediator {
             //     this.pageStateManager.load();
             //     this.changePage(key);
             // }
+            const func: (e: MouseEvent) => void = this.funcDevelopment(key, val);
 
-            this.pageClickEventRegistry.set(key, (e) => {
-                this.funcDevelopment(key, val);
+            this.pageClickEventRegistry.set(key, (e: MouseEvent) => {
+                func(e);
+
+            });
+
+            key.addEventListener("click", (e: MouseEvent) => {
+                func(e);
+
             });
         }
     }
@@ -105,8 +110,10 @@ export class PageMediator implements IPageMediator {
 
         this.pageChangeMemento.changeState(newPageKey);
     }
+
     pageReset(): void {
         this.pageClickEventRegistry.removeAll();
+
     }
 
 
@@ -116,6 +123,7 @@ export class PageMediator implements IPageMediator {
             this.pageStateManager.set(val);
             this.pageStateManager.load();
             this.changePage(key);
+            
         }
 
         return func;

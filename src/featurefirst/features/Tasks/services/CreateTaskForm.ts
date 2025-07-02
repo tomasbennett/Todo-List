@@ -17,13 +17,13 @@ export class TaskForm<Proj extends { id: number, title: string }> implements ITa
 
     constructor(
         private screenElementRegistry: IScreenComponentRegistry,
-        private screenEventsRegistry: ISubmitEventRegistry,
+        private screenSubmitEventsRegistry: ISubmitEventRegistry,
         private form: HTMLFormElement,
         private taskLocalStorage: ILocalStorageRegistry<ITask>,
         
         private projLocalStorage: ILocalStorageRegistry<Proj>,
 
-        private dialogElem: IOpenClose,
+        private dialogToggle: IOpenClose,
 
         private stateManager: IStateManager,
         private dateToString: IDateToString,
@@ -55,7 +55,7 @@ export class TaskForm<Proj extends { id: number, title: string }> implements ITa
 
         this.project.value = data?.project?.toString() ?? "0"; // Need a class to help get a name from an id number
 
-        this.screenEventsRegistry.set(this.form, (e: SubmitEvent) => {
+        this.screenSubmitEventsRegistry.set(this.form, (e: SubmitEvent) => {
             e.preventDefault();
 
             const obj: Record<string, unknown> = {};
@@ -68,7 +68,7 @@ export class TaskForm<Proj extends { id: number, title: string }> implements ITa
             obj["project"] = Number(this.project.value); //If this guy is --default-- then you should set it as default but it won't pass TaskSchema you should set it to a default negative number instead
             obj["completed"] = data?.completed ?? false;
 
-            if (TaskSchema.safeParse(obj)) {
+            if (TaskSchema.safeParse(obj).success) {
                 this.taskLocalStorage.set(obj["id"] as number, obj as ITask);
                 //GOING TO NEED SOME SORT OF CURRENT SCREEN .LOAD(INSTEAD OF TAKING LOCALSTORAGE.GETALL IT ONLY TAKES THE ONE ITASK)
                 
@@ -76,7 +76,7 @@ export class TaskForm<Proj extends { id: number, title: string }> implements ITa
 
                 this.removeAll();
 
-                this.dialogElem.close();
+                this.dialogToggle.close();
 
                 this.stateManager.exit();
                 this.stateManager.load();
@@ -99,7 +99,7 @@ export class TaskForm<Proj extends { id: number, title: string }> implements ITa
         
         // this.screenElementRegistry.removeAll()
         this.screenElementRegistry.removeAll();
-        this.screenEventsRegistry.removeAll();
+        this.screenSubmitEventsRegistry.removeAll();
     }
 
 }

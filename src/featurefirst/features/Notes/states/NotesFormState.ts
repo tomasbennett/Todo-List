@@ -1,3 +1,7 @@
+import { ISubmitCommand } from "../../../models/CommandModel";
+import { IState } from "../../../models/PageState";
+import { ISubmitEventRegistry } from "../../../models/Registry";
+
 // import { ICommand, ICommandCriteria } from "../../../models/CommandModel";
 // import { IComponentRemovable } from "../../../models/IComponentModels";
 // import { IIDGenerator } from "../../../models/IGenerator";
@@ -9,6 +13,7 @@
 // import { INote } from "../models/NotesModel";
 // import { NotesRender } from "../services/NotesRender";
 // import { NoteDynamicPage } from "./NotePageState";
+
 
 
 // export class NotesFormState implements IState<INote> {
@@ -59,3 +64,32 @@
 //         this.eventRegistry.removeByID(this.form);
 //     }
 // }
+
+
+export class NotesFormState implements IState {
+
+    constructor(
+        private form: HTMLFormElement,
+        
+        private noteSubmitCommand: ISubmitCommand,
+        private eventsRegistry: ISubmitEventRegistry
+    ) {}
+
+    load(): void {
+
+        this.form.style.display = "flex";
+
+        this.eventsRegistry.set(this.form, (e: SubmitEvent) => {
+            this.noteSubmitCommand.execute(e);
+
+        });
+    }
+    exit(): void {
+
+        this.form.style.display = "none";
+        this.form.reset();
+
+        this.eventsRegistry.removeAll();
+    }
+
+}

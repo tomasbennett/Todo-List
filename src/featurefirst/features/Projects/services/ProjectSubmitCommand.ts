@@ -14,16 +14,19 @@ export class ProjectSubmitCommand implements ISubmitCommand {
     }
 
     execute(criteria: SubmitEvent): void {
+
         const form: HTMLFormElement = criteria.target as HTMLFormElement;
         const projTitleInput: HTMLInputElement = form.querySelector("input[name='title']") as HTMLInputElement;
 
         const obj: Record<string, unknown> = {};
+        
         obj["id"] = this.projIDGenerator.generate();
         obj["title"] = projTitleInput.value;
 
         if (ProjectSchema.safeParse(obj).success) {
             this.projLocalStorage.set(obj["id"] as number, obj as IProject);
             this.projHTMLCreator.execute(obj as IProject);
+
         }
     }
 }

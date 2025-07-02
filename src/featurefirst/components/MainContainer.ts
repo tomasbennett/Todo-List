@@ -1,0 +1,1 @@
+export const homeContentContainer: HTMLElement = document.getElementById("home-content-container")!;

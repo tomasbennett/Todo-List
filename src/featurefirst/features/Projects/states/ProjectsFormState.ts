@@ -1,10 +1,10 @@
-import { ICommand, ISubmitCommand } from "../../../models/CommandModel";
+import { ISubmitCommand } from "../../../models/CommandModel";
 import { IState } from "../../../models/PageState";
-import { IClickEventRegistry, ISubmitEventRegistry } from "../../../models/Registry";
-import { IProject } from "../models/ProjectsModel";
+import { ISubmitEventRegistry } from "../../../models/Registry";
 
 
 export class ProjectsFormState implements IState {
+
     constructor(
         private form: HTMLFormElement,
         // private formInputVals: ICommand, I'm going to try setting the vals in the event listeners when the dialog is called up
@@ -18,9 +18,11 @@ export class ProjectsFormState implements IState {
         this.form.style.display = "flex";
         this.eventsRegistry.set(this.form, (e: SubmitEvent) => {
             this.projectSubmitCommand.execute(e);
+
         });
 
     }
+
     exit(): void {
         this.form.style.display = "none";
         this.form.reset();
