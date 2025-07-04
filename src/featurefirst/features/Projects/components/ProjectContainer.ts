@@ -1,0 +1,1 @@
+export const projContainer: HTMLElement = document.querySelector("#aside-projects-list-container > .sidebar-inner-container")!;

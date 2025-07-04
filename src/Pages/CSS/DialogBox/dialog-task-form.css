@@ -11,6 +11,7 @@ div#dialog-task-state{
     grid-template-areas: "subject subject"
                          "description description"
                          "due-date ."
+                         "project ."
                          "priority submit";
 
     row-gap: 1rem;
@@ -117,6 +118,13 @@ div#task-body-text-container label{
 div#task-due-date-container{
     grid-area: due-date;
 }
+
+
+div#task-project-container{
+    grid-area: project;
+}
+
+
 
 
 

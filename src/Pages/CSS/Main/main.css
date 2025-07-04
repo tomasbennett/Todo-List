@@ -41,6 +41,8 @@ div#home-content-container{
 
     row-gap: 2rem;
 
+    padding-bottom: 1.5rem;
+
     max-height: 100%;
     max-width: 100%;
 
@@ -90,15 +92,15 @@ div.task-entry-container:hover{
 
 
 
-div.task-entry-container[data-importance="low-importance"]{
+div.task-entry-container[data-importance="low"]{
     border-left-color: green;
 }
 
-div.task-entry-container[data-importance="medium-importance"]{
+div.task-entry-container[data-importance="medium"]{
     border-left-color: rgb(221, 221, 0);
 }
 
-div.task-entry-container[data-importance="high-importance"]{
+div.task-entry-container[data-importance="high"]{
     border-left-color: red;
 }
 
@@ -190,6 +192,9 @@ div.task-del-svg-container svg{
 
     object-fit: cover;
 
+    fill-rule:evenodd;
+    clip-rule:evenodd;
+
     fill: var(--dark-grey);
 
     transition: fill 300ms linear;
@@ -203,3 +208,70 @@ div.task-edit-svg-container svg:hover{
 div.task-del-svg-container svg:hover{
     fill: rgb(253, 52, 52);
 }
+
+
+div.note-container{
+    position: relative;
+
+    flex-shrink: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    row-gap: .8rem;
+
+    height: max-content;
+    width: 50%;
+
+    padding: 1rem 0;
+
+    border-radius: .3rem;
+
+    box-shadow: .5rem .5rem 1rem rgba(128, 128, 128, 0.5);
+
+    background-color: rgb(255, 255, 100);
+}
+
+div.note-container .note-title{
+    padding: 0 .8rem;
+
+    font-size: 1.6rem;
+    font-style: italic;
+    font-weight: bold;
+}
+
+div.note-container .note-body{
+    padding: 0 1.8rem;
+}
+
+div.note-container button.note-del-btn{
+    position: absolute;
+
+    background-color: inherit;
+
+    font-size: 2.2rem;
+    font-weight: bold;
+
+    top: 2%;
+    right: 3%;
+
+
+    color: grey;
+
+    cursor: pointer;
+}
+
+div.note-container button.note-del-btn:hover{
+    color: red;
+}
+
+
+
+/* #date-range-specifier{
+    display: flex;
+    flex-direction: column;
+
+    width: min-content;
+} */

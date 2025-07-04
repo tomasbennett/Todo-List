@@ -1,0 +1,1 @@
+export const mainTitle: HTMLElement = document.getElementById("main-title")!;

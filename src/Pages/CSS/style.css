@@ -38,3 +38,9 @@ body{
     width: 100dvw;
     height: 100dvh;
 }
+
+
+[data-page="selected"],
+[data-page="selected"]{
+    background-color: rgba(32, 147, 255, 0.3) !important;
+}

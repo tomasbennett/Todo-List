@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const { default: test } = require("node:test");
 const { type } = require("os");
+// const { optional } = require("zod");
 
 
 const config = {
@@ -40,12 +41,17 @@ const config = {
                     filename: "fonts/[name][hash].[ext]"
                 }
             },
+
             {
                 test: /\.tsx?$/i,
-                loader: "ts-loader",
-                options: {
-                    onlyCompileBundledFiles: true
-                }
+                use: {
+                    loader: "ts-loader",
+                    options: {
+                        onlyCompileBundledFiles: true
+                    }
+
+                },
+                exclude: /node_modules/
             }
             ,{
                 test: /\.css$/i,
@@ -76,11 +82,16 @@ const config = {
                     }
                 }
             }
+            ,{
+                test: /\.mjs$/,
+                include: /node_modules/,
+                type: "javascript/auto",
+            },
         ]
     }
 
     ,resolve: {
-        extensions: [".js", ".css", ".json", ".jsx", ".wasm", ".ts"]
+        extensions: [".mjs", ".js", ".css", ".json", ".jsx", ".wasm", ".ts"]
     }
 
     ,plugins: [

@@ -1,0 +1,1 @@
+export const noteSidebarContainer: HTMLElement = document.getElementById("notes-container")!;

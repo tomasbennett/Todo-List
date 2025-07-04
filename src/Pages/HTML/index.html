@@ -8,7 +8,7 @@
 </head>
 <body>
     
-    <svg style="display: none;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg id="project-svg-img-container" style="display: none;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
         
         <defs>
             <symbol id="folder-svg-template" viewBox="0 0 122.88 82.18">
@@ -37,7 +37,7 @@
         <aside class="maximise">
             <div id="menu-title-container">
                 <h2>Menu</h2>
-                <button type="button">
+                <button style="display: none;" type="button">
                     <<
                 </button>
             </div>
@@ -47,14 +47,14 @@
                     <h3 id="sidebar-tasks-header" class="sidebar-list-header">Tasks</h3>
                     
                     <div class="sidebar-inner-container">
-                        <div id="home-option" class="sidebar-option">
+                        <div data-page="unselected" id="home-option" class="sidebar-option">
                             <div class="sidebar-svg-container">
                                 <?xml version="1.0" encoding="utf-8"?><svg height="2.5996rem" width="2.5966rem" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 112.07" style="enable-background:new 0 0 122.88 112.07" xml:space="preserve"><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;}</style><g><path class="st0" d="M61.44,0L0,60.18l14.99,7.87L61.04,19.7l46.85,48.36l14.99-7.87L61.44,0L61.44,0z M18.26,69.63L18.26,69.63 L61.5,26.38l43.11,43.25h0v0v42.43H73.12V82.09H49.49v29.97H18.26V69.63L18.26,69.63L18.26,69.63z"/></g></svg>
                             </div>
                             <p class="sidebar-option-title">Home</p>
                             <div class="sidebar-notification-number-container" data-notification="active">12</div>
                         </div>
-                        <div id="upcoming-option" class="sidebar-option">
+                        <div data-page="unselected" id="upcoming-option" class="sidebar-option">
                             <div class="sidebar-svg-container">
                                 <?xml version="1.0" encoding="utf-8"?>
                                 <svg height="2.5996rem" width="2.5966rem" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 102.85 122.88" style="enable-background:new 0 0 102.85 122.88" xml:space="preserve">
@@ -67,7 +67,7 @@
                             <p class="sidebar-option-title">Upcoming</p>
                             <div class="sidebar-notification-number-container" data-notification="inactive"></div>
                         </div>
-                        <div id="calendar-option" class="sidebar-option">
+                        <div data-page="unselected" id="calendar-option" class="sidebar-option">
                             <div class="sidebar-svg-container">
                                 <?xml version="1.0" encoding="utf-8"?>
                                 <svg height="2.5996rem" width="2.5966rem" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 122.88" style="enable-background:new 0 0 122.88 122.88" xml:space="preserve">
@@ -89,7 +89,7 @@
                     <h3 id="sidebar-projects-header" class="sidebar-list-header">Projects</h3>
                     
                     <div class="sidebar-inner-container">
-                        <div id="personal-option" class="sidebar-option">
+                        <!-- <div data-page="unselected" id="personal-option" class="sidebar-option">
                             <div class="sidebar-svg-container">
                                 <svg>
                                     <use href="#folder-svg-template" x="0" y="0" />
@@ -97,8 +97,9 @@
                             </div>
                             <p class="sidebar-option-title">Personal</p>
                             <div class="sidebar-notification-number-container" data-notification="inactive"></div>
+                            <div class="remove-sidebar-option">X</div>
                         </div>
-                        <div id="study-option" class="sidebar-option">
+                        <div data-page="unselected" id="study-option" class="sidebar-option">
                             <div class="sidebar-svg-container">
                                 <svg>
                                     <use href="#book-svg-template" x="0" y="0" />
@@ -106,8 +107,9 @@
                             </div>
                             <p class="sidebar-option-title">Studies</p>
                             <div class="sidebar-notification-number-container" data-notification="inactive"></div>
+                            <div class="remove-sidebar-option">X</div>
                         </div>
-                        <div id="list-one-option" class="sidebar-option">
+                        <div data-page="unselected" id="list-one-option" class="sidebar-option">
                             <div class="sidebar-svg-container">
                                 <svg>
                                     <use href="#social-svg-template" x="0" y="0" />
@@ -115,7 +117,8 @@
                             </div>
                             <p class="sidebar-option-title">List 1</p>
                             <div class="sidebar-notification-number-container" data-notification="inactive"></div>
-                        </div>
+                            <div class="remove-sidebar-option">X</div>
+                        </div> -->
 
                         
 
@@ -138,12 +141,12 @@
 
                         <div id="notes-container">
 
-                            <button type="button" class="sidebar-notes-button">
+                            <!-- <button data-page="unselected" type="button" class="sidebar-notes-button">
                                 Note 1
                             </button>
-                            <button type="button" class="sidebar-notes-button">
+                            <button data-page="unselected" type="button" class="sidebar-notes-button">
                                 Note 2
-                            </button>
+                            </button> -->
                             
 
                         </div>
@@ -164,14 +167,15 @@
             <h1 id="main-title">Home</h1>
             
             <div style="display: none;" id="date-range-specifier">
-                <div id="from-date-container" class="date-specifier-container">
+                
+                <!-- <div id="from-date-container" class="date-specifier-container">
                     <label for="from-date-input">From:</label>
                     <input type="date" name="from-date-input" id="from-date-input">
                 </div>                
                 <div id="to-date-container" class="date-specifier-container">
                     <label for="to-date-input">To:</label>
                     <input type="date" name="to-date-input" id="to-date-input">
-                </div>   
+                </div>    -->
                 
             </div>
 
@@ -179,7 +183,7 @@
 
             <div id="main-content">
                 <div id="home-content-container" class="content-container">
-                    <div class="task-entry-container" data-importance="low-importance">
+                    <!-- <div class="task-entry-container" data-importance="low">
                         
                         <label>
                             <input type="checkbox">
@@ -192,7 +196,7 @@
                         <div class="task-del-svg-container"></div>
                     
                     </div>
-                    <div class="task-entry-container" data-importance="low-importance">
+                    <div class="task-entry-container" data-importance="low">
                         
                         <label>
                             <input type="checkbox">
@@ -202,14 +206,22 @@
                         <p class="task-entry-description">Spend your time today and tomorrow hopefully typing up this todo list using default webpack templates</p>
                         <p class="due-date">10th May</p>
                         <div class="task-edit-svg-container">
-                            <?xml version="1.0" encoding="utf-8"?><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 122.88 122.88" style="enable-background:new 0 0 122.88 122.88" xml:space="preserve"><style type="text/css">.st0{fill-rule:evenodd;clip-rule:evenodd;}</style><g><path class="st0" d="M14.1,0h94.67c7.76,0,14.1,6.35,14.1,14.1v94.67c0,7.75-6.35,14.1-14.1,14.1H14.1c-7.75,0-14.1-6.34-14.1-14.1 V14.1C0,6.34,6.34,0,14.1,0L14.1,0z M81.35,28.38L94.1,41.14c1.68,1.68,1.68,4.44,0,6.11l-7.06,7.06L68.17,35.44l7.06-7.06 C76.91,26.7,79.66,26.7,81.35,28.38L81.35,28.38z M52.34,88.98c-5.1,1.58-10.21,3.15-15.32,4.74c-12.01,3.71-11.95,6.18-8.68-5.37 l5.16-18.2l0,0l-0.02-0.02L64.6,39.01l18.87,18.87l-31.1,31.11L52.34,88.98L52.34,88.98z M36.73,73.36l12.39,12.39 c-3.35,1.03-6.71,2.06-10.07,3.11c-7.88,2.42-7.84,4.05-5.7-3.54L36.73,73.36L36.73,73.36z"/></g></svg>
+                            
+                            <svg viewBox="0 0 122.88 122.88">
+                                <g>
+                                    <path d="M14.1,0h94.67c7.76,0,14.1,6.35,14.1,14.1v94.67c0,7.75-6.35,14.1-14.1,14.1H14.1c-7.75,0-14.1-6.34-14.1-14.1 V14.1C0,6.34,6.34,0,14.1,0L14.1,0z M81.35,28.38L94.1,41.14c1.68,1.68,1.68,4.44,0,6.11l-7.06,7.06L68.17,35.44l7.06-7.06 C76.91,26.7,79.66,26.7,81.35,28.38L81.35,28.38z M52.34,88.98c-5.1,1.58-10.21,3.15-15.32,4.74c-12.01,3.71-11.95,6.18-8.68-5.37 l5.16-18.2l0,0l-0.02-0.02L64.6,39.01l18.87,18.87l-31.1,31.11L52.34,88.98L52.34,88.98z M36.73,73.36l12.39,12.39 c-3.35,1.03-6.71,2.06-10.07,3.11c-7.88,2.42-7.84,4.05-5.7-3.54L36.73,73.36L36.73,73.36z"/>
+                                </g>
+                            </svg>
+                            
                         </div>
                         <div class="task-del-svg-container">
-                            <?xml version="1.0" encoding="utf-8"?><svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="109.484px" height="122.88px" viewBox="0 0 109.484 122.88" enable-background="new 0 0 109.484 122.88" xml:space="preserve"><g><path fill-rule="evenodd" clip-rule="evenodd" d="M2.347,9.633h38.297V3.76c0-2.068,1.689-3.76,3.76-3.76h21.144 c2.07,0,3.76,1.691,3.76,3.76v5.874h37.83c1.293,0,2.347,1.057,2.347,2.349v11.514H0V11.982C0,10.69,1.055,9.633,2.347,9.633 L2.347,9.633z M8.69,29.605h92.921c1.937,0,3.696,1.599,3.521,3.524l-7.864,86.229c-0.174,1.926-1.59,3.521-3.523,3.521h-77.3 c-1.934,0-3.352-1.592-3.524-3.521L5.166,33.129C4.994,31.197,6.751,29.605,8.69,29.605L8.69,29.605z M69.077,42.998h9.866v65.314 h-9.866V42.998L69.077,42.998z M30.072,42.998h9.867v65.314h-9.867V42.998L30.072,42.998z M49.572,42.998h9.869v65.314h-9.869 V42.998L49.572,42.998z"/></g></svg>
+                            <?xml version="1.0" encoding="utf-8"?>
+                                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="109.484px" height="122.88px" viewBox="0 0 109.484 122.88" enable-background="new 0 0 109.484 122.88" xml:space="preserve"><g><path fill-rule="evenodd" clip-rule="evenodd" d="M2.347,9.633h38.297V3.76c0-2.068,1.689-3.76,3.76-3.76h21.144 c2.07,0,3.76,1.691,3.76,3.76v5.874h37.83c1.293,0,2.347,1.057,2.347,2.349v11.514H0V11.982C0,10.69,1.055,9.633,2.347,9.633 L2.347,9.633z M8.69,29.605h92.921c1.937,0,3.696,1.599,3.521,3.524l-7.864,86.229c-0.174,1.926-1.59,3.521-3.523,3.521h-77.3 c-1.934,0-3.352-1.592-3.524-3.521L5.166,33.129C4.994,31.197,6.751,29.605,8.69,29.605L8.69,29.605z M69.077,42.998h9.866v65.314 h-9.866V42.998L69.077,42.998z M30.072,42.998h9.867v65.314h-9.867V42.998L30.072,42.998z M49.572,42.998h9.869v65.314h-9.869 V42.998L49.572,42.998z"/></g>
+                                </svg>
                         </div>
                     
                     </div>
-                    <div class="task-entry-container" data-importance="medium-importance">
+                    <div class="task-entry-container" data-importance="medium">
                         
                         <label>
                             <input type="checkbox">
@@ -222,7 +234,7 @@
                         <div class="task-del-svg-container"></div>
                     
                     </div>
-                    <div class="task-entry-container" data-importance="low-importance">
+                    <div class="task-entry-container" data-importance="low">
                         
                         <label>
                             <input type="checkbox">
@@ -235,7 +247,7 @@
                         <div class="task-del-svg-container"></div>
                     
                     </div>
-                    <div class="task-entry-container" data-importance="high-importance">
+                    <div class="task-entry-container" data-importance="high">
                         
                         <label>
                             <input type="checkbox">
@@ -247,7 +259,28 @@
                         <div class="task-edit-svg-container"></div>
                         <div class="task-del-svg-container"></div>
                     
+                    </div> -->
+
+
+
+
+                    <!-- <div class="note-container">
+                        <button type="button" class="note-del-btn">X</button>
+                        <div class="note-title">Example Title 1.0</div>
+                        <div class="note-body">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non obcaecati expedita laboriosam mollitia eveniet neque?</div>
                     </div>
+                    <div class="note-container">
+                        <button type="button" class="note-del-btn">X</button>
+                        <div class="note-title">Example Title 2.0.0</div>
+                        <div class="note-body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium doloribus quisquam aliquid ab reprehenderit. Blanditiis fuga rerum incidunt et ipsa odit perspiciatis animi, quisquam nulla modi cum reprehenderit aspernatur. At natus quas ea aperiam voluptatibus impedit, aliquid voluptate repudiandae nam odit ullam, minima quasi. Nostrum voluptate provident doloremque esse iste?</div>
+                    </div>
+                    <div class="note-container">
+                        <button type="button" class="note-del-btn">X</button>
+                        <div class="note-title">Exp</div>
+                        <div class="note-body">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Neque dolores, magni sed nulla tenetur delectus in rerum consectetur temporibus?</div>
+                    </div> -->
+
+
 
 
                 </div>
@@ -255,13 +288,8 @@
 
             </div>
         </main>
-
-
         <button type="button" id="add-button">
-            
         </button>
-
-
     </div>
     <dialog id="new-entry-dialog">
         <div id="dialog-header">
@@ -273,21 +301,24 @@
         </div>
         <div id="aside-theme-container">
             <div>
-                <p id="dialog-task-theme" class="dialog-theme-selection">Task</p>
-                <p id="dialog-project-theme" class="dialog-theme-selection">Project</p>
-                <p id="dialog-note-theme" class="dialog-theme-selection">Note</p>
+
+
+
+                <p data-page="unselected" id="dialog-task-theme" class="dialog-theme-selection">Task</p>
+                <p data-page="unselected" id="dialog-project-theme" class="dialog-theme-selection">Project</p>
+                <p data-page="unselected" id="dialog-note-theme" class="dialog-theme-selection">Note</p>
+            
+            
+            
             </div>
-
-
         </div>
         <div id="main-editor-container" data-state="task">
-            <form style="display: none;" id="form-task-state" method="dialog">
+            <form style="display: flex;" id="form-task-state" method="dialog">
                 <div id="dialog-task-state">
                     
                     <div class="task-dialog-input-container" id="task-subject-container">
                         <input value="" placeholder="Enter the subject for your task..." id="task-subject" name="title" type="text" required minlength="1">
                         <label for="task-subject"></label>
-
                     </div>
                     
 
@@ -300,6 +331,15 @@
                     <div class="task-dialog-input-container" id="task-due-date-container">
                         <label for="task-due-date">Task due-date:</label>
                         <input type="date" name="dueDate" id="task-due-date">  
+                    </div>
+
+                    <div class="task-dialog-input-container" id="task-project-container">
+                        <label for="task-project">Project:</label>
+                        <select id="task-project" name="project">
+                            <option value="0" selected>(--none--)</option>
+
+                        </select>
+                        
                     </div>
 
 
