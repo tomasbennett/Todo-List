@@ -6,6 +6,9 @@ export class NoteSidebarBtn implements IComponentRemovable<string> {
     constructor() {
         this.noteSidebarBtn = document.createElement("button");
         this.noteSidebarBtn.classList.add("sidebar-notes-button");
+        
+        this.noteSidebarBtn.setAttribute("data-page", "unselected");
+
         this.noteSidebarBtn.type = "button";
     }
     

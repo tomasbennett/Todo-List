@@ -40,7 +40,7 @@ body{
 }
 
 
-.sidebar-option.selected-sidebar,
-.dialog-theme-selection.selected-sidebar{
+.sidebar-option[data-page="selected"],
+.dialog-theme-selection[data-page="selected"]{
     background-color: rgba(32, 147, 255, 0.3);
 }

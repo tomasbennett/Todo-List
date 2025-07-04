@@ -1,4 +1,5 @@
 import { homeContentContainer } from "../../../components/MainContainer";
+import { mainTitle } from "../../../components/MainTitle";
 import { ICommandCriteria } from "../../../models/CommandModel";
 import { IComponentRemovable } from "../../../models/IComponentModels";
 import { IPageMediator } from "../../../models/PageMediator";
@@ -28,6 +29,9 @@ export class NoteDynamicPage implements IState {
     ) {}
 
     load(): void {
+
+        mainTitle.textContent = "";
+
         const note: INote = this.noteLocalStorage.getByID(this.noteID);
 
 

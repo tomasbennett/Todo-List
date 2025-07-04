@@ -70,6 +70,9 @@ export class ProjectContainer implements IComponentRemovable<void> {
     ) {
         this.innerContainer = document.createElement("div");
         this.innerContainer.classList.add("sidebar-option");
+
+        this.innerContainer.setAttribute("data-page", "unselected");
+
         this.innerContainer.setAttribute("data-project-id", this.projID.toString());
 
 

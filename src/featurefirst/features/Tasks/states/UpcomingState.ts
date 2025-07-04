@@ -1,3 +1,4 @@
+import { mainTitle } from "../../../components/MainTitle";
 import { IState } from "../../../models/PageState";
 import { IClickEventRegistry, ILocalStorageRegistry, IScreenComponentRegistry } from "../../../models/Registry";
 import { nextWeek } from "../components/SetDates";
@@ -37,6 +38,8 @@ export class UpcomingState implements IState {
         //     const taskRender: ICommand = new RenderTasks(task, this.eventRegistry, this.screenRegistry);
         //     taskRender.execute(); //This can be done if TaskRender wasn't an IOpenClose as I believe ITasks needs to go through load instead of through the constructor anyway???
         // }
+        mainTitle.textContent = "Upcoming";
+
         const dateRange: IDateRange = {
             fromDate: new Date(),
             toDate: nextWeek()

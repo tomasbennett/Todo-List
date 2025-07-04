@@ -11,7 +11,7 @@ import { ProjectHTMLCreator } from "./features/Projects/services/ProjectHTMLCrea
 import { ProjectSubmitCommand } from "./features/Projects/services/ProjectSubmitCommand";
 import { ProjectsFormState } from "./features/Projects/states/ProjectsFormState";
 import { AllSymbolID } from "./features/Projects/util/AllSymbolIDs";
-import { fourWeeksFromToday } from "./features/Tasks/components/SetDates";
+import { fourWeeksFromToday, nextWeek } from "./features/Tasks/components/SetDates";
 import { tasksCalendarBtn, tasksHomeBtn, tasksUpcomingBtn } from "./features/Tasks/components/TaskDateFilters";
 import { tasksForm, tasksFormBtn } from "./features/Tasks/components/TasksFormComponents";
 import { IDateRangeCheck } from "./features/Tasks/models/DateRangeModel";
@@ -179,6 +179,15 @@ if (existingKeys.some((key) => localStorage.getItem(key) == null)) {
             date: new Date(2012, 9, 18),
             completed: true
         },
+        {
+            id: taskIDGenerator.generate(),
+            title: "Upcoming Check",
+            body: "I have a body of text here as an example for the upcoming slot...",
+            priority: "low",
+            project: 1,
+            date: nextWeek(),
+            completed: false
+        },
     
     ]
     
@@ -305,7 +314,8 @@ const projHTMLCreation: ICommandCriteria<IProject> = new ProjectHTMLCreator(
     mainPageMediator,
     tasksHomeBtn,
     taskRenderScreen,
-    taskLocalStorage
+    taskLocalStorage,
+    projLocalStorage
 );
 
 
@@ -372,7 +382,10 @@ projLocalStorage.getAll().forEach((proj) => {
 
 const dialogAddToggle: IOpenClose = new DialogToggle(
     dialogElem,
-    cancelBtn
+    cancelBtn,
+    //ADDITIONAL LOGIC AFTER CLOSING THE DIALOG FOR THIS IS THAT WE WANT TO:
+    // SO ANY HTMLELEMENT BEING REGISTRED WITH THE PAGE SHOULD SHOW UP WITH DISPLAY FLEX
+    //LETS TRY AND MAKE THE PAGE SIMULATION OF COLOURS WORK WITH THE PAGE MEDIATOR
 );
 
 

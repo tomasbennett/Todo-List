@@ -24,7 +24,8 @@ export class ProjectHTMLCreator<Task extends { id: number, project: number }> im
         private defaultPage: HTMLElement,
 
         private taskRenderScreen: IScreenGroupingCriteria<Task>,
-        private taskLocalStorage: ILocalStorageRegistry<Task>
+        private taskLocalStorage: ILocalStorageRegistry<Task>,
+        private projLocalStorage: ILocalStorageRegistry<IProject>
     ) {}
 
     execute(criteria: IProject): void {
@@ -47,6 +48,7 @@ export class ProjectHTMLCreator<Task extends { id: number, project: number }> im
 
         const newProjState: IState = new ProjectGenericState<Task>(
             criteria.id,
+            this.projLocalStorage,
             this.taskRenderScreen,
             this.taskLocalStorage
         );
@@ -74,7 +76,7 @@ export class ProjectHTMLCreator<Task extends { id: number, project: number }> im
 
         });
         
-        projRemoveBtn.render(projHTMLContainer.getHTML())
         projHTMLContainer.render(projContainer);
+        projRemoveBtn.render(projHTMLContainer.getHTML());
     }
 }

@@ -6,12 +6,13 @@ export class DateRangeCheck implements IDateRangeCheck {
     constructor() {}
     
     isBetween(date: Date, dateRange: IDateRange): boolean {
-        return date.getDate() >= dateRange.fromDate.getDate() &&
-               date.getDate() <= dateRange.toDate.getDate(); 
+        
+        return date >= dateRange.fromDate &&
+               date <= dateRange.toDate; 
     }
 
     // isBetween(date: Date): boolean {
-    //     return date.getDate() >= this.startDate.getDate() && 
-    //            date.getDate() <= this.endDate.getDate();
+    //     return date >= this.startDate && 
+    //            date <= this.endDate;
     // }
 }

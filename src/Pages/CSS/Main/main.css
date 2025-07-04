@@ -266,3 +266,12 @@ div.note-container button.note-del-btn{
 div.note-container button.note-del-btn:hover{
     color: red;
 }
+
+
+
+/* #date-range-specifier{
+    display: flex;
+    flex-direction: column;
+
+    width: min-content;
+} */

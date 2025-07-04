@@ -1,6 +1,8 @@
+import { mainTitle } from "../../../components/MainTitle";
 import { IState } from "../../../models/PageState";
 import { ILocalStorageRegistry } from "../../../models/Registry";
 import { fourWeeksFromToday, nextWeek } from "../components/SetDates";
+import { dateSpecifierContainer } from "../components/TaskDateFilters";
 import { IDateRangeCheck } from "../models/DateRangeModel";
 import { IDateRange, IDateRangeScreen } from "../models/DateRangeScreen";
 import { ITask } from "../models/TaskModels";
@@ -71,11 +73,15 @@ export class CalendarState implements IState {
         //     fromDate: today,
         //     toDate: fourWeeksAhead
         // }
+
+        mainTitle.textContent = "Calendar";
         
         const dateRange: IDateRange = {
             fromDate: new Date(),
             toDate: fourWeeksFromToday()
         }
+
+        dateSpecifierContainer.style.display = "block";
 
         this.dateScreen.renderDataToScreen(dateRange);
 
@@ -97,6 +103,9 @@ export class CalendarState implements IState {
         // this.dateEventRegistry.removeAll();
         
         // this.taskScreen.removeAll();
+
+        dateSpecifierContainer.style.display = "none";
+
         this.dateScreen.removeAll();
 
     }

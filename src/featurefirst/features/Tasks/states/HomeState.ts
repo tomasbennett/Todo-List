@@ -1,3 +1,4 @@
+import { mainTitle } from "../../../components/MainTitle";
 import { IState } from "../../../models/PageState";
 import { ILocalStorageRegistry } from "../../../models/Registry";
 import { ITask } from "../models/TaskModels";
@@ -15,6 +16,9 @@ export class HomeState implements IState {
     ) {}
 
     load(): void {
+
+        mainTitle.textContent = "Home";
+
         // const localStorage: LocalStorage<ITask> = new TaskLocalStorage();
         // const tasks: ITask[] = localStorage.getAll();
 

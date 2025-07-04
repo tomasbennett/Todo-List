@@ -139,7 +139,7 @@ div.sidebar-option{
 }
 
 
-div.sidebar-option:hover:not(.selected-sidebar){
+div.sidebar-option[data-page="unselected"]:hover{
     background-color: var(--hover-background-colour);
 }
 
@@ -239,6 +239,8 @@ div.sidebar-notification-number-container{
     flex-shrink: 0;
 
     width: 8rem;
+    min-width: min-content;
+    
     height: 100%;
 
     text-wrap: nowrap;
