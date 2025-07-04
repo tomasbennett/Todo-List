@@ -72,9 +72,9 @@ export class PageMediator implements IPageMediator {
         private startPage: Map<HTMLElement, IState>
     ) {
         for (const [key, val] of this.startPage) {
-            this.pageClickEventRegistry.set(key, this.funcDevelopment(key, val));
             this.pageStateManager.set(val);
             this.pageChangeMemento.changeState(key);
+            this.pageClickEventRegistry.set(key, (e: MouseEvent) => { this.changePage(key, val); });
             val.load();
 
         }
@@ -88,20 +88,24 @@ export class PageMediator implements IPageMediator {
             //     this.pageStateManager.load();
             //     this.changePage(key);
             // }
-            const func: (e: MouseEvent) => void = this.funcDevelopment(key, val);
+            
 
             this.pageClickEventRegistry.set(key, (e: MouseEvent) => {
-                func(e);
+                this.changePage(key, val);
 
             });
 
             key.addEventListener("click", (e: MouseEvent) => {
-                func(e);
+                this.changePage(key, val);
 
             });
         }
-    }
-    changePage(newPageKey: HTMLElement): void {
+    } //NEED TO CHANGE THIS CHANGE PAGE FUNCTIONALITY THROUGHOUT SO THAT IT IN ITSELF DOES THE STATEMANAGER STUFF
+    changePage(newPageKey: HTMLElement, val: IState): void {
+        this.pageStateManager.exit();
+        this.pageStateManager.set(val);
+        this.pageStateManager.load();
+
         const funcRemove: (e: MouseEvent) => void = this.pageClickEventRegistry.getByID(newPageKey);
         newPageKey.removeEventListener("click", funcRemove);
         
@@ -117,16 +121,16 @@ export class PageMediator implements IPageMediator {
     }
 
 
-    private funcDevelopment(key: HTMLElement, val: IState): (e: MouseEvent) => void {
-        const func: (e: MouseEvent) => void = (e) => {
-            this.pageStateManager.exit();
-            this.pageStateManager.set(val);
-            this.pageStateManager.load();
-            this.changePage(key);
+    // private funcDevelopment(key: HTMLElement, val: IState): (e: MouseEvent) => void {
+    //     const func: (e: MouseEvent) => void = (e) => {
+    //         this.pageStateManager.exit();
+    //         this.pageStateManager.set(val);
+    //         this.pageStateManager.load();
+    //         this.changePage(key);
             
-        }
+    //     }
 
-        return func;
-    }
+    //     return func;
+    // }
 
 }

@@ -139,7 +139,7 @@ div.sidebar-option{
 }
 
 
-div.sidebar-option[data-page="unselected"]:hover{
+[data-page="unselected"]:hover{
     background-color: var(--hover-background-colour);
 }
 
@@ -266,9 +266,9 @@ div.sidebar-notification-number-container{
 
 
 
-.sidebar-notes-button:hover{
+/* .sidebar-notes-button:hover{
     background-color: var(--hover-background-colour);
-}
+} */
 
 
 div.remove-sidebar-option{

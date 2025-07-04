@@ -77,7 +77,7 @@ export class NoteSidebarScreen implements ICommandCriteria<INote> {
         private screenRegistry: IScreenComponentRegistry,
         private clickEventRegistry: IClickEventRegistry,
 
-        private defaultHomePage: HTMLElement
+        private defaultHomePage: Map<HTMLElement, IState>
 
     ) {}
     execute(criteria: { id: number; title: string; body: string; }): void {

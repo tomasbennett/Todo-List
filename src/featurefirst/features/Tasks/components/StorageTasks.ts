@@ -163,7 +163,16 @@ export class TaskContainer implements IComponentRemovable<ITask> {
         this.container.setAttribute("data-importance", value.priority);
         this.container.setAttribute("data-id", value.id.toString());
 
-        this.title.classList.add("task-entry-title", value.completed ? "complete" : "incomplete");
+
+        if (value.completed) {
+            this.title.classList.remove("incomplete");
+            this.title.classList.add("complete");
+        } else {
+            this.title.classList.remove("complete");
+            this.title.classList.add("incomplete");
+        }
+
+        this.title.classList.add("task-entry-title");
         this.title.textContent = value.title;
         this.description.textContent = value.body;
         this.date.textContent = value.date.toDateString();

@@ -57,6 +57,8 @@ const noteLocalStorage: ILocalStorageRegistry<INote> = new NoteLocalStorage();
 
 const homeScreenRegistry: IScreenComponentRegistry = new ScreenRegistry(new Map<HTMLElement, IComponentRemovable<any>>());
 const homeClickEventRegistry: IClickEventRegistry = new ClickEventRegistry(new Map<HTMLElement, (e: MouseEvent) => void>());
+const homeChangeEventRegistry: IChangeEventRegistry = new InputChangeEventRegistry(new Map<HTMLInputElement, (e: Event) => void>());
+
 
 const dateRangeScreenRegistry: IScreenComponentRegistry = new ScreenRegistry(new Map<HTMLElement, IComponentRemovable<any>>());
 const dateChangeEventRegistry: IChangeEventRegistry = new InputChangeEventRegistry(new Map<HTMLInputElement, (e: Event) => void>());
@@ -222,10 +224,15 @@ if (existingKeys.some((key) => localStorage.getItem(key) == null)) {
 
 
 
+const mainPageClickEvents: IClickEventRegistry = new PageEventRegistry(new Map<HTMLElement, (e: MouseEvent) => void>());
+const mainPageStateManager: IStateManager = new PageStateManager();
+const mainPageMemento: IPageChangeMemento = new ChangePageMemento();
 
 //********************************** THESE WILL BE THE PAGE EVENTS AND REGISTRY */
 
 const taskRenderScreen: ITaskScreen = new RenderTasks(
+    taskLocalStorage,
+    homeChangeEventRegistry,
     homeClickEventRegistry,
     homeScreenRegistry
 );
@@ -241,6 +248,29 @@ const dateSelectorScreen: IDateRangeScreen = new DateRangeSelectorScreen(
 
 
 
+const defaultPage: Map<HTMLElement, IState> = new Map<HTMLElement, IState>([
+    [tasksHomeBtn, new HomeState(
+        taskRenderScreen,
+        taskLocalStorage
+    )]
+]);
+
+const mainPageMediator: IPageMediator = new PageMediator(
+    mainPageClickEvents,
+    mainPageStateManager,
+    mainPageMemento,
+    defaultPage
+);
+
+
+
+
+mainPageMediator.setLivePages(new Map<HTMLElement, IState>([
+    [tasksCalendarBtn, new CalendarState(dateSelectorScreen)],
+    [tasksUpcomingBtn, new UpcomingState(taskRenderScreen, taskLocalStorage, dateCheck)]
+]));
+
+//********************************** THESE WILL BE MAIN PAGE CLASSES */
 
 //********************************** THESE WILL BE THE PAGE EVENTS AND REGISTRY */
 
@@ -259,32 +289,6 @@ const dateSelectorScreen: IDateRangeScreen = new DateRangeSelectorScreen(
 // );
 
 
-const mainPageClickEvents: IClickEventRegistry = new PageEventRegistry(new Map<HTMLElement, (e: MouseEvent) => void>());
-const mainPageStateManager: IStateManager = new PageStateManager();
-const mainPageMemento: IPageChangeMemento = new ChangePageMemento();
-const mainPageMediator: IPageMediator = new PageMediator(
-    mainPageClickEvents,
-    mainPageStateManager,
-    mainPageMemento,
-    new Map<HTMLElement, IState>([
-        [tasksHomeBtn, new HomeState(
-            taskRenderScreen,
-            taskLocalStorage
-        )]
-    ])
-);
-
-
-
-
-mainPageMediator.setLivePages(new Map<HTMLElement, IState>([
-    [tasksCalendarBtn, new CalendarState(dateSelectorScreen)],
-    [tasksUpcomingBtn, new UpcomingState(taskRenderScreen, taskLocalStorage, dateCheck)]
-]));
-
-//********************************** THESE WILL BE MAIN PAGE CLASSES */
-
-
 
 
 
@@ -297,22 +301,24 @@ mainPageMediator.setLivePages(new Map<HTMLElement, IState>([
 
 //********************************** THESE WILL BE THE PROJECT PAGE EVENTS AND REGISTRY */
 
+const projRemoveClickRegistry: IClickEventRegistry = new ClickEventRegistry(new Map<HTMLElement, (e: MouseEvent) => void>());
+
 const projRemovalCommand: ICommandCriteria<IComponentRemovable<void>> = new ProjectRemovalCommand(
     projLocalStorage,
     mainPageClickEvents,
     taskLocalStorage
 );
 
-
+//ISSUE BEING THAT IT IS CAUSING AN ERROR TO DELETE THE FUNDAMENTALS, WORKING WITH EVENT LISTENERS IS AWFUL
 
 const projHTMLCreation: ICommandCriteria<IProject> = new ProjectHTMLCreator(
     allSymbolIDs,
     idRandomSelect,
-    mainPageClickEvents,
+    projRemoveClickRegistry,
     projRemovalCommand,
     mainPageStateManager,
     mainPageMediator,
-    tasksHomeBtn,
+    defaultPage,
     taskRenderScreen,
     taskLocalStorage,
     projLocalStorage
@@ -346,7 +352,7 @@ const noteSidebarScreen: ICommandCriteria<INote> = new NoteSidebarScreen(
     noteLocalStorage,
     homeScreenRegistry,
     homeClickEventRegistry,
-    tasksHomeBtn
+    defaultPage
 
 );
 

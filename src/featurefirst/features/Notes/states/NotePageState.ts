@@ -23,7 +23,7 @@ export class NoteDynamicPage implements IState {
 
         private noteRemovalCommand: ICommandCriteria<number>,
         private pageMediator: IPageMediator,
-        private defaultPage: HTMLElement
+        private defaultPage: Map<HTMLElement, IState>
         
 
     ) {}
@@ -49,7 +49,10 @@ export class NoteDynamicPage implements IState {
         this.elementRegistry.set(noteRemv.getHTML(), noteRemv);
         this.clickEventRegistry.set(noteRemv.getHTML(), (e: MouseEvent) => {
             if (this.pageStateManager.getState() === this) {
-                this.pageMediator.changePage(this.defaultPage);
+                for (const [key, val] of this.defaultPage) {
+                    this.pageMediator.changePage(key, val);
+
+                }
 
             }
             this.noteRemovalCommand.execute(this.noteID);

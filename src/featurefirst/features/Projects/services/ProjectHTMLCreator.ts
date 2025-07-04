@@ -21,7 +21,7 @@ export class ProjectHTMLCreator<Task extends { id: number, project: number }> im
         private projRemovalCommand: ICommandCriteria<IComponentRemovable<void>>,
         private pageStateManager: IStateManager,
         private pageMediator: IPageMediator,
-        private defaultPage: HTMLElement,
+        private defaultPage: Map<HTMLElement, IState>,
 
         private taskRenderScreen: IScreenGroupingCriteria<Task>,
         private taskLocalStorage: ILocalStorageRegistry<Task>,
@@ -66,14 +66,20 @@ export class ProjectHTMLCreator<Task extends { id: number, project: number }> im
         // });
         
         this.pageClickEventRegistry.set(projRemoveBtn.getHTML(), (e: MouseEvent) => {
+            e.stopPropagation();
+
             if (this.pageStateManager.getState() === newProjState) {
-                this.pageMediator.changePage(this.defaultPage);
-
+                for (const [key, val] of this.defaultPage) {
+                    this.pageMediator.changePage(key, val);
+                    
+                }
+                
             }
+            
             this.projRemovalCommand.execute(projHTMLContainer);
-
+            
             this.pageClickEventRegistry.removeByID(projRemoveBtn.getHTML());
-
+            
         });
         
         projHTMLContainer.render(projContainer);
