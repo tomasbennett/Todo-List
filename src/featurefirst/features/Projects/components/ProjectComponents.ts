@@ -68,6 +68,8 @@ export class ProjectContainer implements IComponentRemovable<void> {
 
         private projID: number
     ) {
+        const randomColours: string[] = ["rgb(216, 76, 100)", "rgb(77, 200, 241)", "rgb(179, 179, 38)"];
+
         this.innerContainer = document.createElement("div");
         this.innerContainer.classList.add("sidebar-option");
 
@@ -82,6 +84,7 @@ export class ProjectContainer implements IComponentRemovable<void> {
         this.svgContainer.classList.add("sidebar-svg-container");
 
         this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        this.svg.style.fill = randomColours[Math.floor(Math.random() * 3)];
 
         this.svgUsePath = document.createElementNS('http://www.w3.org/2000/svg', 'use');
         

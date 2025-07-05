@@ -74,7 +74,7 @@ export class TaskForm<Proj extends { id: number, title: string }> implements ITa
                 
 
 
-                this.removeAll();
+                // this.removeAll();
 
                 this.dialogToggle.close();
 

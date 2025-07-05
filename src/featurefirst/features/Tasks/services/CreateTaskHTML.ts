@@ -1,4 +1,5 @@
 import { homeContentContainer } from "../../../components/MainContainer";
+import { ICommandCriteria } from "../../../models/CommandModel";
 import { IComponentEventRemovable, IComponentRemovable } from "../../../models/IComponentModels";
 import { IStateManager } from "../../../models/PageState";
 import { IChangeEventRegistry, IClickEventRegistry, ILocalStorageRegistry, IScreenComponentRegistry } from "../../../models/Registry";
@@ -15,7 +16,10 @@ export class RenderTasks implements ITaskScreen {
                 private inputChangeEvents: IChangeEventRegistry,
         
                 private screenEvents: IClickEventRegistry,
-                private screenRegistry: IScreenComponentRegistry
+                private screenRegistry: IScreenComponentRegistry,
+
+
+                private editTaskCommand: ICommandCriteria<number>
     ) {}
     renderDataToScreen(data: { id: number; title: string; body: string; date: Date; priority: "low" | "medium" | "high"; project: number; completed: boolean; }): void {
         const inputCheckBox: IComponentEventRemovable<boolean> = new InputCompletedTask(this.screenEvents);
@@ -49,6 +53,8 @@ export class RenderTasks implements ITaskScreen {
 
         this.screenEvents.set(editTask.getHTML(), (e: MouseEvent) => {
             e.stopPropagation();
+
+            this.editTaskCommand.execute(data.id);
 
 
         });

@@ -17,6 +17,8 @@ export class ProjectsFormState implements IState {
     load(): void {
         this.form.style.display = "flex";
         this.eventsRegistry.set(this.form, (e: SubmitEvent) => {
+            e.preventDefault();
+
             this.projectSubmitCommand.execute(e);
 
         });

@@ -26,3 +26,30 @@ export class TaskFormComponent implements IComponentRemovable<void> {
         return this.formElement;
     }
 }
+
+
+
+export class TaskFormBtnComponent implements IComponentRemovable<string> {
+    private taskFormBtn: HTMLElement;
+
+    constructor() {
+        this.taskFormBtn = document.createElement("p");
+        this.taskFormBtn.id = "dialog-task-theme";
+        this.taskFormBtn.classList.add("dialog-theme-selection");
+        
+    }
+
+    remove(): void {
+        this.taskFormBtn.remove();
+    }
+    render(container: HTMLElement): void {
+        container.appendChild(this.taskFormBtn);
+    }
+    setValue(value: string): void {
+        this.taskFormBtn.textContent = value;
+    }
+    getHTML(): HTMLElement {
+        return this.taskFormBtn;
+    }
+
+}

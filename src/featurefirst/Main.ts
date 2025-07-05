@@ -1,10 +1,10 @@
-import { cancelBtn, dialogElem } from "./components/DialogComponent";
-import { notesForm, notesFormBtn } from "./features/Notes/components/NotesForm";
+import { addBtn, cancelBtn, dialogElem, dialogSidePageOptionsContainer } from "./components/DialogComponent";
+import { NotesFormBtnComponent, notesForm, notesFormBtn } from "./features/Notes/components/NotesForm";
 import { INote } from "./features/Notes/models/NotesModel";
 import { NoteSidebarScreen } from "./features/Notes/services/NoteSidebar";
 import { NoteSubmitCommand } from "./features/Notes/services/NoteSubmitCommand";
 import { NotesFormState } from "./features/Notes/states/NotesFormState";
-import { projectsForm, projectsFormBtn } from "./features/Projects/components/ProjectsForm";
+import { ProjectFormBtnComponent, projectsForm, projectsFormBtn } from "./features/Projects/components/ProjectsForm";
 import { IProject } from "./features/Projects/models/ProjectsModel";
 import { ProjectRemovalCommand } from "./features/Projects/services/ProjectClickEvent";
 import { ProjectHTMLCreator } from "./features/Projects/services/ProjectHTMLCreator";
@@ -13,7 +13,7 @@ import { ProjectsFormState } from "./features/Projects/states/ProjectsFormState"
 import { AllSymbolID } from "./features/Projects/util/AllSymbolIDs";
 import { fourWeeksFromToday, nextWeek } from "./features/Tasks/components/SetDates";
 import { tasksCalendarBtn, tasksHomeBtn, tasksUpcomingBtn } from "./features/Tasks/components/TaskDateFilters";
-import { tasksForm, tasksFormBtn } from "./features/Tasks/components/TasksFormComponents";
+import { TaskFormBtnComponent, tasksForm, tasksFormBtn } from "./features/Tasks/components/TasksFormComponents";
 import { IDateRangeCheck } from "./features/Tasks/models/DateRangeModel";
 import { IDateRangeScreen } from "./features/Tasks/models/DateRangeScreen";
 import { ITask } from "./features/Tasks/models/TaskModels";
@@ -21,13 +21,15 @@ import { ITaskFormScreen, ITaskScreen } from "./features/Tasks/models/TaskScreen
 import { DateRangeSelectorScreen } from "./features/Tasks/services/CreateDateRangeScreen";
 import { TaskForm } from "./features/Tasks/services/CreateTaskForm";
 import { RenderTasks } from "./features/Tasks/services/CreateTaskHTML";
+import { EditTaskCommand } from "./features/Tasks/services/EditTaskCommand";
 import { CalendarState } from "./features/Tasks/states/CalendarState";
 import { HomeState } from "./features/Tasks/states/HomeState";
 import { TaskFormState } from "./features/Tasks/states/TaskFormState";
 import { UpcomingState } from "./features/Tasks/states/UpcomingState";
 import { DateToString } from "./features/Tasks/util/DateToText";
 import { DateRangeCheck } from "./features/Tasks/util/DatesFilter";
-import { ICommandCriteria, ISubmitCommand } from "./models/CommandModel";
+import { ICommand, ICommandCriteria, ISubmitCommand } from "./models/CommandModel";
+import { IDialogShutdownEditCommand } from "./models/DialogShutDownEditCommand";
 import { IComponentRemovable } from "./models/IComponentModels";
 import { IIDGenerator, IIDRandomSelect, ISymbolIDGenerator } from "./models/IGenerator";
 import { IPageChangeMemento } from "./models/Memento";
@@ -36,6 +38,7 @@ import { IPageMediator } from "./models/PageMediator";
 import { IState, IStateManager } from "./models/PageState";
 import { IChangeEventRegistry, IClickEventRegistry, ILocalStorageRegistry, IScreenComponentRegistry, ISubmitEventRegistry } from "./models/Registry";
 import { IDateToString } from "./models/Transformer";
+import { DialogShutdownCommand, DialogShutdownEdit } from "./services/DialogShutDownCommands";
 import { DialogToggle } from "./services/DialogToggle";
 import { NoteLocalStorage, ProjectLocalStorage, TaskLocalStorage } from "./services/LocalStorage";
 import { PageMediator } from "./services/PageMediator";
@@ -230,11 +233,95 @@ const mainPageMemento: IPageChangeMemento = new ChangePageMemento();
 
 //********************************** THESE WILL BE THE PAGE EVENTS AND REGISTRY */
 
+
+
+
+const dialogPageClickEventRegistry: IClickEventRegistry = new ClickEventRegistry(new Map<HTMLElement, (e: MouseEvent) => void>());
+const dialogPageStateManager: IStateManager = new PageStateManager();
+const dialogPageMemento: IPageChangeMemento = new ChangePageMemento();
+
+const dialogSidebarPageRegistry: IScreenComponentRegistry = new ScreenRegistry(new Map<HTMLElement, IComponentRemovable<any>>());
+
+const dialogAddRemovalCommand: ICommand = new DialogShutdownCommand(
+    dialogPageStateManager,
+    dialogSidebarPageRegistry
+)
+
+const dialogAddToggle: IOpenClose = new DialogToggle(
+    dialogElem,
+    cancelBtn,
+    dialogAddRemovalCommand
+    //ADDITIONAL LOGIC AFTER CLOSING THE DIALOG FOR THIS IS THAT WE WANT TO:
+    // SO ANY HTMLELEMENT BEING REGISTRED WITH THE PAGE SHOULD SHOW UP WITH DISPLAY FLEX
+    //LETS TRY AND MAKE THE PAGE SIMULATION OF COLOURS WORK WITH THE PAGE MEDIATOR
+);
+
+
+const dialogScreenRegistry: IScreenComponentRegistry = new ScreenRegistry(new Map<HTMLElement, IComponentRemovable<any>>());
+const dialogSubmitEventRegistry: ISubmitEventRegistry = new FormSubmitEventRegistry(new Map<HTMLFormElement, (e: SubmitEvent) => void>());
+
+
+
+
+const taskFormScreen: ITaskFormScreen = new TaskForm<IProject>(
+    dialogScreenRegistry,
+    dialogSubmitEventRegistry,
+    tasksForm,
+    taskLocalStorage,
+    projLocalStorage,
+    dialogAddToggle,
+    mainPageStateManager,
+    dateToStr,
+    taskIDGenerator
+);
+
+
+
+const dialogShutDownEditCommand: IDialogShutdownEditCommand<ITask> = new DialogShutdownEdit<ITask>(dialogSidebarPageRegistry);
+
+const dialogEditToggle: IOpenClose = new DialogToggle(
+    dialogElem,
+    cancelBtn,
+    dialogShutDownEditCommand
+);
+
+const taskFormScreenEdit: ITaskFormScreen = new TaskForm<IProject>(
+    dialogScreenRegistry,
+    dialogSubmitEventRegistry,
+    tasksForm,
+    taskLocalStorage,
+    projLocalStorage,
+    dialogEditToggle,
+    mainPageStateManager,
+    dateToStr,
+    taskIDGenerator
+);
+
+dialogShutDownEditCommand.setTaskFormScreen(taskFormScreenEdit);
+
+
+
+
+
+
+
+const taskEditCommand: ICommandCriteria<number> = new EditTaskCommand(
+    dialogEditToggle,
+    taskLocalStorage,
+    taskFormScreenEdit,
+    dialogSidebarPageRegistry,
+    dialogPageMemento
+);
+
+
+
+
 const taskRenderScreen: ITaskScreen = new RenderTasks(
     taskLocalStorage,
     homeChangeEventRegistry,
     homeClickEventRegistry,
-    homeScreenRegistry
+    homeScreenRegistry,
+    taskEditCommand
 );
 
 const dateSelectorScreen: IDateRangeScreen = new DateRangeSelectorScreen(
@@ -386,36 +473,14 @@ projLocalStorage.getAll().forEach((proj) => {
 
 //********************************** ALL THINGS DIALOG */
 
-const dialogAddToggle: IOpenClose = new DialogToggle(
-    dialogElem,
-    cancelBtn,
-    //ADDITIONAL LOGIC AFTER CLOSING THE DIALOG FOR THIS IS THAT WE WANT TO:
-    // SO ANY HTMLELEMENT BEING REGISTRED WITH THE PAGE SHOULD SHOW UP WITH DISPLAY FLEX
-    //LETS TRY AND MAKE THE PAGE SIMULATION OF COLOURS WORK WITH THE PAGE MEDIATOR
-);
-
-
-const dialogPageClickEventRegistry: IClickEventRegistry = new ClickEventRegistry(new Map<HTMLElement, (e: MouseEvent) => void>());
-const dialogPageStateManager: IStateManager = new PageStateManager();
-const dialogPageMemento: IPageChangeMemento = new ChangePageMemento();
-
-
-const dialogScreenRegistry: IScreenComponentRegistry = new ScreenRegistry(new Map<HTMLElement, IComponentRemovable<any>>());
-const dialogSubmitEventRegistry: ISubmitEventRegistry = new FormSubmitEventRegistry(new Map<HTMLFormElement, (e: SubmitEvent) => void>());
 
 
 
-const taskFormScreen: ITaskFormScreen = new TaskForm<IProject>(
-    dialogScreenRegistry,
-    dialogSubmitEventRegistry,
-    tasksForm,
-    taskLocalStorage,
-    projLocalStorage,
-    dialogAddToggle,
-    dialogPageStateManager,
-    dateToStr,
-    taskIDGenerator
-);
+
+
+
+
+
 
 const taskFormState: IState = new TaskFormState(taskFormScreen);
 
@@ -429,7 +494,8 @@ const taskFormState: IState = new TaskFormState(taskFormScreen);
 const projSubmitCommand: ISubmitCommand = new ProjectSubmitCommand(
     projIDGenerator,
     projHTMLCreation,
-    projLocalStorage
+    projLocalStorage,
+    dialogAddToggle
 );
 
 const projFormState: IState = new ProjectsFormState(
@@ -449,7 +515,8 @@ const projFormState: IState = new ProjectsFormState(
 const noteSubmitCommand: ISubmitCommand = new NoteSubmitCommand(
     noteIDGenerator,
     noteSidebarScreen,
-    noteLocalStorage
+    noteLocalStorage,
+    dialogAddToggle
 );
 
 
@@ -468,13 +535,26 @@ const noteFormState: IState = new NotesFormState(
 
 
 
-dialogElem.addEventListener("click", () => {
+addBtn.addEventListener("click", () => {
     //SHOULD THE PAGE MEDIATOR BELONG INSIDE OF THE EVENT LISTENER: LEADING THEORY IS THAT YES BUT KEEP THE REGISTRIES OUTSIDE AS THE CONSTRUCTOR WILL ALWAYS SET, WE JUST NEED TO
     //CLEAR THE REGISTRY ON CLOSE
     
     
     
+    const taskFormBtnComponent: IComponentRemovable<string> = new TaskFormBtnComponent();
+    dialogSidebarPageRegistry.set(taskFormBtnComponent.getHTML(), taskFormBtnComponent);
+    taskFormBtnComponent.setValue("Task");
+    taskFormBtnComponent.render(dialogSidePageOptionsContainer);
     
+    const projFormBtnComponent: IComponentRemovable<string> = new ProjectFormBtnComponent();
+    dialogSidebarPageRegistry.set(projFormBtnComponent.getHTML(), projFormBtnComponent);
+    projFormBtnComponent.setValue("Project");
+    projFormBtnComponent.render(dialogSidePageOptionsContainer);
+    
+    const noteFormBtnComponent: IComponentRemovable<string> = new NotesFormBtnComponent();
+    dialogSidebarPageRegistry.set(noteFormBtnComponent.getHTML(), noteFormBtnComponent);
+    noteFormBtnComponent.setValue("Note");
+    noteFormBtnComponent.render(dialogSidePageOptionsContainer);
     
     
     
@@ -486,13 +566,13 @@ dialogElem.addEventListener("click", () => {
         dialogPageStateManager,
         dialogPageMemento,
         new Map<HTMLElement, IState>([
-            [tasksFormBtn, taskFormState]
+            [taskFormBtnComponent.getHTML(), taskFormState]
         ])
     );
 
     dialogPageMediator.setLivePages(new Map<HTMLElement, IState>([
-        [projectsFormBtn, projFormState],
-        [notesFormBtn, noteFormState]
+        [projFormBtnComponent.getHTML(), projFormState],
+        [noteFormBtnComponent.getHTML(), noteFormState]
     ]));
 
 

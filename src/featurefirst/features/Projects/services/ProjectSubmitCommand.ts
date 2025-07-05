@@ -1,5 +1,6 @@
 import { ICommandCriteria, ISubmitCommand } from "../../../models/CommandModel";
 import { IIDGenerator } from "../../../models/IGenerator";
+import { IOpenClose } from "../../../models/OpenCloseModel";
 import { ILocalStorageRegistry } from "../../../models/Registry";
 import { IProject, ProjectSchema } from "../models/ProjectsModel";
 
@@ -8,7 +9,10 @@ export class ProjectSubmitCommand implements ISubmitCommand {
     constructor(
         private projIDGenerator: IIDGenerator,
         private projHTMLCreator: ICommandCriteria<IProject>,
-        private projLocalStorage: ILocalStorageRegistry<IProject>
+        private projLocalStorage: ILocalStorageRegistry<IProject>,
+
+        private dialogToggle: IOpenClose
+
     ) {
 
     }
@@ -26,6 +30,10 @@ export class ProjectSubmitCommand implements ISubmitCommand {
         if (ProjectSchema.safeParse(obj).success) {
             this.projLocalStorage.set(obj["id"] as number, obj as IProject);
             this.projHTMLCreator.execute(obj as IProject);
+
+            this.dialogToggle.close();
+
+
 
         }
     }

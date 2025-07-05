@@ -80,6 +80,8 @@ export class NotesFormState implements IState {
         this.form.style.display = "flex";
 
         this.eventsRegistry.set(this.form, (e: SubmitEvent) => {
+            e.preventDefault();
+
             this.noteSubmitCommand.execute(e);
 
         });
