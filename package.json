@@ -7,7 +7,8 @@
     "dev-startup": "npx webpack --config webpack.dev.js",
     "dev-live": "npx webpack-dev-server --open --config webpack.dev.js",
     "prod-startup": "npx webpack --config webpack.prod.js",
-    "prod-live": "npx webpack-dev-server --open --config webpack.prod.js"
+    "prod-live": "npx webpack-dev-server --open --config webpack.prod.js",
+    "upload": "git add dist -f && git commit -m 'Deployment commit' && git subtree push --prefix dist origin gh-pages && git checkout main"
   },
   "author": "Tomas Bennett",
   "license": "ISC",
